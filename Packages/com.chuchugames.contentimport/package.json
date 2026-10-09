@@ -1,0 +1,9 @@
+{
+  "name": "com.chuchugames.contentimport",
+  "version": "0.1.0",
+  "displayName": "Chuchu Games - Content Import",
+  "description": "Bulk content pipeline: CSV parsing (engine-free) and editor helpers to upsert ScriptableObject assets by id with an import report.",
+  "unity": "6000.0",
+  "author": { "name": "Chuchu Games", "email": "contact@chuchugames.com" },
+  "keywords": ["import", "csv", "json", "scriptableobject", "content"]
+}

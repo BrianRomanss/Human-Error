@@ -1,0 +1,10 @@
+{
+  "name": "com.chuchugames.dialogue",
+  "version": "0.1.0",
+  "displayName": "Chuchu Games - Dialogue",
+  "description": "Visual-novel style dialogue: engine-free runner and plain-text script format, plus a uGUI overlay with portraits, typewriter text, voice blips, choices, log, auto and skip.",
+  "unity": "6000.0",
+  "author": { "name": "Chuchu Games", "email": "contact@chuchugames.com" },
+  "dependencies": { "com.chuchugames.ui": "0.2.0" },
+  "keywords": ["dialogue", "visual novel", "story"]
+}

@@ -1,0 +1,14 @@
+{
+    "name": "ChuchuGames.ContentImport.Editor",
+    "rootNamespace": "ChuchuGames.ContentImport.Editor",
+    "references": ["ChuchuGames.ContentImport"],
+    "includePlatforms": ["Editor"],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

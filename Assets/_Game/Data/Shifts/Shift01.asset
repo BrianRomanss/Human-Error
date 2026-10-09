@@ -1,0 +1,49 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6ea7988840a5bd488445465412f2c6d, type: 3}
+  m_Name: Shift01
+  m_EditorClassIdentifier: 
+  data:
+    number: 1
+    title: First Night
+    cycle: 412
+    day: 2
+    kesh: 
+    visitors: 7
+    humans: 2
+    ruleBreakers: 1
+    oddCitizens: 0
+    skilledShare: 0
+    clumsyMinTells: 0
+    clumsyMaxTells: 0
+    skilledTells: 0
+    maxForgedFields: 1
+    questionBudget: 3
+    questions:
+    - greeting
+    - floor
+    - hands
+    - nervous
+    tells:
+    - RoundPupils
+    - PhotoRoundPupils
+    - HumanEar
+    - SmallTalkGreeting
+    - SaysFine
+    - Sweats
+    - FiveFingers
+    closedFloors: 
+    rules: []
+    tools: []
+    briefing: Welcome to window 3. Check every ID against the visitor's face, and
+      every slip against the ID.
+    supervisor: Three questions each. Don't waste them, and don't arrest citizens.

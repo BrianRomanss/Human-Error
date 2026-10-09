@@ -1,0 +1,9 @@
+{
+  "name": "com.chuchugames.procart",
+  "version": "0.1.0",
+  "displayName": "Chuchu Games - Procedural Art",
+  "description": "Engine-free placeholder asset generation: signed-distance 2D shapes with anti-aliasing, gradients and glow, PNG writer, WAV writer and a tiny synth for SFX.",
+  "unity": "6000.0",
+  "author": { "name": "Chuchu Games", "email": "contact@chuchugames.com" },
+  "keywords": ["procedural", "sdf", "png", "wav", "placeholder"]
+}

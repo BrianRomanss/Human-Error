@@ -1,0 +1,10 @@
+{
+  "name": "com.chuchugames.ui",
+  "version": "0.2.0",
+  "displayName": "Chuchu Games - UI",
+  "description": "uGUI helpers: drag & drop (mouse, touch, tap-to-place) with hover callbacks; later screen router, juice and SFX.",
+  "unity": "6000.0",
+  "author": { "name": "Chuchu Games", "email": "contact@chuchugames.com" },
+  "dependencies": { "com.unity.ugui": "2.0.0" },
+  "keywords": ["ui", "drag", "drop", "touch"]
+}

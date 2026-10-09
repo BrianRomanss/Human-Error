@@ -1,0 +1,14 @@
+{
+    "name": "HumanError.Model",
+    "rootNamespace": "HumanError.Model",
+    "references": ["ChuchuGames.Core"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

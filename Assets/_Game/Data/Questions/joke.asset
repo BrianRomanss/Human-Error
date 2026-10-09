@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d166290693aaa4da8fe7a683412f0d, type: 3}
+  m_Name: joke
+  m_EditorClassIdentifier: 
+  data:
+    id: joke
+    text: Why did the courier cross the Lattice? Haha.
+    kind: Trap
+    effect: 
+    reveals: LaughsAtTrap
+    citizen:
+    - "\u2026"
+    - That is not a question for the window.
+    - '*waits for you to stop*'
+    human:
+    - Ha! I don't know, why?
+    - Haha, go on then!
+    - Heh. To get to the other side?
+    slipChance: 0.45
+    stress: 0.25
+    unlockShift: 5

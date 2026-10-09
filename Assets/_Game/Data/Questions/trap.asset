@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d166290693aaa4da8fe7a683412f0d, type: 3}
+  m_Name: trap
+  m_EditorClassIdentifier: 
+  data:
+    id: trap
+    text: Long night, right? Haha.
+    kind: Trap
+    effect: 
+    reveals: LaughsAtTrap
+    citizen:
+    - "\u2026"
+    - '*stares at you in silence*'
+    - I do not share humour with strangers.
+    human:
+    - Haha, tell me about it!
+    - Ha! Tell me about it.
+    - "Heh \u2014 yeah, you said it."
+    slipChance: 0.45
+    stress: 0.25
+    unlockShift: 3

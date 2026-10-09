@@ -1,0 +1,20 @@
+{
+    "name": "HumanError.Runtime",
+    "rootNamespace": "HumanError",
+    "references": [
+        "HumanError.Model",
+        "ChuchuGames.Core",
+        "ChuchuGames.UI",
+        "UnityEngine.UI",
+        "Unity.InputSystem"
+    ],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

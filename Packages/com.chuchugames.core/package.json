@@ -1,0 +1,9 @@
+{
+  "name": "com.chuchugames.core",
+  "version": "0.2.0",
+  "displayName": "Chuchu Games - Core",
+  "description": "Engine-free game plumbing: undo/redo command stack, enum state machine, event bus, seeded RNG, save slots. Save service lives in the Unity sub-assembly.",
+  "unity": "6000.0",
+  "author": { "name": "Chuchu Games", "email": "contact@chuchugames.com" },
+  "keywords": ["undo", "command", "state machine", "save"]
+}

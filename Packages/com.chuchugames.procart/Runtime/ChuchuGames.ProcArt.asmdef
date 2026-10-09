@@ -1,0 +1,14 @@
+{
+    "name": "ChuchuGames.ProcArt",
+    "rootNamespace": "ChuchuGames.ProcArt",
+    "references": [],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": true
+}

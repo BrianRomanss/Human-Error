@@ -1,0 +1,14 @@
+{
+    "name": "ChuchuGames.Dialogue.UI",
+    "rootNamespace": "ChuchuGames.Dialogue.UI",
+    "references": ["ChuchuGames.Dialogue", "ChuchuGames.UI", "UnityEngine.UI"],
+    "includePlatforms": [],
+    "excludePlatforms": [],
+    "allowUnsafeCode": false,
+    "overrideReferences": false,
+    "precompiledReferences": [],
+    "autoReferenced": true,
+    "defineConstraints": [],
+    "versionDefines": [],
+    "noEngineReferences": false
+}

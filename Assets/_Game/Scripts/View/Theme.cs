@@ -57,6 +57,9 @@ namespace HumanError.View
         /// <summary>Shard amount with sign, e.g. "+25 ◆" (Chakra Petch labels only).</summary>
         public static string Shards(int n) => (n > 0 ? "+" : n < 0 ? "−" : "") + Mathf.Abs(n) + " ◆";
 
+        /// <summary>A balance rather than a change, e.g. "45 ◆" or "−15 ◆".</summary>
+        public static string Balance(int n) => (n < 0 ? "−" : "") + Mathf.Abs(n) + " ◆";
+
         public static Sprite Sprite(string name) => Art != null ? Art.Sprite(name) : null;
 
         public static void Sfx(string name, float volume = 1f, float pitch = 1f)

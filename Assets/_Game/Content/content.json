@@ -71,10 +71,10 @@
   "shifts": [
     { "number": 1, "title": "First Night", "cycle": 412, "day": 2,
       "visitors": 7, "humans": 2, "ruleBreakers": 1, "oddCitizens": 0, "skilledShare": 0,
-      "questionBudget": 3, "maxForgedFields": 1,
+      "questionBudget": 3, "maxForgedFields": 1, "revealEach": true,
       "questions": ["greeting", "floor", "hands", "nervous"],
       "tells": ["RoundPupils", "PhotoRoundPupils", "HumanEar", "SmallTalkGreeting", "SaysFine", "Sweats", "FiveFingers"],
-      "briefing": "Welcome to window 3. Check every ID against the visitor's face, and every slip against the ID.",
+      "briefing": "Welcome to Night Window 3. Check every ID against the visitor's face, and every slip against the ID. Tonight is your training night: I'll walk you through the first three visitors, and after each one I'll tell you what they really were.",
       "supervisor": "Three questions each. Don't waste them, and don't arrest citizens." },
     { "number": 2, "title": "Names", "cycle": 412, "day": 3,
       "visitors": 8, "humans": 2, "ruleBreakers": 2, "oddCitizens": 1, "skilledShare": 0,
@@ -106,9 +106,238 @@
       "supervisor": "Know the clans better than they do." },
     { "number": 6, "title": "Light", "cycle": 412, "day": 7,
       "visitors": 10, "humans": 3, "ruleBreakers": 2, "oddCitizens": 2, "skilledShare": 0.5,
-      "questionBudget": 3, "maxForgedFields": 3, "closedFloors": [5], "rules": ["clan-stamp"], "tools": ["uv"],
+      "questionBudget": 3, "maxForgedFields": 3, "closedFloors": [5], "rules": ["clan-stamp"],
       "questions": ["evening", "date", "home", "time", "palm", "breathe", "trap", "reports"],
-      "briefing": "You've been issued a UV lamp. Genuine holograms glow with rings under it; printed ones stay flat.",
-      "supervisor": "The good forgeries start now. Use the lamp." }
-  ]
+      "briefing": "Forgers have started printing fake holograms. Under a UV lamp a genuine hologram glows with rings; a printed one stays flat. No lamp? Then check everything else twice.",
+      "supervisor": "The good forgeries start now. I hope you bought the lamp." }
+  ],
+  "news": [
+    { "after": 0, "text": "Night Window 3 reopens after its last receptionist was \"reassigned\"." },
+    { "after": 0, "text": "LATTICE: humans in stolen bio-suits seen near the Tower. Citizens urged to report anyone who blinks." },
+    { "after": 0, "text": "Kesh to wear five colours this cycle. Moon-readers 80% excited." },
+
+    { "after": 1, "when": ["caught"], "text": "INVADER CAUGHT AT TOWER. New night receptionist \"a natural\", says Lattice." },
+    { "after": 1, "when": ["invader"], "text": "Unregistered being sighted on floor 14. Lattice: \"An isolated incident. Stay 60% content.\"" },
+    { "after": 1, "when": ["wrongful"], "text": "Citizen detained in error at the Tower released \"mostly unharmed\"." },
+    { "after": 1, "text": "Lattice reminds citizens: humans blink. Do not blink." },
+    { "after": 1, "text": "Earth signal detected again. Lattice: \"Nothing to worry about. Do not listen to it.\"" },
+    { "after": 1, "text": "Spore-meal up 3%: \"a temporary harvest wobble\", says the Food Lattice." },
+
+    { "after": 2, "when": ["caught"], "text": "Tower arrests rise. \"The night window is our wall,\" says Supervisor Graav." },
+    { "after": 2, "when": ["invader"], "text": "Floor 9 cleaners report \"a smell of sweat\". Audit office sealed for the night." },
+    { "after": 2, "when": ["wrongful"], "text": "Family of wrongly arrested clerk asks: \"Who checks the checkers?\"" },
+    { "after": 2, "text": "Forged IDs flood the markets. Lattice: \"Read every name letter by letter.\"" },
+    { "after": 2, "text": "Elder Sunnek of the Ammaru turns 300. Celebrations 70% muted." },
+    { "after": 2, "text": "Kesh turned an \"unusual\" shade last night. Moon-readers \"not concerned\"." },
+
+    { "after": 3, "when": ["flag:reported-22b"], "text": "Block 22 family taken in for a \"routine gill inspection\". Neighbours 90% relieved." },
+    { "after": 3, "when": ["flag:protected-22b"], "text": "Block 22 resident complains the Lattice \"ignores perfectly good tips\"." },
+    { "after": 3, "when": ["caught"], "text": "Night Window 3 now catches more invaders than windows 1 and 2 combined." },
+    { "after": 3, "when": ["invader"], "text": "Invader seen laughing in a Tower lift. Lattice: \"Do not laugh back.\"" },
+    { "after": 3, "text": "LATTICE: There is no basement in the Lattice Tower. Please stop asking about the basement." },
+    { "after": 3, "text": "Humans can't even write a date, says expert: \"They put dots in it.\"" },
+    { "after": 3, "text": "Moon-readers confirm Kesh \"will be whatever colour it is\"." },
+
+    { "after": 4, "when": ["caught"], "text": "Invader-free week at the Tower! Where are the invaders now? \"Processed,\" says the Lattice." },
+    { "after": 4, "when": ["invader"], "text": "Human \"refugees\" reported in the Moss Deeps. Lattice: \"There are no refugees. Only invaders.\"" },
+    { "after": 4, "text": "From tomorrow, Ammaru visitors to the Tower need a blue clan stamp." },
+    { "after": 4, "text": "Maintenance worker taken for questioning after humming \"the basement song\" in a lift." },
+    { "after": 4, "text": "Breathing on glass is now \"a civic duty\", says the Lattice." },
+
+    { "after": 5, "when": ["caught"], "text": "Lattice medal shortlist includes \"a certain night receptionist\"." },
+    { "after": 5, "when": ["invader"], "text": "Fake glow spots found in a Tower bin. \"Someone is getting sloppy,\" says Graav." },
+    { "after": 5, "text": "UV lamps now on sale to night staff. \"Holograms don't lie.\"" },
+    { "after": 5, "text": "Forgers move on to printed holograms, warns the Lattice." },
+    { "after": 5, "text": "Plo frill-crowns win the cycle's crest parade for the 9th time." },
+
+    { "after": 6, "text": "Lattice: invader numbers \"stable\". Basement numbers \"not a thing\"." },
+    { "after": 6, "text": "Kesh to go dark for one night next cycle. Citizens told to \"just know\" its colour." },
+    { "after": 6, "text": "Night Window 3 receptionist's record \"under review\"." }
+  ],
+  "messages": [
+    { "id": "hearing", "after": -1, "when": ["hearing"], "from": "Supervisor Graav",
+      "text": "Three strikes this act. Disciplinary hearing held in your absence: fined 30 shards. Your slate is clean. It will not be clean twice." },
+    { "id": "clinic", "after": -1, "when": ["sel-hospital"], "from": "Lattice Clinic",
+      "text": "Your sibling Sel was admitted last night with gill fever. Sel is resting at home now. The 50-shard bill is due tonight." },
+    { "id": "landlord-debt", "after": -1, "when": ["debt"], "from": "Landlord Mott",
+      "text": "You owe me rent, Receptionist. I am 0% patient. Pay, or the Lattice hears about it." },
+
+    { "id": "intro-lattice", "after": 0, "from": "Civic Lattice",
+      "text": "Welcome to the Lattice Tower, Receptionist Ilo. Report to Night Window 3 at 20:00. You are paid per correct decision; errors are deducted. Glory to the Lattice." },
+    { "id": "intro-sel", "after": 0, "from": "Sel",
+      "text": "BIG NIGHT!! You're going to be the best window person ever. I'm 90% proud and 10% coughing. Don't worry about the coughing. Will you bring me a story about a weird visitor?",
+      "choices": [
+        { "text": "I promise. Get some sleep.", "flag": "promised-stories", "reply": "YES. 100% asleep. (Not really.)" },
+        { "text": "Work is work, Sel. Rules are rules.", "flag": "rules-first", "loyalty": 1, "reply": "...okay. 60% okay." }
+      ] },
+
+    { "id": "graav-1-good", "after": 1, "when": ["perfect"], "from": "Supervisor Graav",
+      "text": "A clean first night. Don't let it go to your crest." },
+    { "id": "graav-1", "after": 1, "when": ["!perfect"], "from": "Supervisor Graav",
+      "text": "Mistakes on your first night. Everyone makes them once. Make them once." },
+    { "id": "sel-1", "after": 1, "from": "Sel",
+      "text": "Did you see one?? A real human?? Tuvo at school says they have hair EVERYWHERE and five fingers on each hand. FIVE." },
+    { "id": "landlord-1", "after": 1, "when": ["broke"], "from": "Landlord Mott",
+      "text": "Rent is due every night, Receptionist. The Lattice pays you; you pay me. Simple." },
+
+    { "id": "sel-2-sick", "after": 2, "when": ["meds-missed"], "from": "Sel",
+      "text": "I'm fine. I'm 40% fine. The cough is louder at night, but I can hide it under the pillow." },
+    { "id": "sel-2", "after": 2, "when": ["!meds-missed"], "from": "Sel",
+      "text": "The new medicine tastes like burnt glow-moss. I'm 70% better! Did anyone laugh at your jokes yet?" },
+    { "id": "graav-2", "after": 2, "when": ["wrongful"], "from": "Supervisor Graav",
+      "text": "You arrested a citizen. Their family filed a complaint with my office. Read the rulebook. Then read it again." },
+    { "id": "neighbour-2", "after": 2, "from": "Neighbour Vaun",
+      "text": "Receptionist. You work for the Lattice, yes? The family in 22-B never shows their gills. Never. I've been watching. Will you report them?",
+      "choices": [
+        { "text": "I'll pass it on to the Lattice.", "flag": "reported-22b", "loyalty": 1, "reply": "Good. Someone has to." },
+        { "text": "Leave them alone. Gills are private.", "flag": "protected-22b", "mercy": 1, "reply": "Hmph. On your crest be it." }
+      ] },
+
+    { "id": "sel-3-sick", "after": 3, "when": ["sel-sick"], "from": "Sel",
+      "text": "Don't be mad. I fainted at school. The nurse says I need my medicine every night. Every night, Ilo." },
+    { "id": "sel-3", "after": 3, "when": ["!sel-sick"], "from": "Sel",
+      "text": "I drew you at your window! You're the one with the big important face. Graav is the grumpy cloud." },
+    { "id": "graav-3", "after": 3, "from": "Supervisor Graav",
+      "text": "Records is closed tomorrow. Make them breathe on the glass. Citizens leave it clear." },
+
+    { "id": "w3-caught", "after": 4, "when": ["caught"], "from": "Unknown",
+      "text": "You're good at spotting us. Do you know where they take the ones you catch? Look down, receptionist. — W3",
+      "choices": [
+        { "text": "Delete the message.", "flag": "w3-deleted", "loyalty": 1, "reply": "(The message is gone. The feeling isn't.)" },
+        { "text": "Reply: \"Who is this?\"", "flag": "w3-replied", "mercy": 1, "reply": "Someone who sat at Window 3 once. Like you. — W3" }
+      ] },
+    { "id": "w3-missed", "after": 4, "when": ["!caught"], "from": "Unknown",
+      "text": "Some of us walked right past you. Maybe you noticed, maybe you didn't. Either way: thank you. Look down, receptionist. — W3",
+      "choices": [
+        { "text": "Delete the message.", "flag": "w3-deleted", "loyalty": 1, "reply": "(The message is gone. The feeling isn't.)" },
+        { "text": "Reply: \"Who is this?\"", "flag": "w3-replied", "mercy": 1, "reply": "Someone who sat at Window 3 once. Like you. — W3" }
+      ] },
+    { "id": "sel-4", "after": 4, "from": "Sel",
+      "text": "A Lattice man came to school and asked if anyone's family blinks. Everyone laughed. I didn't laugh. Is that bad?" },
+    { "id": "graav-4", "after": 4, "from": "Supervisor Graav",
+      "text": "Your first week is done. Tomorrow the clan rule starts: Ammaru need a blue stamp. Know the clans better than they do." },
+
+    { "id": "graav-5", "after": 5, "from": "Supervisor Graav",
+      "text": "Tomorrow the forgers start faking holograms. A UV lamp shows the fakes. The Lattice store sells them. I'd buy one." },
+    { "id": "sel-5", "after": 5, "from": "Sel",
+      "text": "Is it true the humans' planet is dying? Tuvo says they come here because there's nowhere else. Tuvo says a lot of things." },
+
+    { "id": "sel-6", "after": 6, "from": "Sel",
+      "text": "You came home late again. I saved you some spore-meal. It's 50% spore-meal and 50% my drawing of you." }
+  ],
+  "upgrades": [
+    { "id": "uv-lamp", "name": "UV lamp", "tool": "uv", "price": 60, "unlockShift": 6,
+      "text": "Shows genuine holograms: real ones glow with rings, printed fakes stay flat." }
+  ],
+  "tutorial": {
+    "shift": 1,
+    "visitors": [
+      {
+        "kind": "OrdinaryCitizen"
+      },
+      {
+        "kind": "ClumsyHuman",
+        "tells": [
+          "RoundPupils",
+          "SaysFine"
+        ]
+      },
+      {
+        "kind": "RuleBreakerCitizen",
+        "violation": "Expired"
+      }
+    ],
+    "steps": [
+      {
+        "visitor": 1,
+        "target": "window",
+        "wait": "tap",
+        "text": "Welcome to Night Window 3! Every visitor says they're a citizen of Vel'Tara. Some are HUMANS hiding in stolen bio-suits. Your job: spot them."
+      },
+      {
+        "visitor": 1,
+        "target": "id",
+        "wait": "tap",
+        "text": "This is their Civic Lattice ID. First check: does the PHOTO match the face at the window? Same clan, same face, slit pupils."
+      },
+      {
+        "visitor": 1,
+        "target": "slip",
+        "wait": "tap",
+        "text": "This is their appointment slip. The NAME must match the ID exactly, and the FLOOR must be in the ID's floor access."
+      },
+      {
+        "visitor": 1,
+        "target": "topbar",
+        "wait": "tap",
+        "text": "Up here: tonight's date, the clock and your score. An ID that EXPIRES before tonight's date is no good."
+      },
+      {
+        "visitor": 1,
+        "target": "questions",
+        "wait": "ask",
+        "text": "You can ask each visitor 3 questions. Pick one now. Try “How are you feeling tonight?”"
+      },
+      {
+        "visitor": 1,
+        "target": "log",
+        "wait": "tap",
+        "text": "Every answer goes in this log. Citizens state a mood, like “I am 60% content.”"
+      },
+      {
+        "visitor": 1,
+        "target": "rulebook",
+        "wait": "tap",
+        "text": "Not sure what's normal? The RULEBOOK lists how citizens look and behave, and every desk rule."
+      },
+      {
+        "visitor": 1,
+        "target": "letin",
+        "wait": "letin",
+        "text": "Matching papers, a matching face, a citizen's answer. This is a citizen: press LET IN."
+      },
+      {
+        "visitor": 2,
+        "target": "window",
+        "wait": "tap",
+        "text": "Look closely at this visitor's eyes: ROUND pupils! Every citizen has vertical slit pupils."
+      },
+      {
+        "visitor": 2,
+        "target": "question:greeting",
+        "wait": "ask:greeting",
+        "text": "Ask how they're feeling, and read the answer."
+      },
+      {
+        "visitor": 2,
+        "target": "log",
+        "wait": "tap",
+        "text": "“Fine” instead of a mood: another human slip. Humans also blink, sweat, and show five fingers."
+      },
+      {
+        "visitor": 2,
+        "target": "security",
+        "wait": "security",
+        "text": "This is a human in a suit. HOLD Call Security until the bar fills."
+      },
+      {
+        "visitor": 3,
+        "target": "id",
+        "wait": "tap",
+        "text": "This one looks like a real citizen. But compare the ID's EXPIRES date with tonight's date at the top."
+      },
+      {
+        "visitor": 3,
+        "target": "away",
+        "wait": "away",
+        "text": "The ID has expired. A real citizen who breaks a rule is TURNED AWAY, never arrested."
+      },
+      {
+        "visitor": 4,
+        "target": "decisions",
+        "wait": "tap",
+        "text": "That's the job. Humans: CALL SECURITY. Rule-breakers: TURN AWAY. Everyone else: LET IN. The rest of tonight is up to you!"
+      }
+    ]
+  }
 }

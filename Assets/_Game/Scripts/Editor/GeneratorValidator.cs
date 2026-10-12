@@ -43,7 +43,8 @@ namespace HumanError.EditorTools
                 log = $"FAIL no catalog at {ContentImporter.CatalogPath} — run Import Content first";
                 return false;
             }
-            var plans = catalog.Load(out var errors);
+            var game = catalog.LoadGame(out var errors);
+            var plans = game.Shifts;
             if (errors.Count > 0)
             {
                 log = "FAIL content errors:\n" + string.Join("\n", errors);
@@ -57,9 +58,11 @@ namespace HumanError.EditorTools
                 int visitors = 0, bad = 0;
                 var firstProblems = new List<string>();
                 var tellCounts = new Dictionary<Tell, int>();
+                // Odd seeds with every tool on sale by then, even seeds with none: players may or may not buy them.
+                var shopTools = game.Home.ToolsBy(plan.Data.number).ToList();
                 for (ulong seed = 0; seed < SeedsPerShift; seed++)
                 {
-                    var session = plan.NewSession(seed);
+                    var session = plan.NewSession(seed, seed % 2 == 0 ? null : shopTools);
                     foreach (var v in session.Queue)
                     {
                         visitors++;

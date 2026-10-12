@@ -44,6 +44,9 @@ MonoBehaviour:
     closedFloors: 
     rules: []
     tools: []
-    briefing: Welcome to window 3. Check every ID against the visitor's face, and
-      every slip against the ID.
+    briefing: 'Welcome to Night Window 3. Check every ID against the visitor''s face,
+      and every slip against the ID. Tonight is your training night: I''ll walk you
+      through the first three visitors, and after each one I''ll tell you what they
+      really were.'
     supervisor: Three questions each. Don't waste them, and don't arrest citizens.
+    revealEach: 1

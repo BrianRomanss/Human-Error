@@ -9,7 +9,7 @@ namespace HumanError.Tests
     /// <summary>Loads Assets/_Game/Content/content.json in Unity (JsonUtility) or .NET (System.Text.Json).</summary>
     public static class TestContent
     {
-        static List<ShiftPlan> _plans;
+        static GameContent _game;
 
         public static string ContentDir()
         {
@@ -33,12 +33,33 @@ namespace HumanError.Tests
 #endif
         }
 
-        public static List<ShiftPlan> Plans()
+        public static List<ShiftPlan> Plans() => Game().Shifts;
+
+        public static GameContent Game()
         {
-            if (_plans != null) return _plans;
-            _plans = ContentFactory.Load(File(), out var errors);
+            if (_game != null) return _game;
+            _game = ContentFactory.LoadGame(File(), out var errors);
             Assert.IsEmpty(errors, string.Join("\n", errors));
-            return _plans;
+            return _game;
+        }
+
+        /// <summary>JSON the way the game stores saves (JsonUtility in Unity, System.Text.Json in .NET).</summary>
+        public static string ToJson<T>(T value)
+        {
+#if UNITY_5_3_OR_NEWER
+            return UnityEngine.JsonUtility.ToJson(value);
+#else
+            return System.Text.Json.JsonSerializer.Serialize(value, new System.Text.Json.JsonSerializerOptions { IncludeFields = true });
+#endif
+        }
+
+        public static T FromJson<T>(string json)
+        {
+#if UNITY_5_3_OR_NEWER
+            return UnityEngine.JsonUtility.FromJson<T>(json);
+#else
+            return System.Text.Json.JsonSerializer.Deserialize<T>(json, new System.Text.Json.JsonSerializerOptions { IncludeFields = true });
+#endif
         }
 
         public static ShiftPlan Plan(int number) => Plans().Find(p => p.Data.number == number);

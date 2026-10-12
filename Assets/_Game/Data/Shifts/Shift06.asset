@@ -41,8 +41,9 @@ MonoBehaviour:
     closedFloors: 05000000
     rules:
     - clan-stamp
-    tools:
-    - uv
-    briefing: You've been issued a UV lamp. Genuine holograms glow with rings under
-      it; printed ones stay flat.
-    supervisor: The good forgeries start now. Use the lamp.
+    tools: []
+    briefing: Forgers have started printing fake holograms. Under a UV lamp a genuine
+      hologram glows with rings; a printed one stays flat. No lamp? Then check everything
+      else twice.
+    supervisor: The good forgeries start now. I hope you bought the lamp.
+    revealEach: 0

@@ -7,42 +7,45 @@ using UnityEngine.UI;
 
 namespace HumanError.View
 {
-    /// <summary>Grey-box switches; become player settings in M4 (GDD §7.2 Settings).</summary>
-    public static class GameSettings
-    {
-        /// <summary>Show the truth right after each decision (grey-box gate); the final game keeps it for the Shift Report.</summary>
-        public static bool RevealEachVisitor = true;
-    }
-
     /// <summary>Shift Briefing, Rulebook and Shift Report (GDD §7.2).</summary>
     public static class Screens
     {
-        public static GameObject Briefing(RectTransform parent, ShiftContext ctx, Action start)
+        /// <param name="newQuestions">Questions on tonight's list for the first time (GDD §7.2: "new tool or rule highlighted").</param>
+        public static GameObject Briefing(RectTransform parent, ShiftContext ctx, System.Collections.Generic.IList<string> newQuestions, Action start)
         {
             var root = UiBuild.Panel("Briefing", parent, Palette.MossNight, rounded: false);
             root.rectTransform.Fill();
             var card = Theme.Panel("Card", root.transform);
             card.rectTransform.Centre(1100, 760);
             var rt = card.rectTransform;
-            Theme.Title("Kicker", rt, "LATTICE TOWER · NIGHT WINDOW 3", 24, Palette.BioGlow).rectTransform.PlaceTopLeft(60, 50, 980, 32);
+            int act = Acts.For(ctx.ShiftNumber);
+            string kicker = ctx.IsMode ? $"LATTICE TOWER · NIGHT WINDOW 3 · {ctx.Mode} MODE" : $"LATTICE TOWER · NIGHT WINDOW 3 · ACT {act} · {Acts.Title(act)}";
+            Theme.Title("Kicker", rt, kicker, 24, Palette.BioGlow).rectTransform.PlaceTopLeft(60, 50, 980, 32);
             string title = string.IsNullOrEmpty(ctx.Title) ? "BRIEFING" : ctx.Title.ToUpperInvariant();
-            Theme.Title("Title", rt, $"SHIFT {ctx.ShiftNumber} · {title}", 60, Palette.PaperSand).rectTransform.PlaceTopLeft(60, 88, 980, 80);
+            Theme.Title("Title", rt, ctx.IsMode ? title : $"SHIFT {ctx.ShiftNumber} · {title}", 60, Palette.PaperSand).rectTransform.PlaceTopLeft(60, 88, 980, 80);
             string closed = ctx.ClosedFloors.Count == 0 ? "All floors are open."
                 : string.Join(", ", ctx.ClosedFloors.Select(f => $"Floor {f} ({Floors.Office(f)})")) + " is CLOSED tonight.";
-            string tools = ctx.Has(Tools.UvLamp) ? "\nTool issued: <b>UV LAMP</b>." : "";
+            string tools = ctx.Has(Tools.UvLamp) ? "\nOn your desk: <b>UV LAMP</b>." : "";
+            string fresh = newQuestions == null || newQuestions.Count == 0 ? ""
+                : "\n<color=#3FE0C5><b>NEW QUESTIONS:</b></color> " + string.Join("  ·  ", newQuestions.Select(q => $"“{q}”"));
             var body = Theme.Body("Body", rt,
                 $"Date: <b>{ctx.Tonight.Lattice}</b>   ·   Kesh is <b>{ctx.KeshColour.ToUpperInvariant()}</b> tonight.\n" +
-                $"{closed}{tools}\n\n" +
+                $"{closed}{tools}{fresh}\n\n" +
                 (string.IsNullOrEmpty(ctx.Briefing) ? "Humans in stolen bio-suits have been reported in the Tower." : ctx.Briefing) + "\n\n" +
                 $"Ask each visitor up to <b>{ctx.QuestionBudget} questions</b> — choose them well, and watch them while they answer.\n\n" +
                 "<color=#8FA7A8>Humans → CALL SECURITY.  Citizens whose papers break a rule → TURN AWAY.  Everyone else → LET IN.</color>",
                 27, Palette.PaperSand);
             body.supportRichText = true;
             body.rectTransform.PlaceTopLeft(60, 190, 980, 400);
+            // The card grows with tonight's text (new questions, long bulletins).
+            float y = 190 + body.preferredHeight + 24;
             string graav = string.IsNullOrEmpty(ctx.SupervisorLine) ? "Don't waste questions, and don't arrest citizens." : ctx.SupervisorLine;
-            Theme.Body("Graav", rt, $"SUPERVISOR GRAAV: \"{graav}\"", 24, Palette.Sand).rectTransform.PlaceTopLeft(60, 600, 980, 60);
+            var g = Theme.Body("Graav", rt, $"SUPERVISOR GRAAV: \"{graav}\"", 24, Palette.Sand);
+            g.rectTransform.PlaceTopLeft(60, y, 980, 60);
+            y += g.preferredHeight + 20;
             var b = Theme.Button("Start", rt, "START SHIFT", Palette.BioGlow, Palette.Ink, start, 32);
-            ((RectTransform)b.transform).PlaceTopLeft(760, 666, 280, 70);
+            ((RectTransform)b.transform).PlaceTopLeft(760, y, 280, 70);
+            card.rectTransform.Centre(1100, Mathf.Min(1040, y + 70 + 40));
             return root.gameObject;
         }
 
@@ -98,13 +101,18 @@ namespace HumanError.View
             return dim.gameObject;
         }
 
-        public static GameObject Report(RectTransform parent, ShiftSession s, Action replay, Action next, string nextLabel)
+        /// <param name="replay">Debug runs only: replay the same shift. The campaign has no replays.</param>
+        /// <param name="score">Endless and Daily: show the run's score instead of pay.</param>
+        /// <param name="note">Replaces the supervisor's note (e.g. "New best!").</param>
+        public static GameObject Report(RectTransform parent, ShiftSession s, Action next, string nextLabel, Action replay = null,
+            string replayLabel = "REPLAY SHIFT", ScoreRun score = null, string note = null)
         {
             Theme.Sfx("report", 0.6f);
             var root = UiBuild.Panel("Report", parent, Palette.MossNight, rounded: false);
             root.rectTransform.Fill();
             var rt = root.rectTransform;
-            Theme.Title("Title", rt, $"SHIFT {s.Context.ShiftNumber} REPORT", 56, Palette.PaperSand).rectTransform.PlaceTopLeft(80, 34, 900, 70);
+            string heading = s.Context.IsMode ? s.Context.Title.ToUpperInvariant() : $"SHIFT {s.Context.ShiftNumber}";
+            Theme.Title("Title", rt, $"{heading} REPORT", 56, Palette.PaperSand).rectTransform.PlaceTopLeft(80, 34, 1300, 70);
             Theme.Title("Date", rt, s.Context.Tonight.Lattice, 32, Palette.Muted, TextAnchor.UpperRight).rectTransform.PlaceTopLeft(1440, 50, 400, 40);
 
             float rowsTop = 116, rowsBottom = 884;
@@ -112,8 +120,13 @@ namespace HumanError.View
             float good = 46, bad = 74;
             float scale = Mathf.Min(1f, (rowsBottom - rowsTop) / Mathf.Max(1f, (s.Results.Count - mistakes) * good + mistakes * bad));
             float y = rowsTop;
+            // Score modes: this shift's decisions are the last ones in the run.
+            int pointsFrom = score == null ? 0 : score.Points.Count - s.Results.Count;
+            int rowIndex = 0;
             foreach (var r in s.Results)
             {
+                int points = score == null ? 0 : score.Points[pointsFrom + rowIndex];
+                rowIndex++;
                 var v = r.Visitor;
                 bool showHint = !r.Verdict.IsGood || r.Verdict.Complaint;
                 float h = (showHint ? bad : good) * scale;
@@ -125,7 +138,7 @@ namespace HumanError.View
                 Theme.Body("Decision", row.transform, decided, 23, Palette.Muted).rectTransform.PlaceTopLeft(470, 8, 220, 30);
                 Theme.Body("Truth", row.transform, truth, 23, v.Truth.IsHuman ? Palette.Coral : Palette.Muted).rectTransform.PlaceTopLeft(700, 8, 220, 30);
                 string label = r.Verdict.Label + (r.Verdict.Complaint ? " + complaint" : "");
-                Theme.Title("Outcome", row.transform, $"{label}   {Theme.Shards(r.Verdict.Shards)}", 23, Palette.For(r.Verdict.Outcome)).rectTransform.PlaceTopLeft(930, 8, 600, 30);
+                Theme.Title("Outcome", row.transform, score == null ? $"{label}   {Theme.Shards(r.Verdict.Shards)}" : $"{label}   {(points > 0 ? $"+{points} pts" : "streak lost")}", 23, Palette.For(r.Verdict.Outcome)).rectTransform.PlaceTopLeft(930, 8, 600, 30);
                 if (showHint)
                 {
                     var reasons = r.Verdict.IsGood ? new System.Collections.Generic.List<string> { "Too many pressure or trap questions for a citizen." } : Judge.Reasons(v, s.Context);
@@ -146,18 +159,30 @@ namespace HumanError.View
             }
             var dark = Palette.Ink;
             var red = new Color(0.75f, 0.25f, 0.2f);
-            Stat("PAY", Theme.Shards(s.Pay), dark, 30);
-            Stat("PENALTIES", Theme.Shards(s.Penalties), s.Penalties < 0 ? red : dark, 230);
+            if (score == null)
+            {
+                Stat("PAY", Theme.Shards(s.Pay), dark, 30);
+                Stat("PENALTIES", Theme.Shards(s.Penalties), s.Penalties < 0 ? red : dark, 230);
+            }
+            else
+            {
+                Stat("SCORE", score.Score.ToString(), dark, 30);
+                Stat("BEST STREAK", score.BestStreak.ToString(), dark, 230);
+            }
             Stat("ACCURACY", $"{Mathf.RoundToInt(s.Accuracy * 100)}%", dark, 440);
-            Stat("STRIKES", s.Strikes.ToString(), s.Strikes > 0 ? red : dark, 610);
+            int strikes = score != null && score.EndsOnStrikes ? score.Strikes : s.Strikes;
+            Stat(score != null && score.EndsOnStrikes ? $"STRIKES /{ScoreRun.StrikesAllowed}" : "STRIKES", strikes.ToString(), strikes > 0 ? red : dark, 610);
             Stat("COMPLAINTS", s.Complaints.ToString(), s.Complaints > 0 ? red : dark, 750);
-            Theme.Mono("L", sum.transform, "SUPERVISOR", 18, Palette.Ink.WithAlpha(0.6f)).rectTransform.PlaceTopLeft(940, 20, 300, 24);
-            Theme.Body("Note", sum.transform, s.SupervisorNote, 25, dark).rectTransform.PlaceTopLeft(940, 50, 440, 90);
+            Theme.Mono("L", sum.transform, note != null ? "RESULT" : "SUPERVISOR", 18, Palette.Ink.WithAlpha(0.6f)).rectTransform.PlaceTopLeft(940, 20, 300, 24);
+            Theme.Body("Note", sum.transform, note ?? s.SupervisorNote, 25, dark).rectTransform.PlaceTopLeft(940, 50, 440, 90);
 
-            var again = Theme.Button("Replay", sum.transform, "REPLAY SHIFT", Palette.Sand, Palette.Ink, replay, 24);
-            ((RectTransform)again.transform).PlaceTopLeft(1400, 18, 340, 52);
-            var nextB = Theme.Button("Next", sum.transform, nextLabel, Palette.BioGlow, Palette.Ink, next, 24);
-            ((RectTransform)nextB.transform).PlaceTopLeft(1400, 80, 340, 52);
+            if (replay != null)
+            {
+                var again = Theme.Button("Replay", sum.transform, replayLabel, Palette.Sand, Palette.Ink, replay, 24);
+                ((RectTransform)again.transform).PlaceTopLeft(1400, 18, 340, 52);
+            }
+            var nextB = Theme.Button("Next", sum.transform, nextLabel, Palette.BioGlow, Palette.Ink, next, replay != null ? 24 : 30);
+            ((RectTransform)nextB.transform).PlaceTopLeft(1400, replay != null ? 80 : 30, 340, replay != null ? 52 : 90);
             return root.gameObject;
         }
     }

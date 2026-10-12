@@ -10,7 +10,7 @@ using UnityEngine;
 namespace HumanError.EditorTools
 {
     /// <summary>
-    /// content.json → QuestionSO / ShiftSO assets and the ContentCatalog. Everything is validated first
+    /// content.json → QuestionSO / ShiftSO assets and the ContentCatalog (which also holds news, messages and upgrades). Everything is validated first
     /// (ContentFactory); nothing is written if there are errors. Re-imports keep GUIDs.
     /// Batchmode: -executeMethod HumanError.EditorTools.ContentImporter.ImportBatch
     /// </summary>
@@ -71,6 +71,10 @@ namespace HumanError.EditorTools
             {
                 a.questions = questions.ToArray();
                 a.shifts = shifts.ToArray();
+                a.news = file.news ?? new NewsData[0];
+                a.messages = file.messages ?? new MessageData[0];
+                a.upgrades = file.upgrades ?? new UpgradeData[0];
+                a.tutorial = file.tutorial ?? new TutorialData();
             }, report);
             AssetDatabase.SaveAssets();
 

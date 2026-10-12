@@ -6,14 +6,19 @@ namespace ChuchuGames.UI
 {
     /// <summary>
     /// Tutorial spotlight: dims everything except one target, outlines it, points a bobbing hand at
-    /// it and shows a tip. Tap anywhere to continue. No text walls: one short tip per step.
+    /// it and shows a tip. Tap anywhere to continue — or, with <c>waitForAction</c>, only the target
+    /// stays clickable and the caller closes the spotlight when the player has done the action.
+    /// No text walls: one short tip per step.
     /// </summary>
     public sealed class Spotlight : MonoBehaviour
     {
         Action _onDone;
 
+        /// <param name="waitForAction">No tap-to-continue: clicks reach only the target; call <see cref="Close"/> when done.</param>
+        /// <param name="onSkip">When set, a "skip tutorial" button closes the spotlight and calls it.</param>
         public static Spotlight Show(RectTransform canvasRoot, RectTransform target, string tip, Action onDone,
-            Sprite hand = null, Color? outline = null, Color? bubble = null, Color? ink = null, float padding = 14f)
+            Sprite hand = null, Color? outline = null, Color? bubble = null, Color? ink = null, float padding = 14f,
+            bool waitForAction = false, Action onSkip = null)
         {
             var root = UiBuild.Rect("Spotlight", canvasRoot).Fill();
             root.SetAsLastSibling();
@@ -46,7 +51,12 @@ namespace ChuchuGames.UI
             Block(root, oc, new Vector2(max.x, min.y), new Vector2(max.x + t, max.y), false);
 
             // Tip bubble: below the target if there's room, else above, else beside it; always on screen.
-            const float bw = 640, bh = 150, gap = 130;
+            const float bw = 640, gap = 130;
+            // The bubble grows with the tip (measured with the label's font at the bubble's width).
+            var measure = UiBuild.Label("Measure", root, tip, 30, Color.clear);
+            measure.rectTransform.sizeDelta = new Vector2(bw - 40, 10);
+            float bh = Mathf.Max(150, measure.preferredHeight + 70);
+            Destroy(measure.gameObject);
             Vector2 centre = (min + max) / 2f;
             Vector2 bubblePos, handPos;
             float handAngle;
@@ -61,8 +71,11 @@ namespace ChuchuGames.UI
             brt.anchorMin = brt.anchorMax = brt.pivot = new Vector2(0.5f, 0.5f);
             brt.anchoredPosition = new Vector2(bx, by);
             brt.sizeDelta = new Vector2(bw, bh);
-            UiBuild.Label("Text", brt, tip, 30, ink ?? new Color(0.16f, 0.14f, 0.2f)).rectTransform.Fill(20);
-            UiBuild.Label("Hint", brt, "tap to continue", 18, new Color(0.5f, 0.45f, 0.4f), TextAnchor.LowerRight).rectTransform.Fill(8);
+            var text = UiBuild.Label("Text", brt, tip, 30, ink ?? new Color(0.16f, 0.14f, 0.2f));
+            text.rectTransform.Fill(20);
+            text.rectTransform.offsetMin = new Vector2(20, 34);
+            if (!waitForAction)
+                UiBuild.Label("Hint", brt, "tap to continue", 18, new Color(0.5f, 0.45f, 0.4f), TextAnchor.LowerRight).rectTransform.Fill(8);
 
             if (hand != null)
             {
@@ -75,10 +88,29 @@ namespace ChuchuGames.UI
                 h.gameObject.AddComponent<Bob>().amplitude = 10f;
             }
 
-            // Whole-screen catcher so any tap continues.
-            var catcher = UiBuild.Panel("Catcher", root, new Color(0, 0, 0, 0), raycastTarget: true, rounded: false);
-            catcher.rectTransform.Fill();
-            catcher.gameObject.AddComponent<Button>().onClick.AddListener(s.Done);
+            if (!waitForAction)
+            {
+                // Whole-screen catcher so any tap continues.
+                var catcher = UiBuild.Panel("Catcher", root, new Color(0, 0, 0, 0), raycastTarget: true, rounded: false);
+                catcher.rectTransform.Fill();
+                catcher.gameObject.AddComponent<Button>().onClick.AddListener(s.Done);
+            }
+            if (onSkip != null)
+            {
+                // A small link in the tip's corner, so it never covers a target. The bubble goes on top of the
+                // tap catcher; it isn't a raycast target itself, so taps on its text still continue.
+                var skip = UiBuild.Button("Skip", brt, "skip tutorial", new Color(0, 0, 0, 0.08f), ink ?? new Color(0.16f, 0.14f, 0.2f), () =>
+                {
+                    s._onDone = null;
+                    s.Close();
+                    onSkip();
+                }, 18);
+                var srt = (RectTransform)skip.transform;
+                srt.anchorMin = srt.anchorMax = srt.pivot = Vector2.zero;
+                srt.sizeDelta = new Vector2(150, 30);
+                srt.anchoredPosition = new Vector2(10, 6);
+                brt.SetAsLastSibling();
+            }
 
             var group = root.gameObject.AddComponent<CanvasGroup>();
             Tween.Fade(group, 0, 1, 0.25f);
@@ -89,6 +121,12 @@ namespace ChuchuGames.UI
         {
             Destroy(gameObject);
             _onDone?.Invoke();
+        }
+
+        /// <summary>Removes the spotlight without calling onDone (for <c>waitForAction</c> steps).</summary>
+        public void Close()
+        {
+            if (this != null) Destroy(gameObject);
         }
 
         static void Block(RectTransform parent, Color c, Vector2 min, Vector2 max, bool raycast = true)

@@ -34,6 +34,8 @@ namespace HumanError.EditorTools.ArtGen
             Save("alarm", Synth.Mix(chirp, Synth.At(Synth.Silence(0.5f), chirp, 0.2f)));
             Save("scan", Synth.Env(Synth.Tone(0.5f, 300, 1200, Synth.Wave.Sine, 0.4f), 0.05f, 0.4f, 0.3f));
             Save("report", Synth.Mix(Synth.Bell(1.2f, 523.25f), Synth.At(Synth.Silence(1.4f), Synth.Bell(1.0f, 659.25f), 0.18f)));
+            // Home: a low, quiet two-note chime (GDD §10 "quiet room tone").
+            Save("home", Synth.Mul(Synth.Mix(Synth.Bell(1.8f, 392f), Synth.At(Synth.Silence(2.1f), Synth.Bell(1.6f, 493.88f), 0.3f)), 0.6f));
             return files;
         }
 

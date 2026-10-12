@@ -19,8 +19,10 @@ namespace HumanError.Tests
         [Test]
         public void EveryTellCanBeRevealedBySomething()
         {
-            // Across the whole game, every tell must be findable in at least one shift.
-            var found = TestContent.Plans().SelectMany(p => VisitorGenerator.AvailableTells(p.Context(1))).Distinct().ToList();
+            // Across the whole game, every tell must be findable in at least one shift (with the tools on sale by then).
+            var home = TestContent.Game().Home;
+            var found = TestContent.Plans()
+                .SelectMany(p => VisitorGenerator.AvailableTells(p.ContextWith(1, home.ToolsBy(p.Data.number)))).Distinct().ToList();
             foreach (var t in Tells.All) Assert.Contains(t, found, $"{t} can never be found");
         }
 
@@ -36,6 +38,70 @@ namespace HumanError.Tests
             }
         }
 
+        [Test]
+        public void ToolsOnSaleAddToTheShiftAndItsFindableTells()
+        {
+            var game = TestContent.Game();
+            var plan = game.Shift(6);
+            var uv = game.Home.Upgrades.Single(u => u.tool == Tools.UvLamp);
+            Assert.AreEqual(6, uv.unlockShift);
+            Assert.IsFalse(plan.Context(1).Has(Tools.UvLamp), "shift 6 doesn't issue the lamp: it's bought at Home");
+            Assert.IsFalse(VisitorGenerator.AvailableTells(plan.Context(1)).Contains(Tell.FlatHologram));
+            var owned = plan.ContextWith(1, new[] { Tools.UvLamp });
+            Assert.IsTrue(owned.Has(Tools.UvLamp));
+            Assert.IsTrue(VisitorGenerator.AvailableTells(owned).Contains(Tell.FlatHologram));
+        }
+
+        [Test]
+        public void OnlyTheTrainingNightRevealsEachVisitor()
+        {
+            foreach (var p in TestContent.Plans())
+                Assert.AreEqual(p.Data.number == 1, p.Context(1).RevealEachVisitor, $"shift {p.Data.number}");
+        }
+
+        [Test]
+        public void EveryEveningHasAFullFrontPageAndAMessageWhateverHappened()
+        {
+            var game = TestContent.Game();
+            int last = game.Shifts.Max(p => p.Data.number);
+            var cases = new[]
+            {
+                new ShiftSummary { visitors = 8, caught = 2 },
+                new ShiftSummary { visitors = 8, invaders = 2, wrongful = 1, mistakes = 4 },
+                new ShiftSummary { visitors = 8, mistakes = 0 },
+            };
+            for (int after = 0; after <= last; after++)
+                foreach (var c in cases)
+                {
+                    c.shift = after;
+                    var save = new SaveData { last = c, shards = 100 };
+                    Assert.AreEqual(HomeContent.NewsPerNight, game.Home.NewsFor(save).Count, $"after shift {after}");
+                    Assert.IsNotEmpty(game.Home.MessagesFor(save), $"no message after shift {after}");
+                }
+        }
+
+        [Test]
+        public void BrokenHomeContentReportsReadableErrors()
+        {
+            var file = Minimal();
+            file.news = new[]
+            {
+                new NewsData { after = 0, text = "A", when = new[] { "moonquake" } },
+                new NewsData { after = 7, text = "B" },
+            };
+            file.messages = new[]
+            {
+                new MessageData { id = "m", after = 1, from = "Sel", text = "Hi", choices = new[] { new ChoiceData() } },
+                new MessageData { id = "m", after = 0, from = "", text = "Hi" },
+            };
+            file.upgrades = new[] { new UpgradeData { id = "x", name = "X", price = 0, unlockShift = 1, tool = "laser" } };
+            ContentFactory.LoadGame(file, out var errors);
+            string all = string.Join("\n", errors);
+            foreach (var expected in new[] { "unknown condition 'moonquake'", "there is no shift 7", "unconditional headlines",
+                         "a choice without text", "duplicate message id 'm'", "no sender", "price must be above 0", "unknown tool 'laser'" })
+                StringAssert.Contains(expected, all);
+        }
+
         static ContentFile Minimal() => new ContentFile
         {
             questions = new[]
@@ -44,6 +110,7 @@ namespace HumanError.Tests
                 new QuestionData { id = "q2", kind = "Pressure", text = "Why?", citizen = new[] { "No." } },
             },
             shifts = new[] { new ShiftData { number = 1, day = 1, visitors = 4, humans = 1, questions = new[] { "q1", "q2" }, questionBudget = 2 } },
+            news = new[] { 0, 0, 0, 1, 1, 1 }.Select((after, i) => new NewsData { after = after, text = $"Headline {i}" }).ToArray(),
         };
 
         [Test]

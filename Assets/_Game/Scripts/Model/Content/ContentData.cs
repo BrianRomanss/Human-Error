@@ -58,6 +58,93 @@ namespace HumanError.Model.Content
         public string[] tools = new string[0];
         public string briefing;
         public string supervisor;
+        /// <summary>Show the truth after every decision (the training night); otherwise only the Shift Report does (GDD §7.2).</summary>
+        public bool revealEach;
+    }
+
+    /// <summary>A news headline at Home (GDD §8: 3 per shift, reacting to your choices).</summary>
+    [Serializable]
+    public class NewsData
+    {
+        /// <summary>Shown at Home after this shift (0 = the first evening of a new game).</summary>
+        public int after;
+        public string text;
+        /// <summary>Condition tokens that must all hold (see Conditions); empty = always. Earlier entries win.</summary>
+        public string[] when = new string[0];
+    }
+
+    /// <summary>A reply to a message: a small story choice (GDD §7.2 Home "story choices").</summary>
+    [Serializable]
+    public class ChoiceData
+    {
+        public string text;
+        /// <summary>What the sender says back once you choose.</summary>
+        public string reply;
+        /// <summary>Story flag set by this choice (optional).</summary>
+        public string flag;
+        public int loyalty;
+        public int mercy;
+        /// <summary>Shards gained (or spent, if negative) tonight.</summary>
+        public int shards;
+    }
+
+    /// <summary>A message waiting at Home: from Sel, Supervisor Graav, the landlord, or someone unknown.</summary>
+    [Serializable]
+    public class MessageData
+    {
+        public string id;
+        /// <summary>Shown at Home after this shift; -1 = any evening (when its conditions hold).</summary>
+        public int after;
+        public string from;
+        public string text;
+        public string[] when = new string[0];
+        public ChoiceData[] choices = new ChoiceData[0];
+    }
+
+    /// <summary>A tool sold at Home (GDD §5.6), e.g. the UV lamp from shift 6.</summary>
+    [Serializable]
+    public class UpgradeData
+    {
+        public string id;
+        public string name;
+        public string text;
+        public int price;
+        /// <summary>First shift it can be used on: on sale at Home before that shift.</summary>
+        public int unlockShift;
+        /// <summary>Desk tool id it unlocks (Tools.All).</summary>
+        public string tool;
+    }
+
+    /// <summary>A scripted tutorial visitor, e.g. a clumsy human who must show round pupils and say "fine".</summary>
+    [Serializable]
+    public class TutorialVisitorData
+    {
+        /// <summary>VisitorKind name.</summary>
+        public string kind;
+        /// <summary>Tell names the visitor must show.</summary>
+        public string[] tells = new string[0];
+        /// <summary>Optional Violation name for a rule-breaker, e.g. "Expired".</summary>
+        public string violation;
+    }
+
+    /// <summary>One tutorial tip (see Tutorial.Targets and Tutorial.Waits).</summary>
+    [Serializable]
+    public class TutorialStepData
+    {
+        public int visitor;
+        public string target;
+        /// <summary>tap, ask, letin, away or security.</summary>
+        public string wait;
+        public string text;
+    }
+
+    /// <summary>The guided first night. shift 0 = no tutorial.</summary>
+    [Serializable]
+    public class TutorialData
+    {
+        public int shift;
+        public TutorialVisitorData[] visitors = new TutorialVisitorData[0];
+        public TutorialStepData[] steps = new TutorialStepData[0];
     }
 
     [Serializable]
@@ -65,5 +152,9 @@ namespace HumanError.Model.Content
     {
         public QuestionData[] questions = new QuestionData[0];
         public ShiftData[] shifts = new ShiftData[0];
+        public NewsData[] news = new NewsData[0];
+        public MessageData[] messages = new MessageData[0];
+        public UpgradeData[] upgrades = new UpgradeData[0];
+        public TutorialData tutorial = new TutorialData();
     }
 }

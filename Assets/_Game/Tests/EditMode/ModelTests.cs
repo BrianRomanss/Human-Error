@@ -245,7 +245,7 @@ namespace HumanError.Tests
         [Test]
         public void ForgeryTellsShowUpInThePapers()
         {
-            var ctx = TestContent.Plan(6).Context(1); // every tell allowed, UV lamp issued
+            var ctx = TestContent.Plan(6).ContextWith(1, new[] { Tools.UvLamp }); // every tell allowed, UV lamp bought
             var cfg = new ShiftConfig { ClumsyMinTells = 3, ClumsyMaxTells = 3 };
             var seen = new HashSet<Tell>();
             for (ulong s = 0; s < 800; s++)
@@ -267,7 +267,7 @@ namespace HumanError.Tests
         [Test]
         public void HologramForgeriesNeedTheUvLamp()
         {
-            var ctx = TestContent.Plan(6).Context(1);
+            var ctx = TestContent.Plan(6).ContextWith(1, new[] { Tools.UvLamp });
             Assert.Contains(Tell.FlatHologram, VisitorGenerator.AvailableTells(ctx));
             ctx.Tools.Clear();
             Assert.IsFalse(VisitorGenerator.AvailableTells(ctx).Contains(Tell.FlatHologram));

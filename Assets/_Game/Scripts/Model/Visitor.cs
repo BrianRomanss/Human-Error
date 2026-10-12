@@ -119,7 +119,7 @@ namespace HumanError.Model
     public enum Motive { None, Refugee, Runaway, Spy, LostTourist }
 
     /// <summary>
-    /// What the suit (or the real body) shows: the GDD §9 kit's six slots × four options. Eyes and crest are
+    /// What the suit (or the real body) shows: the GDD §9 kit's six slots (eight options for the free ones). Eyes and crest are
     /// required by the clan (ClanSO "required parts"); the other four slots are free choices.
     /// </summary>
     public sealed class Look
@@ -132,7 +132,8 @@ namespace HumanError.Model
         /// <summary>Clan recolour: 0 = standard tone, 1 = deeper tone.</summary>
         public int Tone;
 
-        public const int Options = 4;
+        /// <summary>Options per free slot (head, mouth, pattern, outfit): GDD §12 milestone 3 asks for 8 parts per slot.</summary>
+        public const int Options = 8;
 
         public Look Clone() => (Look)MemberwiseClone();
 

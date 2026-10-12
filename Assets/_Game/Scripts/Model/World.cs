@@ -140,6 +140,11 @@ namespace HumanError.Model
         public string Title = "";
         public string Briefing = "";
         public string SupervisorLine = "";
+        /// <summary>Show the truth after each decision (the training night) instead of only on the Shift Report.</summary>
+        public bool RevealEachVisitor;
+        /// <summary>"ENDLESS" or "DAILY" for the score modes; empty in the story. Screens show Title instead of a shift number.</summary>
+        public string Mode = "";
+        public bool IsMode => !string.IsNullOrEmpty(Mode);
 
         public bool Has(string tool) => Tools.Contains(tool);
         public bool HasRule(string id) => Rules.Exists(r => r.Id == id);

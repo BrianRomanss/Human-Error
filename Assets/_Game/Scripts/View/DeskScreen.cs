@@ -19,6 +19,8 @@ namespace HumanError.View
         {
             public Action ShiftOver;
             public Action OpenRulebook;
+            /// <summary>The pause menu (MENU button or Esc).</summary>
+            public Action OpenMenu;
         }
 
         ShiftSession _session;
@@ -34,16 +36,50 @@ namespace HumanError.View
         readonly List<Button> _decisionButtons = new List<Button>();
         VisitorView _visitor;
         bool _busy;
+        // Panels the tutorial can point at (Tutorial.Targets).
+        RectTransform _topBar, _windowFrame, _slip, _questionsPanel, _logPanel, _bulletinPanel, _rulebookButton, _decisionsArea;
+        readonly Dictionary<string, RectTransform> _decisionRects = new Dictionary<string, RectTransform>();
 
         public ShiftSession Session => _session;
 
-        public static DeskScreen Create(RectTransform parent, ShiftSession session, Actions actions)
+        /// <summary>The visitor (0-based queue index) has arrived and their papers have settled on the counter.</summary>
+        public event Action<int> VisitorReady;
+        public event Action<string> Asked;
+        public event Action<Decision> Decided;
+
+        /// <summary>A panel for the tutorial spotlight: a Tutorial.Targets name or "question:id".</summary>
+        public RectTransform Target(string name)
+        {
+            var q = Tutorial.QuestionIn(name, "question:", _session.Context);
+            if (q != null && _questionButtons.TryGetValue(q, out var b)) return (RectTransform)b.transform;
+            switch (name)
+            {
+                case "topbar": return _topBar;
+                case "id": return _idCard != null ? _idCard.Root : _counter;
+                case "slip": return _slip != null ? _slip : _counter;
+                case "questions": return _questionsPanel;
+                case "log": return _logPanel;
+                case "bulletin": return _bulletinPanel;
+                case "rulebook": return _rulebookButton;
+                case "decisions": return _decisionsArea;
+                case "letin":
+                case "away":
+                case "security": return _decisionRects[name];
+                default: return _windowFrame;
+            }
+        }
+
+        ScoreRun _score;
+
+        /// <param name="score">Endless and Daily: the run's score, shown in the top bar instead of shards.</param>
+        public static DeskScreen Create(RectTransform parent, ShiftSession session, Actions actions, ScoreRun score = null)
         {
             var root = UiBuild.Rect("DeskScreen", parent).Fill();
             var screen = root.gameObject.AddComponent<DeskScreen>();
             screen._root = root;
             screen._session = session;
             screen._actions = actions;
+            screen._score = score;
             screen.Build();
             screen.ShowVisitor();
             return screen;
@@ -68,8 +104,12 @@ namespace HumanError.View
         {
             var bar = UiBuild.Panel("TopBar", _root, Palette.Panel, rounded: false);
             bar.rectTransform.Band(RectTransform.Edge.Top, 64);
+            _topBar = bar.rectTransform;
+            var menu = Theme.Button("Menu", bar.transform, "MENU", Palette.PanelLight, Palette.PaperSand, () => _actions.OpenMenu?.Invoke(), 22);
+            ((RectTransform)menu.transform).PlaceTopLeft(16, 10, 110, 44);
             _topLeft = Theme.Title("Shift", bar.transform, "", 28, Palette.PaperSand, TextAnchor.MiddleLeft);
             _topLeft.rectTransform.Fill(28);
+            _topLeft.rectTransform.offsetMin = new Vector2(146, 0);
             _clock = Theme.Title("Clock", bar.transform, "", 34, Palette.BioGlow, TextAnchor.MiddleCenter);
             _clock.rectTransform.Fill();
             _topRight = Theme.Title("Stats", bar.transform, "", 26, Palette.PaperSand, TextAnchor.MiddleRight);
@@ -80,6 +120,7 @@ namespace HumanError.View
         {
             var frame = UiBuild.Panel("WindowFrame", _root, Palette.BioGlow);
             frame.rectTransform.PlaceTopLeft(24, 80, 1056, 620);
+            _windowFrame = frame.rectTransform;
             var glass = UiBuild.Panel("Glass", frame.transform, Palette.BoothGlass);
             _window = glass.rectTransform.Fill(6);
             glass.gameObject.AddComponent<RectMask2D>();
@@ -164,6 +205,7 @@ namespace HumanError.View
         {
             var panel = Theme.Panel("Questions", _root);
             panel.rectTransform.PlaceTopLeft(1104, 80, 792, 476);
+            _questionsPanel = panel.rectTransform;
             var list = _session.Context.Questions;
             float row = Mathf.Min(66, (476 - 70) / (float)Mathf.Max(1, list.Count));
             int font = row >= 60 ? 25 : 22;
@@ -187,6 +229,7 @@ namespace HumanError.View
         {
             var panel = Theme.Panel("Log", _root);
             panel.rectTransform.PlaceTopLeft(1104, 568, 792, 124);
+            _logPanel = panel.rectTransform;
             Theme.Title("Header", panel.transform, "ANSWER LOG", 18, Palette.Muted).rectTransform.PlaceTopLeft(22, 8, 400, 24);
             _log = Theme.Body("Text", panel.transform, "", 19, Palette.PaperSand);
             _log.supportRichText = true;
@@ -199,6 +242,7 @@ namespace HumanError.View
             var ctx = _session.Context;
             var panel = Theme.Panel("Bulletin", _root, Palette.PaperSand.WithAlpha(0.5f));
             panel.rectTransform.PlaceTopLeft(1104, 704, 792, 160);
+            _bulletinPanel = panel.rectTransform;
             Theme.Title("Header", panel.transform, $"TONIGHT'S BULLETIN · {ctx.Tonight.Lattice}", 22, Palette.Sand).rectTransform.PlaceTopLeft(22, 12, 560, 30);
             string closed = ctx.ClosedFloors.Count == 0 ? "All floors open."
                 : "Closed: " + string.Join(", ", ctx.ClosedFloors.Select(f => $"floor {f} ({Floors.Office(f)})")) + ".";
@@ -211,6 +255,7 @@ namespace HumanError.View
             bool uv = ctx.Has(Tools.UvLamp);
             var rb = Theme.Button("Rulebook", panel.transform, "RULEBOOK", Palette.Sand, Palette.Ink, () => _actions.OpenRulebook?.Invoke(), 24);
             ((RectTransform)rb.transform).PlaceTopLeft(600, uv ? 14 : 44, 172, uv ? 62 : 72);
+            _rulebookButton = (RectTransform)rb.transform;
             if (uv)
             {
                 var lamp = Theme.Button("UvLamp", panel.transform, "UV LAMP", Palette.UvViolet, Palette.PaperSand, ToggleUv, 24);
@@ -222,6 +267,7 @@ namespace HumanError.View
         {
             var area = UiBuild.Rect("Decisions", _root);
             area.PlaceTopLeft(1104, 876, 792, 180);
+            _decisionsArea = area;
             var letIn = Theme.Button("LetIn", area, "LET IN", Palette.BioGlow, Palette.Ink, () => Decide(Decision.LetIn), 30);
             ((RectTransform)letIn.transform).PlaceTopLeft(0, 0, 252, 130);
             var away = Theme.Button("TurnAway", area, "TURN\nAWAY", Palette.Sand, Palette.Ink, () => Decide(Decision.TurnAway), 30);
@@ -233,6 +279,9 @@ namespace HumanError.View
             Theme.Body("Hint", area, "Humans → security · Citizens breaking a rule → turn away", 18, Palette.Muted, TextAnchor.UpperLeft)
                 .rectTransform.PlaceTopLeft(0, 136, 530, 30);
             _decisionButtons.AddRange(new[] { letIn, away, sec });
+            _decisionRects["letin"] = (RectTransform)letIn.transform;
+            _decisionRects["away"] = (RectTransform)away.transform;
+            _decisionRects["security"] = (RectTransform)sec.transform;
         }
 
         // ---------------------------------------------------------------- flow
@@ -268,7 +317,7 @@ namespace HumanError.View
             var id = _idCard.Root;
             id.PlaceTopLeft(14, 18, DocumentViews.IdWidth, DocumentViews.IdHeight);
             Tween.Move(id, id.anchoredPosition + new Vector2(0, -360), id.anchoredPosition, 0.4f, Ease.OutBack, null, 0.5f);
-            var slip = DocumentViews.Slip(_counter, v);
+            var slip = _slip = DocumentViews.Slip(_counter, v);
             slip.PlaceTopLeft(636, 18, DocumentViews.SlipWidth, DocumentViews.SlipHeight);
             slip.localRotation = Quaternion.Euler(0, 0, -1.5f);
             Tween.Move(slip, slip.anchoredPosition + new Vector2(0, -360), slip.anchoredPosition, 0.4f, Ease.OutBack, null, 0.62f);
@@ -287,6 +336,8 @@ namespace HumanError.View
 
             Say(v.Greeting, 0.5f);
             Refresh();
+            int index = _session.Index;
+            Tween.Delay(this, 1.15f, () => VisitorReady?.Invoke(index), "ready");
         }
 
         void Say(string line, float delay = 0f)
@@ -304,6 +355,7 @@ namespace HumanError.View
             if (_busy || !_session.CanAsk(q)) return;
             var answer = _session.Ask(q);
             Say(answer.Text);
+            Asked?.Invoke(q.Id);
             if (answer.FingersShown > 0)
             {
                 _handImage.sprite = Theme.Sprite($"hand_{answer.FingersShown}");
@@ -331,13 +383,16 @@ namespace HumanError.View
         {
             if (_busy || _session.IsOver) return;
             _busy = true;
+            Decided?.Invoke(d);
             var visitor = _session.Current;
             var asked = _session.Asked.ToList();
             var verdict = _session.Decide(d);
+            int points = _score?.Add(verdict) ?? 0;
+            if (_score != null) ShowPoints(verdict, points);
             _bubble.gameObject.SetActive(false);
             PlayVerdict(d, () =>
             {
-                if (GameSettings.RevealEachVisitor) ShowReveal(visitor, verdict, Next);
+                if (_session.Context.RevealEachVisitor) ShowReveal(visitor, verdict, Next);
                 else Next();
             });
             RefreshTopBar();
@@ -347,7 +402,7 @@ namespace HumanError.View
         {
             foreach (Transform c in _overlay) Destroy(c.gameObject);
             _busy = false;
-            if (_session.IsOver) { _actions.ShiftOver?.Invoke(); return; }
+            if (_session.IsOver || _score != null && _score.Over) { _actions.ShiftOver?.Invoke(); return; }
             ShowVisitor();
         }
 
@@ -390,7 +445,7 @@ namespace HumanError.View
             }
         }
 
-        /// <summary>M1 grey-box truth reveal after each decision (GDD §12 milestone 1). Later only the report shows it.</summary>
+        /// <summary>Truth reveal after each decision: the training night only (ShiftData.revealEach); later only the report shows it.</summary>
         void ShowReveal(VisitorInstance v, Verdict verdict, Action next)
         {
             var dim = UiBuild.Panel("Dim", _overlay, Palette.Ink.WithAlpha(0.6f), rounded: false);
@@ -418,6 +473,24 @@ namespace HumanError.View
             var b = Theme.Button("Next", rt, last ? "END SHIFT" : "NEXT VISITOR", Palette.BioGlow, Palette.Ink, next, 28);
             ((RectTransform)b.transform).PlaceTopLeft(620, 428, 280, 66);
             Tween.Scale(rt, Vector3.one * 0.85f, Vector3.one, 0.25f, Ease.OutBack);
+        }
+
+        void Update()
+        {
+            var kb = UnityEngine.InputSystem.Keyboard.current;
+            if (kb != null && kb.escapeKey.wasPressedThisFrame && !_busy) _actions.OpenMenu?.Invoke();
+        }
+
+        /// <summary>Score modes: a quick "+30" or "STREAK LOST" over the window. The truth still waits for the report.</summary>
+        void ShowPoints(Verdict verdict, int points)
+        {
+            bool good = points > 0;
+            var t = Theme.Title("Points", _window, good ? $"+{points}" : _score.Streak == 0 && verdict.Strike ? "STRIKE!" : "STREAK LOST",
+                64, good ? Palette.BioGlow : Palette.Coral, TextAnchor.MiddleCenter);
+            t.rectTransform.PlaceTopLeft(0, 200, 1044, 120);
+            t.horizontalOverflow = HorizontalWrapMode.Overflow;
+            Tween.Move(t.rectTransform, t.rectTransform.anchoredPosition, t.rectTransform.anchoredPosition + new Vector2(0, 80), 1.0f, Ease.OutQuad);
+            Destroy(t.gameObject, 1.0f);
         }
 
         void ToggleUv()
@@ -460,11 +533,14 @@ namespace HumanError.View
         void RefreshTopBar()
         {
             var ctx = _session.Context;
-            _topLeft.text = $"SHIFT {ctx.ShiftNumber} · {ctx.Tonight.Lattice}";
+            _topLeft.text = ctx.IsMode ? $"{ctx.Title.ToUpperInvariant()} · {ctx.Tonight.Lattice}" : $"SHIFT {ctx.ShiftNumber} · {ctx.Tonight.Lattice}";
             _clock.text = ShiftContext.Clock(_session.ClockMinutes);
             int mistakes = _session.Results.Count(r => !r.Verdict.IsGood);
             int shown = Math.Min(_session.Index + 1, _session.Queue.Count);
-            _topRight.text = $"VISITOR {shown}/{_session.Queue.Count}   CAUGHT {_session.HumansCaught}   MISTAKES {mistakes}   {Theme.Shards(_session.Net)}";
+            _topRight.text = _score == null
+                ? $"VISITOR {shown}/{_session.Queue.Count}   CAUGHT {_session.HumansCaught}   MISTAKES {mistakes}   {Theme.Shards(_session.Net)}"
+                : $"VISITOR {shown}/{_session.Queue.Count}   STREAK ×{_score.Multiplier}   " +
+                  (_score.EndsOnStrikes ? $"STRIKES {_score.Strikes}/{ScoreRun.StrikesAllowed}   " : "") + $"SCORE {_score.Score}";
         }
     }
 }

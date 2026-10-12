@@ -28,6 +28,9 @@ namespace HumanError.EditorTools.ArtGen
 
         public static readonly string[] ClanNames = { "Vessi", "Ammaru", "Plo", "Ruu" };
 
+        /// <summary>Options per free kit slot (head, mouth, pattern, outfit); matches Look.Options.</summary>
+        public const int Options = 8;
+
         /// <summary>Writes every placeholder into <paramref name="root"/> (…/Art/Generated). Returns the files written.</summary>
         public static List<string> GenerateAll(string root, Action<string> log = null)
         {
@@ -40,11 +43,11 @@ namespace HumanError.EditorTools.ArtGen
                 log?.Invoke(rel);
             }
 
-            for (int h = 0; h < 4; h++)
+            for (int h = 0; h < Options; h++)
             {
                 Save($"Visitor/head_{h}.png", Head(h));
                 Save($"Visitor/ear_{h}.png", Ear(h));
-                for (int p = 0; p < 4; p++) Save($"Visitor/pattern_{p}_{h}.png", Pattern(p, h));
+                for (int p = 0; p < Options; p++) Save($"Visitor/pattern_{p}_{h}.png", Pattern(p, h));
                 for (int c = 0; c < 4; c++)
                 {
                     Save($"Visitor/crest_{ClanNames[c]}_{h}.png", Crest(c, h));
@@ -54,8 +57,8 @@ namespace HumanError.EditorTools.ArtGen
                     Save($"Visitor/eyelids_{ClanNames[c]}_{h}.png", Eyes(c, h, round: false, closed: true));
                 }
             }
-            for (int m = 0; m < 4; m++) Save($"Visitor/mouth_{m}.png", Mouth(m));
-            for (int o = 0; o < 4; o++) Save($"Visitor/outfit_{o}.png", Outfit(o));
+            for (int m = 0; m < Options; m++) Save($"Visitor/mouth_{m}.png", Mouth(m));
+            for (int o = 0; o < Options; o++) Save($"Visitor/outfit_{o}.png", Outfit(o));
             Save("Visitor/neck.png", Neck());
             Save("Visitor/gills.png", Gills());
             Save("Visitor/seam.png", Seam());
@@ -72,6 +75,9 @@ namespace HumanError.EditorTools.ArtGen
             Save("UI/moon_kesh.png", Moon(160, false));
             Save("UI/moon_aun.png", Moon(320, true));
             Save("Backgrounds/booth.png", Booth());
+            Save("Backgrounds/title.png", TitleTower());
+            Save("Backgrounds/home.png", HomeRoom());
+            Save("UI/shade_left.png", ShadeLeft());
             return files;
         }
 
@@ -86,15 +92,48 @@ namespace HumanError.EditorTools.ArtGen
                 case 3:
                     return SmoothUnion(Ellipse(256, 270, 150, 140),
                         Union(Circle(172, 160, 62), Circle(256, 128, 68), Circle(340, 160, 62)), 30);
+                case 4: // pear: narrow brow, wide jowls
+                    return SmoothUnion(Ellipse(256, 205, 118, 112), Ellipse(256, 300, 172, 118), 40);
+                case 5: // rounded block
+                    return Box(256, 250, 152, 165, 72);
+                case 6: // onion: a pointed crown
+                    return SmoothUnion(Ellipse(256, 285, 150, 135), Polygon((170, 200), (256, 62), (342, 200)), 40);
+                case 7: // round with cheek lobes
+                    return SmoothUnion(Ellipse(256, 255, 160, 160), Union(Circle(118, 270, 52), Circle(394, 270, 52)), 30);
                 default: return Ellipse(256, 245, 150, 170);
             }
         }
 
         /// <summary>Top of the head at the centre line (the crown anchor for crests).</summary>
-        static float Crown(int h) => h == 1 ? 45 : h == 2 ? 125 : h == 3 ? 62 : 75;
+        static float Crown(int h)
+        {
+            switch (h)
+            {
+                case 1: return 45;
+                case 2: return 125;
+                case 3: return 62;
+                case 4: return 93;
+                case 5: return 85;
+                case 6: return 62;
+                case 7: return 95;
+                default: return 75;
+            }
+        }
 
         /// <summary>Left edge of the head at the ear line.</summary>
-        static float SideX(int h) => h == 1 ? 136 : h == 2 ? 74 : 108;
+        static float SideX(int h)
+        {
+            switch (h)
+            {
+                case 1: return 136;
+                case 2: return 74;
+                case 4: return 88;
+                case 5: return 104;
+                case 6: return 106;
+                case 7: return 68;
+                default: return 108;
+            }
+        }
 
         /// <summary>Eye centres for the clan on this head (GDD kit row "Eyes").</summary>
         static List<(float x, float y, float rx, float ry)> EyeSpots(int clan, int h)
@@ -169,10 +208,27 @@ namespace HumanError.EditorTools.ArtGen
                         r.Fill(Circle(256 + (float)Math.Cos(a) * d, 270 + (float)Math.Sin(a) * d * 0.8f, 6), SkinMark);
                     }
                     break;
-                default: // constellation
+                case 3: // constellation
                     var pts = new[] { (170f, 190f), (215f, 150f), (300f, 175f), (340f, 250f), (300f, 340f), (190f, 320f) };
                     r.Fill(Path(5, pts), SkinMark);
                     foreach (var pt in pts) r.Fill(Circle(pt.Item1, pt.Item2, 9), SkinMark);
+                    break;
+                case 4: // brow chevrons
+                    float top = Math.Max(Crown(h) + 46, 150);
+                    for (int i = 0; i < 3; i++)
+                        r.Fill(Path(9, (206, top + i * 22), (256, top + 24 + i * 22), (306, top + i * 22)), SkinMark);
+                    break;
+                case 5: // cheek patches
+                    r.Fill(Ellipse(170, 312, 36, 24), SkinMark);
+                    r.Fill(Ellipse(342, 312, 36, 24), SkinMark);
+                    break;
+                case 6: // centre stripe
+                    r.Fill(Capsule(256, Crown(h) + 8, 256, 236, 15), SkinMark);
+                    r.Fill(Capsule(256, 284, 256, 420, 15), SkinMark);
+                    break;
+                default: // rings
+                    foreach (var (x, y, rad) in new[] { (176f, 210f, 18f), (336f, 196f, 14f), (346f, 318f, 20f), (180f, 336f, 13f) })
+                        r.Fill(Ring(Circle(x, y, rad), 4), SkinMark);
                     break;
             }
             r.Mask(Grow(head, -Line * 0.5f));
@@ -290,10 +346,37 @@ namespace HumanError.EditorTools.ArtGen
                         r.Stroke(fang, 6, Ink);
                     }
                     break;
-                default:
+                case 3:
                     r.Fill(Capsule(224, 340, 288, 340, 8), Ink);
                     r.Fill(Capsule(240, 352, 246, 362, 5), Ink);
                     r.Fill(Capsule(272, 352, 266, 362, 5), Ink);
+                    break;
+                case 4: // flat grin with two small tusks
+                    foreach (int side in new[] { -1, 1 })
+                    {
+                        var tusk = Polygon((256 + side * 22, 334), (256 + side * 40, 334), (256 + side * 30, 308));
+                        r.Fill(tusk, Sclera);
+                        r.Stroke(tusk, 5, Ink);
+                    }
+                    r.Fill(Capsule(210, 336, 302, 336, 8), Ink);
+                    break;
+                case 5: // "w" mouth
+                    r.Fill(Path(8, (224, 324), (240, 340), (256, 328), (272, 340), (288, 324)), Ink);
+                    break;
+                case 6: // small beak
+                    var beak = Polygon((232, 318), (280, 318), (256, 356));
+                    r.Fill(beak, Rgba.Hex("#E8B64A"));
+                    r.Fill(Polygon((232, 318), (280, 318), (256, 330)), Rgba.Hex("#C9902F"));
+                    r.Stroke(beak, 6, Ink);
+                    break;
+                default: // feeding tendrils
+                    foreach (int i in new[] { -1, 0, 1 })
+                    {
+                        float x = 256 + i * 24;
+                        var t = Path(11, (x, 326), (x + 8, 346), (x - 6, 366), (x + 4, 388));
+                        r.Fill(Grow(t, 3), Ink);
+                        r.Fill(t, Rgba.Hex("#7A5E96"));
+                    }
                     break;
             }
             return r;
@@ -361,6 +444,10 @@ namespace HumanError.EditorTools.ArtGen
                 case 1: main = Rgba.Hex("#E8833A"); accent = PaperSand; break;
                 case 2: main = PaperSand; accent = Coral; break;
                 case 3: main = Rgba.Hex("#8C7B5E"); accent = Rgba.Hex("#3E7A66"); break;
+                case 4: main = Rgba.Hex("#2E6B6A"); accent = PaperSand; break;
+                case 5: main = Rgba.Hex("#3B4048"); accent = BioGlow; break;
+                case 6: main = Rgba.Hex("#A64B5A"); accent = PaperSand; break;
+                case 7: main = Rgba.Hex("#5B4A8A"); accent = Rgba.Hex("#E8B64A"); break;
                 default: main = Rgba.Hex("#2F3A6B"); accent = PaperSand; break;
             }
             Part(r, body, main, main.Shade(-0.18f), -40, -10);
@@ -379,12 +466,34 @@ namespace HumanError.EditorTools.ArtGen
                     r.Stroke(Circle(320, 492, 14), 6, accent);
                     r.Fill(Circle(320, 492, 5), accent);
                     break;
-                default: // apron bib with straps
+                case 3: // apron bib with straps
                     var bib = Rect(196, 470, 120, 60, 6);
                     r.Fill(bib, accent);
                     r.Stroke(bib, 6, Ink);
                     r.Fill(Capsule(206, 470, 190, 446, 8), accent);
                     r.Fill(Capsule(306, 470, 322, 446, 8), accent);
+                    break;
+                case 4: // high-collar coat with buttons
+                    foreach (int side in new[] { -1, 1 })
+                    {
+                        var flap = Polygon((256 + side * 8, 512), (256 + side * 58, 446), (256 + side * 70, 470));
+                        r.Fill(flap, main.Shade(0.12f));
+                        r.Stroke(flap, 6, Ink);
+                    }
+                    for (int i = 0; i < 2; i++) r.Fill(Circle(256, 482 + i * 22, 6), accent);
+                    break;
+                case 5: // Lattice uniform: glowing shoulder bars and a chevron badge
+                    r.Fill(Intersect(body, Rect(90, 452, 70, 12, 4)), accent);
+                    r.Fill(Intersect(body, Rect(352, 452, 70, 12, 4)), accent);
+                    r.Fill(Path(5, (306, 480), (320, 496), (334, 480)), accent);
+                    break;
+                case 6: // striped sweater
+                    for (int i = 0; i < 3; i++) r.Fill(Intersect(body, Rect(0, 470 + i * 22, S, 9)), accent);
+                    break;
+                default: // scarf
+                    var scarf = Union(Capsule(196, 458, 316, 458, 20), Capsule(290, 462, 302, 512, 14));
+                    r.Fill(scarf, accent);
+                    r.Stroke(scarf, 5, Ink);
                     break;
             }
             return r;
@@ -485,6 +594,156 @@ namespace HumanError.EditorTools.ArtGen
             // Glass streaks.
             r.Fill(Capsule(90, 120, 380, 20, 10), Rgba.White.WithAlpha(0.06f));
             r.Fill(Capsule(160, 190, 560, 40, 8), Rgba.White.WithAlpha(0.05f));
+            return r;
+        }
+
+        /// <summary>Alpha-blends an axis-aligned block without anti-aliasing: cheap for hundreds of lit windows.</summary>
+        static void Block(Raster r, float x, float y, float w, float h, Rgba c)
+        {
+            int x0 = Math.Max(0, (int)x), y0 = Math.Max(0, (int)y);
+            int x1 = Math.Min(r.Width, (int)(x + w)), y1 = Math.Min(r.Height, (int)(y + h));
+            for (int yy = y0; yy < y1; yy++)
+            for (int xx = x0; xx < x1; xx++)
+            {
+                var d = r.Get(xx, yy);
+                float a = c.A;
+                r.Set(xx, yy, new Rgba(d.R + (c.R - d.R) * a, d.G + (c.G - d.G) * a, d.B + (c.B - d.B) * a, Math.Max(d.A, a)));
+            }
+        }
+
+        /// <summary>A row of city blocks with a few lit windows, between <paramref name="minTop"/> and <paramref name="maxTop"/>.</summary>
+        static void Skyline(Raster r, Random rng, Rgba colour, int minTop, int maxTop, float lit, Sdf clip = null)
+        {
+            float x = -30;
+            while (x < r.Width)
+            {
+                float w = 60 + rng.Next(110), top = minTop + rng.Next(Math.Max(1, maxTop - minTop));
+                Sdf block = Rect(x, top, w, r.Height - top);
+                if (rng.Next(3) == 0) block = Union(block, Polygon((x + w * 0.3f, top), (x + w * 0.5f, top - 60 - rng.Next(70)), (x + w * 0.7f, top)));
+                r.Fill(clip == null ? block : Intersect(block, clip), colour);
+                for (float wy = top + 18; wy < r.Height - 20; wy += 26)
+                for (float wx = x + 10; wx < x + w - 14; wx += 22)
+                {
+                    if (rng.NextDouble() > lit) continue;
+                    if (clip != null && clip(wx, wy) > 0) continue;
+                    var c = rng.Next(6) == 0 ? Coral : BioGlow;
+                    Block(r, wx, wy, 9, 12, c.WithAlpha(0.35f + (float)rng.NextDouble() * 0.4f));
+                }
+                x += w + 6 + rng.Next(24);
+            }
+        }
+
+        static void MoonAt(Raster r, float x, float y, float rad, bool aun)
+        {
+            r.Glow(Circle(x, y, rad), (aun ? PaperSand : Coral).WithAlpha(0.3f), rad * 0.6f);
+            r.Fill(Circle(x, y, rad), aun ? PaperSand : Coral);
+            if (!aun) return;
+            r.Fill(Circle(x - rad * 0.35f, y - rad * 0.2f, rad * 0.2f), Rgba.Hex("#CFC2A2"));
+            r.Fill(Circle(x + rad * 0.4f, y + rad * 0.35f, rad * 0.12f), Rgba.Hex("#CFC2A2"));
+        }
+
+        /// <summary>Title (GDD §7.2): the Lattice Tower at night with Night Window 3 lit at its foot.</summary>
+        static Raster TitleTower()
+        {
+            const int W = 1600, H = 900;
+            var r = new Raster(W, H);
+            r.Fill(Rect(0, 0, W, H), Raster.VerticalGradient(0, Rgba.Hex("#071014"), H, Rgba.Hex("#1A4650")));
+            var rng = new Random(11);
+            for (int i = 0; i < 160; i++)
+                Block(r, rng.Next(W), rng.Next(H * 6 / 10), 2, 2, Rgba.White.WithAlpha(0.25f + (float)rng.NextDouble() * 0.5f));
+            MoonAt(r, 1390, 170, 92, true);
+            MoonAt(r, 1215, 112, 24, false);
+
+            Skyline(r, rng, Rgba.Hex("#12323B"), 520, 640, 0.10f);
+            Skyline(r, rng, Rgba.Hex("#0C232A"), 640, 760, 0.07f);
+
+            // The tower: a tapering block with a spire, glow-edged, rows of dim windows.
+            const float cx = 1150;
+            var tower = Union(Polygon((cx - 120, H), (cx - 48, 210), (cx + 48, 210), (cx + 120, H)), Polygon((cx - 30, 214), (cx, 50), (cx + 30, 214)));
+            r.Glow(tower, BioGlow.WithAlpha(0.18f), 30);
+            r.Fill(tower, Rgba.Hex("#0D252C"));
+            r.Stroke(tower, 3, BioGlow.WithAlpha(0.55f));
+            for (float y = 270; y < 740; y += 30)
+            {
+                float half = 48 + (120 - 48) * (y - 210) / (H - 210) - 22;
+                for (float x = cx - half; x < cx + half - 8; x += 20)
+                    Block(r, x, y, 9, 14, BioGlow.WithAlpha(rng.Next(9) == 0 ? 0.6f : 0.14f));
+            }
+            r.Fill(Path(6, (cx - 22, 236), (cx, 258), (cx + 22, 236)), BioGlow);
+
+            // Night Window 3: the one lit window, with you in it.
+            var window = Rect(cx - 52, 764, 104, 70, 6);
+            r.Glow(window, BioGlow.WithAlpha(0.5f), 40);
+            r.Fill(window, Rgba.Hex("#7FF2DE"));
+            r.Fill(Ellipse(cx, 796, 16, 19), Rgba.Hex("#0D252C"));
+            r.Fill(Intersect(Ellipse(cx, 846, 40, 30), window), Rgba.Hex("#0D252C"));
+
+            r.Fill(Rect(0, 836, W, H - 836), BoothGlass.WithAlpha(0.75f));
+            r.Fill(Rect(0, 836, W, 4), BioGlow.WithAlpha(0.8f));
+            return r;
+        }
+
+        /// <summary>Home (GDD §7.2): a small room in Block 22. The window sits where the Home screen leaves a gap for it.</summary>
+        static Raster HomeRoom()
+        {
+            const int W = 1600, H = 900;
+            var r = new Raster(W, H);
+            r.Fill(Rect(0, 0, W, H), Raster.VerticalGradient(0, Rgba.Hex("#14232A"), H, Rgba.Hex("#1E3238")));
+            for (int x = 120; x < W; x += 170) Block(r, x, 0, 3, 760, Rgba.Hex("#101D22").WithAlpha(0.8f));
+            r.Fill(Rect(0, 760, W, H - 760), Rgba.Hex("#2A211C"));
+            for (int y = 790; y < H; y += 34) Block(r, 0, y, W, 2, Rgba.Hex("#1F1814"));
+            Block(r, 0, 756, W, 6, Rgba.Hex("#3A3029"));
+
+            // The window (screen 660–1220 × 150–530 at 1920×1080 = art 550–1017 × 125–442).
+            var frame = Rect(548, 116, 470, 332, 12);
+            r.Fill(frame, Rgba.Hex("#2B3F44"));
+            r.Stroke(frame, 6, Ink);
+            var glass = Rect(566, 134, 434, 296, 4);
+            r.Fill(glass, Raster.VerticalGradient(134, Rgba.Hex("#0A171C"), 430, Rgba.Hex("#1D4A54")));
+            var rng = new Random(23);
+            for (int i = 0; i < 40; i++)
+                Block(r, 570 + rng.Next(426), 138 + rng.Next(120), 2, 2, Rgba.White.WithAlpha(0.4f));
+            MoonAt(r, 905, 205, 46, true);
+            MoonAt(r, 805, 176, 13, false);
+            Skyline(r, rng, Rgba.Hex("#0E262D"), 300, 360, 0.18f, glass);
+            for (int i = 0; i < 80; i++)
+            {
+                // Rain on the glass.
+                float x = 570 + rng.Next(430), y = 136 + rng.Next(290), len = 14 + rng.Next(22);
+                r.Fill(Intersect(Capsule(x, y, x - 4, y + len, 1.2f), glass), Rgba.White.WithAlpha(0.16f));
+            }
+            r.Fill(Rect(779, 134, 8, 296), Rgba.Hex("#2B3F44"));
+            r.Fill(Rect(566, 278, 434, 8), Rgba.Hex("#2B3F44"));
+            var sill = Rect(532, 440, 502, 20, 4);
+            r.Fill(sill, Rgba.Hex("#3A3029"));
+            r.Stroke(sill, 4, Ink);
+            // Sel's plant on the sill.
+            var pot = Polygon((600, 440), (640, 440), (634, 404), (606, 404));
+            foreach (var (lx, ly) in new[] { (604f, 360f), (622f, 350f), (640f, 366f) })
+            {
+                var leaf = Capsule(620, 404, lx, ly, 9);
+                r.Fill(leaf, Rgba.Hex("#9EE6B8"));
+                r.Stroke(leaf, 3, Ink);
+            }
+            r.Fill(pot, Coral);
+            r.Stroke(pot, 4, Ink);
+
+            // Sel's drawing pinned to the wall: you at your window, Graav as a grumpy cloud.
+            var paper = Rect(1160, 22, 120, 86, 3);
+            r.Fill(paper, PaperSand);
+            r.Stroke(paper, 3, Ink);
+            r.Stroke(Rect(1176, 40, 44, 50, 4), 3, BioGlow);
+            r.Fill(Circle(1198, 60, 10), Rgba.Hex("#9EE6B8"));
+            r.Fill(Union(Circle(1244, 50, 11), Circle(1258, 46, 13), Circle(1270, 54, 9)), Rgba.Hex("#8FA7A8"));
+            r.Fill(Circle(1220, 26, 4), Coral);
+            return r;
+        }
+
+        /// <summary>Left-to-right fade from the night colour, laid over art behind menus.</summary>
+        static Raster ShadeLeft()
+        {
+            var r = new Raster(256, 16);
+            r.Fill(Rect(0, 0, 256, 16), (x, y) => MossNight.WithAlpha(0.94f * (float)Math.Pow(1 - x / 256f, 1.3)));
             return r;
         }
     }

@@ -32,8 +32,12 @@ namespace HumanError.View
     {
         Image _eyelids, _glow, _gills, _seam;
         Image[] _sweat, _suitImages;
-        RectTransform _suit;
+        RectTransform _suit, _root;
         VisitorLookOptions _o;
+        Clan _clan;
+
+        /// <summary>Settings "tell assist": a ring briefly outlines every animated tell as it happens (GDD §11).</summary>
+        public static bool TellAssist;
         float _nextBlink, _blinkUntil, _nextFlicker, _flickerUntil;
         float _stress;
         bool _sweating, _flickering;
@@ -48,6 +52,7 @@ namespace HumanError.View
                 if (_sweat == null || _sweating == value) return;
                 _sweating = value;
                 foreach (var s in _sweat) s.gameObject.SetActive(value);
+                if (value) Ping(0.5f, 0.38f, 0.62f);
             }
         }
 
@@ -60,6 +65,8 @@ namespace HumanError.View
             var root = UiBuild.Rect("Visitor", parent);
             var view = root.gameObject.AddComponent<VisitorView>();
             view._o = o;
+            view._root = root;
+            view._clan = look.Clan;
             var skin = Palette.Skin(look.Clan, look.Tone);
             string clan = look.Clan.ToString();
 
@@ -137,6 +144,7 @@ namespace HumanError.View
                 {
                     _eyelids.gameObject.SetActive(true);
                     _blinkUntil = t + 0.1f; // ~6 frames at 60 fps (GDD §5.4)
+                    Ping(0.5f, EyeLine(_clan), 0.5f);
                     float gap = Mathf.Lerp(4.5f, 1.6f, _stress);
                     _nextBlink = t + Random.Range(gap * 0.7f, gap * 1.3f);
                 }
@@ -147,9 +155,11 @@ namespace HumanError.View
                 bool on = t < _flickerUntil;
                 if (!on && _flickering && t >= _nextFlicker)
                 {
-                    _flickerUntil = t + 0.09f; // a handful of frames: hard to catch (GDD §5.4)
+                    // A handful of frames: hard to catch (GDD §5.4). Reduce motion swaps the jolt for a longer, gentler glimpse.
+                    _flickerUntil = t + (Tween.ReduceMotion ? 0.35f : 0.09f);
                     _nextFlicker = t + Random.Range(2.2f, 4.5f);
                     on = true;
+                    Ping(0.5f, 0.55f, 0.95f);
                 }
                 _seam.gameObject.SetActive(on);
                 _suit.anchoredPosition = on && !Tween.ReduceMotion ? new Vector2(Mathf.Sin(t * 90f) * 10f, 0) : Vector2.zero;
@@ -157,6 +167,34 @@ namespace HumanError.View
                 foreach (var img in _suitImages)
                     if (img != _eyelids) img.canvasRenderer.SetAlpha(on ? 0.55f : 1f);
             }
+        }
+
+        /// <summary>Height of the eyes on the 512 grid, as a fraction from the top (Ruu eyes sit on stalks above the crown).</summary>
+        static float EyeLine(Clan c) => c == Clan.Ruu ? 0.2f : 0.5f;
+
+        /// <summary>Tell assist: a ring centred on (x, y) (fractions of the 512 grid from the top-left) that swells and fades.</summary>
+        public void Ping(float x, float y, float size)
+        {
+            if (!TellAssist || !enabled) return;
+            Ring(_root, x, y, size);
+        }
+
+        /// <summary>A tell-assist ring on any rect, e.g. the hand or the fogged glass at the desk.</summary>
+        public static void Ring(RectTransform parent, float x, float y, float size)
+        {
+            if (!TellAssist || parent == null) return;
+            var ring = UiBuild.Picture("TellAssist", parent, Theme.Sprite("ring"));
+            ring.color = Palette.Warning;
+            var rt = ring.rectTransform;
+            rt.anchorMin = new Vector2(x - size / 2, 1 - y - size / 2);
+            rt.anchorMax = new Vector2(x + size / 2, 1 - y + size / 2);
+            rt.offsetMin = rt.offsetMax = Vector2.zero;
+            Tween.Run(ring, "ping", 0.9f, Ease.OutQuad, p =>
+            {
+                ring.color = Palette.Warning.WithAlpha(p < 0.2f ? p * 5f : 1f - (p - 0.2f) / 0.8f);
+                if (!Tween.ReduceMotion) rt.localScale = Vector3.one * (0.85f + 0.3f * p);
+            }, isMotion: false);
+            Destroy(ring.gameObject, 0.95f);
         }
 
         /// <summary>A sweat bead that slowly runs down and reappears.</summary>

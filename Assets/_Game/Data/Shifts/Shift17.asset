@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6ea7988840a5bd488445465412f2c6d, type: 3}
+  m_Name: Shift17
+  m_EditorClassIdentifier: 
+  data:
+    number: 17
+    title: Parade
+    cycle: 413
+    day: 9
+    kesh: 
+    visitors: 10
+    humans: 3
+    ruleBreakers: 2
+    oddCitizens: 2
+    skilledShare: 0.67
+    clumsyMinTells: 0
+    clumsyMaxTells: 2
+    skilledTells: 0
+    maxForgedFields: 3
+    questionBudget: 3
+    questions:
+    - sofar
+    - keshname
+    - stamped
+    - hatched
+    - early
+    - wave
+    - parade
+    - chose
+    tells: []
+    closedFloors: 0e000000
+    rules:
+    - clan-stamp
+    tools:
+    - archive
+    briefing: Crest parade night. Half the city is outside cheering; the other half
+      queues at your window. Humans love to talk about parades. Citizens don't talk
+      to strangers at all.
+    supervisor: Last night of the cycle. Don't let the music in.
+    revealEach: 0
+    untimed: 0
+    wanted: 

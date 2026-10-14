@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d166290693aaa4da8fe7a683412f0d, type: 3}
+  m_Name: lantern
+  m_EditorClassIdentifier: 
+  data:
+    id: lantern
+    text: What colour are the Kesh lanterns on your street tonight?
+    kind: Culture
+    effect: 
+    reveals: WrongKesh
+    citizen:
+    - '{kesh}, like every street.'
+    - '{kesh}. Same as the moon.'
+    - 'They match Kesh: {kesh}.'
+    human:
+    - Oh, {wrongKesh}, I think?
+    - I didn't really look. {wrongKesh}?
+    - The usual. {wrongKesh}.
+    slipChance: 0.45
+    stress: 0.15
+    unlockShift: 13

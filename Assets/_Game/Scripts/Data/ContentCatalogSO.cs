@@ -17,6 +17,8 @@ namespace HumanError.Data
         public UpgradeData[] upgrades = new UpgradeData[0];
         /// <summary>The guided first night: scripted visitors and spotlight tips.</summary>
         public TutorialData tutorial = new TutorialData();
+        /// <summary>Recurring story characters and their visits (GDD §6).</summary>
+        public StoryData[] story = new StoryData[0];
 
         public ContentFile ToFile() => new ContentFile
         {
@@ -26,6 +28,7 @@ namespace HumanError.Data
             messages = messages,
             upgrades = upgrades,
             tutorial = tutorial,
+            story = story,
         };
 
         /// <summary>Playable shifts in order. Content errors are logged and also returned.</summary>

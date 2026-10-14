@@ -31,6 +31,47 @@ MonoBehaviour:
   - {fileID: 11400000, guid: cb29f834e391c80459df7a274f81e828, type: 2}
   - {fileID: 11400000, guid: 264f6913061f3d64dbb97acbb20d997a, type: 2}
   - {fileID: 11400000, guid: d0a903be40dacad43986402997eb8817, type: 2}
+  - {fileID: 11400000, guid: 87ae5a711e8f6d146b0f288d8c85241b, type: 2}
+  - {fileID: 11400000, guid: 49ab15a4bf6fc444da3d3f417d199ca2, type: 2}
+  - {fileID: 11400000, guid: 2c5c8815cb3fca74faf0e410d241d891, type: 2}
+  - {fileID: 11400000, guid: 71076414ee40ddc4c91ea35f11cd3182, type: 2}
+  - {fileID: 11400000, guid: bfdd13b99b51ff746a035255ddd6091c, type: 2}
+  - {fileID: 11400000, guid: 7375463d916a3b44cbbfafe116128dbb, type: 2}
+  - {fileID: 11400000, guid: 884008f62849b7e4686aa91a46ad93ce, type: 2}
+  - {fileID: 11400000, guid: 73d658297a52751468308f8a6034d93f, type: 2}
+  - {fileID: 11400000, guid: 45203d91bc1d0ec4a986846a24201417, type: 2}
+  - {fileID: 11400000, guid: 3ea231ced5d6baa4caeda81438a1cd92, type: 2}
+  - {fileID: 11400000, guid: e9e937483c037944c919e007530d37b9, type: 2}
+  - {fileID: 11400000, guid: 4f0dd8b6413ba5b44a1dd538af67fce3, type: 2}
+  - {fileID: 11400000, guid: 7b6bbb77f6e62db4b878bece3ab00860, type: 2}
+  - {fileID: 11400000, guid: f09fdbe90bf26cd49a3975a555a24a4e, type: 2}
+  - {fileID: 11400000, guid: c90e439fdf753d0438059ae407dce1e2, type: 2}
+  - {fileID: 11400000, guid: 1a3c02b94fd76844c9a01bf93aeb864f, type: 2}
+  - {fileID: 11400000, guid: 2ab9e9086bffa0845808cd6e3718cec4, type: 2}
+  - {fileID: 11400000, guid: 6d439911d6c95814a8e778da936f595b, type: 2}
+  - {fileID: 11400000, guid: 663e4558fe38ff349b931766ce4009e1, type: 2}
+  - {fileID: 11400000, guid: 9156050393c662a4f98f787c5a802a85, type: 2}
+  - {fileID: 11400000, guid: cc01d4f38ea83fb418f90bc568cc7bae, type: 2}
+  - {fileID: 11400000, guid: dc5af54c71650c84ca9e00204a5e18b9, type: 2}
+  - {fileID: 11400000, guid: e42edfa2e5aeb794a9c62fcb9058f9c9, type: 2}
+  - {fileID: 11400000, guid: e7c5aeb4325f068489a6760808500eb9, type: 2}
+  - {fileID: 11400000, guid: ae8a69c7a30e1d243929d5bb2bed847a, type: 2}
+  - {fileID: 11400000, guid: 7e038c208a8c5a04b842b5c6622cd215, type: 2}
+  - {fileID: 11400000, guid: 80dd2f73a695659478286466ea5cc220, type: 2}
+  - {fileID: 11400000, guid: 5ab9a44276c1e334cb67ad139b872cd1, type: 2}
+  - {fileID: 11400000, guid: 32ff188161829b44e809fd88bee202d3, type: 2}
+  - {fileID: 11400000, guid: e70c78ef9d4962b4ab928e462e1a35d0, type: 2}
+  - {fileID: 11400000, guid: f5c2b241e5e584945aa5ca359e9bf634, type: 2}
+  - {fileID: 11400000, guid: 4c8704205a30965489f4a95544739da8, type: 2}
+  - {fileID: 11400000, guid: 431a1827e16036f4aa5326eb224c7f86, type: 2}
+  - {fileID: 11400000, guid: 1f810e8239e563e4585624828f336485, type: 2}
+  - {fileID: 11400000, guid: 71512399861bd4c499ff64bdcfb7f811, type: 2}
+  - {fileID: 11400000, guid: 56693cdfeb8fc7a419fe66565144e670, type: 2}
+  - {fileID: 11400000, guid: 6efe37caf0674ea4e9ce22850335364d, type: 2}
+  - {fileID: 11400000, guid: 74ec69e98debe7543a6d8bf9fa81b432, type: 2}
+  - {fileID: 11400000, guid: cc477c224abf4ca4f96b0b56f44e352a, type: 2}
+  - {fileID: 11400000, guid: 45692ec575793dd4fb76f0a14625a995, type: 2}
+  - {fileID: 11400000, guid: 5bc661cc8dbfb464bacb238c4e5e4691, type: 2}
   shifts:
   - {fileID: 11400000, guid: 2df05cbafd5e7184697faf585738a659, type: 2}
   - {fileID: 11400000, guid: e03b1e956d23ed3438d57a58ed89fba9, type: 2}
@@ -38,6 +79,30 @@ MonoBehaviour:
   - {fileID: 11400000, guid: ba29911cae3cd3c47ac9c1f6a012d07e, type: 2}
   - {fileID: 11400000, guid: d4329b09a63175a4280041efd8cc9125, type: 2}
   - {fileID: 11400000, guid: 5e3f013d4015d094dbc4eb18bb9f7f95, type: 2}
+  - {fileID: 11400000, guid: ea501c70b72ad2e4a9beddaa90f76404, type: 2}
+  - {fileID: 11400000, guid: 116a8b53b75ed2f44b1c0d648ffe60f8, type: 2}
+  - {fileID: 11400000, guid: 3c7477c8988e6c74c957864ede780f19, type: 2}
+  - {fileID: 11400000, guid: 4faddcfe99deee049aa3704b8ab92455, type: 2}
+  - {fileID: 11400000, guid: 6930e73ec493a28488ec330f8d76d3c7, type: 2}
+  - {fileID: 11400000, guid: 532395e229dbec6418dffb2dd92f64de, type: 2}
+  - {fileID: 11400000, guid: f07da14f688038c4db5bfcca63009512, type: 2}
+  - {fileID: 11400000, guid: 9042b18abf36aca48b036a13ddb422f6, type: 2}
+  - {fileID: 11400000, guid: 37ceca347c029a34a97bb71adb2254dd, type: 2}
+  - {fileID: 11400000, guid: dbdaa5f9e84148a41a2541ac3f79d293, type: 2}
+  - {fileID: 11400000, guid: 35ca16387e426574a847fd2457620f21, type: 2}
+  - {fileID: 11400000, guid: 3a1d3202fb091994eaa1ddb85b27a3f0, type: 2}
+  - {fileID: 11400000, guid: f916a012ed3d6324a875996a8a5ae6ad, type: 2}
+  - {fileID: 11400000, guid: 774c1e922a007374ab553b2dc5a1bdbe, type: 2}
+  - {fileID: 11400000, guid: a84d6deb2496d8c489c4f13f7d4fbec5, type: 2}
+  - {fileID: 11400000, guid: 255743f2b4dc8e54e9280666a58d51b8, type: 2}
+  - {fileID: 11400000, guid: 8a02ac526b2c8184f9471ae99dccf4fc, type: 2}
+  - {fileID: 11400000, guid: 9db9b76c11a1d7845aac1a3e167975be, type: 2}
+  - {fileID: 11400000, guid: 54e2f6073f31c844a960dbe64f91a5c1, type: 2}
+  - {fileID: 11400000, guid: fb8085f0e041bd74fb95b10e1ac62cec, type: 2}
+  - {fileID: 11400000, guid: c861285b96e91b943a3b739231b6183e, type: 2}
+  - {fileID: 11400000, guid: f2dbc877452659945a35507e687b83f7, type: 2}
+  - {fileID: 11400000, guid: 0786cad9ba0b95a4bbf86a97eebe7263, type: 2}
+  - {fileID: 11400000, guid: c12f642203d7aeb47bfe446a68b7c806, type: 2}
   news:
   - after: 0
     text: Night Window 3 reopens after its last receptionist was "reassigned".
@@ -160,6 +225,11 @@ MonoBehaviour:
     text: Plo frill-crowns win the cycle's crest parade for the 9th time.
     when: []
   - after: 6
+    text: 'Visitors left queuing at the Tower at 02:00. Lattice: "Come back tomorrow,
+      60% earlier."'
+    when:
+    - sent-home
+  - after: 6
     text: 'Lattice: invader numbers "stable". Basement numbers "not a thing".'
     when: []
   - after: 6
@@ -169,7 +239,462 @@ MonoBehaviour:
   - after: 6
     text: Night Window 3 receptionist's record "under review".
     when: []
+  - after: 7
+    text: '"Repeat invader" caught at Tower in her second stolen suit. Lattice: "They
+      always come back. So do we."'
+    when:
+    - flag:mira2:security
+  - after: 7
+    text: 'Vessi clan elder: "Being wanted is not the same as being guilty." Lattice:
+      "Noted."'
+    when:
+    - caught
+  - after: 7
+    text: Vessi clerk arrested at Tower "because of the bulletin" sues the Lattice.
+      Case 0% likely to be heard.
+    when:
+    - wrongful
+  - after: 7
+    text: WANTED bulletins to continue "until the Vessi problem is solved". Vessi
+      asked to stay 70% calm.
+    when: []
+  - after: 7
+    text: Lift Repair worker Fenn released. "I'll never hum again," he says.
+    when: []
+  - after: 7
+    text: 'Earth signal now heard on three frequencies. Lattice: "Static. Very organised
+      static."'
+    when: []
+  - after: 8
+    text: 'End-of-cycle figures: Night Window 3 "the Tower''s finest". Graav "cautiously
+      20% pleased".'
+    when:
+    - caught
+  - after: 8
+    text: End-of-cycle audit finds "irregularities" at Night Window 3. Review continues.
+    when:
+    - invader
+  - after: 8
+    text: Maintenance worker Duun taken from the Tower. Lifts "may hum unattended"
+      this cycle.
+    when:
+    - flag:duun5:security
+  - after: 8
+    text: 'NEW CYCLE C413 begins. Lattice: "New cycle, same rules. More rules, actually."'
+    when: []
+  - after: 8
+    text: 'Refugee camps reported beyond the Moss Deeps. Lattice: "Those are not
+      camps. They are invaders sitting down."'
+    when: []
+  - after: 8
+    text: 'Kesh goes dark tonight. Moon-readers: "Everyone just knows what colour
+      it is. Don''t ask."'
+    when: []
+  - after: 9
+    text: 'Night Window 3 starts the cycle "as it ended: efficiently", says Lattice.'
+    when:
+    - caught
+  - after: 9
+    text: 'Earth signal decoded: "a list of names", says leaked memo. Lattice: "There
+      is no memo."'
+    when:
+    - invader
+  - after: 9
+    text: Humans now "study our moods", warns Lattice. Citizens told to vary their
+      percentages.
+    when: []
+  - after: 9
+    text: Moss Deeps checkpoint opens. Queue reported "60% long".
+    when: []
+  - after: 9
+    text: Ammaru elder Sunnek calls for "calm, and fewer arrests of the elderly".
+    when: []
+  - after: 10
+    text: Elderly citizen with lid-reflex arrested at Tower "for blinking". Released,
+      20% blinking.
+    when:
+    - wrongful
+  - after: 10
+    text: 'Blue threads spotted on cuffs across the Moss Deeps. Lattice: "A fashion.
+      Ignore it."'
+    when:
+    - flag:courier1:letin
+  - after: 10
+    text: Service lift codes changed overnight "for routine reasons".
+    when: []
+  - after: 10
+    text: 'Lattice store: gill-scopes in stock from tomorrow. "See what they''re
+      hiding."'
+    when: []
+  - after: 10
+    text: Kesh lantern makers report record orders ahead of Lantern Night.
+    when: []
+  - after: 11
+    text: 'Plo suits "the invaders'' new favourite", says Lattice. Plo clan: "Flattered
+      and furious."'
+    when:
+    - caught
+  - after: 11
+    text: Plo clerk arrested on wanted bulletin. "I have had this frill since hatching,"
+      she says.
+    when:
+    - wrongful
+  - after: 11
+    text: Gill-scope sales soar. Some citizens scope themselves "just to be sure".
+    when: []
+  - after: 11
+    text: Audit office reopens "for audits only". Visitors told not to ask what is
+      being audited.
+    when: []
+  - after: 11
+    text: A child at Block 22 asks the Lattice why humans want to come here. The
+      Lattice does not answer.
+    when: []
+  - after: 12
+    text: 'Caught invader begs at Tower: "My planet is burning." Lattice: "Planets
+      don''t burn. Stay 70% calm."'
+    when:
+    - caught
+  - after: 12
+    text: 'Tower security report: "Fewer arrests than expected" at Night Window 3.
+      Investigation "not necessary yet".'
+    when:
+    - hid
+  - after: 12
+    text: Pressure questioning "works", says Lattice. Complaints from citizens "also
+      work", say citizens.
+    when: []
+  - after: 12
+    text: The basement button has been removed from all Tower lifts. "There was never
+      a button."
+    when: []
+  - after: 12
+    text: Earth signal now plays a song. Lattice bans humming in public buildings.
+    when: []
+  - after: 13
+    text: '"Repeat invader" finally caught at Tower after three attempts. Her name
+      was not released.'
+    when:
+    - flag:mira3:security
+  - after: 13
+    text: Lantern Night lights every street in Kesh's colour. Nobody gets it wrong.
+      Almost nobody.
+    when: []
+  - after: 13
+    text: 'Records office reports a file "read without permission". File contents:
+      "nothing important".'
+    when: []
+  - after: 13
+    text: Clinic floor closed for "deep cleaning" after an Earth child was treated
+      there in secret.
+    when: []
+  - after: 14
+    text: New archive link "catches forgers in seconds", says Lattice. Forgers "now
+      inventing better names".
+    when:
+    - caught
+  - after: 14
+    text: 'Invented citizen "Pell-Ruu Nobody" seen dining on floor 21. Lattice: "A
+      typo."'
+    when:
+    - invader
+  - after: 14
+    text: Archive records now link every window in the Tower. "We know who you are,"
+      says the Lattice. "Probably."
+    when: []
+  - after: 14
+    text: Duun of Maintenance wins "Most Talkative Employee" for the ninth cycle
+      running.
+    when: []
+  - after: 14
+    text: Files going down to the archive "faster than ever". Up? "That's not a direction
+      files go."
+    when: []
+  - after: 15
+    text: Lattice inspector "accidentally arrested during a test". Window under review.
+    when:
+    - flag:inspector1:security
+  - after: 15
+    text: Windows pass surprise inspections "with distinction". One receptionist
+      named "reliable".
+    when:
+    - flag:inspector1:letin
+  - after: 15
+    text: 'Ruu clan protests wanted bulletins: "Our stalks are not a disguise."'
+    when: []
+  - after: 15
+    text: The Lattice confirms it does not send inspectors. Inspectors confirm they
+      are not being sent.
+    when: []
+  - after: 15
+    text: Refugee camp beyond the Moss Deeps "dispersed". Where to? "Elsewhere."
+    when: []
+  - after: 16
+    text: '"Skilled invaders" now outnumber clumsy ones, says Lattice. "Our windows
+      are better still."'
+    when:
+    - caught
+  - after: 16
+    text: 4th-question licences sell out. "Three questions was always too few," admits
+      Lattice.
+    when: []
+  - after: 16
+    text: 'Earth signal changes: "It sounds like a lullaby," says a moon-reader,
+      who has since resigned.'
+    when: []
+  - after: 16
+    text: Crest parade route announced. Lift maintenance "suspended for the festivities".
+    when: []
+  - after: 17
+    text: 'Parade night arrests: four humans "cheered too loudly".'
+    when:
+    - caught
+  - after: 17
+    text: Humans seen dancing at the crest parade. "Badly," adds the Lattice.
+    when:
+    - invader
+  - after: 17
+    text: Plo frill-crowns win the parade for a 10th cycle. Ruu stalk-seers demand
+      a recount.
+    when: []
+  - after: 17
+    text: 'Cycle 413 ends. Lattice figures: "invaders down, invaders up, invaders
+      stable".'
+    when: []
+  - after: 17
+    text: A Tower lift was heard going down during the parade fireworks. "Fireworks,"
+      says the Lattice.
+    when: []
+  - after: 18
+    text: 'SABOTAGE on floor 9: audit records burned. Lattice blames "an Earth spy
+      who got past a window".'
+    when:
+    - flag:kett1:letin
+  - after: 18
+    text: 'Earth spy caught at Tower carrying "devices". Lattice: "Proof they are
+      all dangerous."'
+    when:
+    - flag:kett1:security
+  - after: 18
+    text: Not every human is a refugee, says Lattice. Not every refugee is human,
+      says nobody.
+    when: []
+  - after: 18
+    text: 'Ammaru clan outraged by wanted bulletin: "Three eyes, zero crimes."'
+    when: []
+  - after: 18
+    text: The audit office is now closed "until the audit is audited".
+    when: []
+  - after: 19
+    text: Arrests at the Tower reach a record. The basement is "at capacity", says
+      a leaked memo. There is no memo.
+    when:
+    - caught
+  - after: 19
+    text: Rumours of "a quiet door" at the Tower spread through the Moss Deeps.
+    when:
+    - hid
+  - after: 19
+    text: Stamp rule moves to Plo visitors. Ammaru stamp-makers "30% relieved".
+    when: []
+  - after: 19
+    text: 'Lattice: "There is no basement." Lift engineers: "There is definitely
+      a basement."'
+    when: []
+  - after: 19
+    text: Cycle 414 begins with three new rules and a fourth "to be announced".
+    when: []
+  - after: 20
+    text: Human "face-copier" caught minutes after the real citizen passed. "Like
+      looking in a bad mirror."
+    when:
+    - flag:twin2:security
+  - after: 20
+    text: 'Orr-Vessi Talm reports "another me" on floor 2. Lattice: "Are you sure
+      it wasn''t you?"'
+    when:
+    - flag:twin2:letin
+  - after: 20
+    text: 'The real Orr-Vessi Talm arrested at the Tower. His copy was let in. Lattice:
+      "A mix-up."'
+    when:
+    - flag:twin1:security
+  - after: 20
+    text: Face-copying forgers "the new threat". Citizens urged not to have common
+      faces.
+    when: []
+  - after: 20
+    text: Service shaft workers report "voices". Voices report nothing.
+    when: []
+  - after: 20
+    text: The Clinic reopens. Earth child "returned to where she came from". Where?
+      "Elsewhere."
+    when: []
+  - after: 21
+    text: Woman with a stolen processing file arrested at the Tower. File returned
+      "unread".
+    when:
+    - flag:mira4:security
+  - after: 21
+    text: 'Second inspector arrested at the same window. Graav: "No comment."'
+    when:
+    - flag:inspector2:security
+  - after: 21
+    text: Missing Records files "probably misfiled". Probably.
+    when: []
+  - after: 21
+    text: Lattice confirms basement "does not exist and is fully staffed".
+    when: []
+  - after: 21
+    text: 'Kesh glows an odd colour over the Moss Deeps. Moon-readers: "Smoke."'
+    when: []
+  - after: 22
+    text: 'Curfew "a success": fewer appointments, more arrests per appointment.'
+    when:
+    - caught
+  - after: 22
+    text: Families left queuing at the Tower at closing time. "Come back before midnight,"
+      says Lattice.
+    when:
+    - sent-home
+  - after: 22
+    text: 'CURFEW: no appointments after midnight. Night-shift workers told to "get
+      sick earlier".'
+    when: []
+  - after: 22
+    text: Lattice Clinic offers free gill scans to all Tower staff. "Routine," it
+      insists.
+    when: []
+  - after: 22
+    text: 'Plo clan elder Pluvia: "The rules change faster than the moon."'
+    when: []
+  - after: 23
+    text: 'Vessi-suited humans "everywhere", says Lattice. Vessi: "We are everywhere.
+      We live here."'
+    when:
+    - invader
+  - after: 23
+    text: 'The Earth signal falls silent. Moon-readers: "That''s worse."'
+    when: []
+  - after: 23
+    text: Maintenance logs "temporarily confiscated" across the Tower.
+    when: []
+  - after: 23
+    text: Night Window staff to be "reviewed one by one" before the Grand Audit.
+    when: []
+  - after: 24
+    text: Graav watched Night Window 3 from the gallery all night. "Educational,"
+      he says.
+    when:
+    - suspected
+  - after: 24
+    text: Night Window 3 "exemplary" under supervision. Graav "almost smiles".
+    when:
+    - '!suspected'
+  - after: 24
+    text: Stamp rule moves to Vessi visitors. Vessi stamp-makers "90% busy".
+    when: []
+  - after: 24
+    text: 'Lattice publishes list of "invader behaviours": blinking, laughing, hoping.'
+    when: []
+  - after: 24
+    text: Grand Audit scheduled for the end of the cycle. "Every window. Every decision."
+    when: []
+  - after: 25
+    text: Second face-copier caught. "The eyes in the photo," says a receptionist.
+      "Always the eyes."
+    when:
+    - flag:twin4:security
+  - after: 25
+    text: Real citizen arrested as their own copy. "I have never been less myself,"
+      says Dosk-Plo Phae.
+    when:
+    - flag:twin3:security
+  - after: 25
+    text: Forgers now copying faces "from the archive itself". Archive "looking into
+      it".
+    when: []
+  - after: 25
+    text: 'Refugees seen boarding a ship at the Moss Deeps. Ship destination: "anywhere
+      but Earth".'
+    when: []
+  - after: 25
+    text: 'The lift log of the Tower has gone missing. Lattice: "There was never
+      a log."'
+    when: []
+  - after: 26
+    text: Third inspector arrested at Night Window 3. The window is "a problem",
+      says the Lattice.
+    when:
+    - flag:inspector3:security
+  - after: 26
+    text: Cycle 414 ends. The Lattice thanks every citizen for being 60% content.
+    when: []
+  - after: 26
+    text: Graav seen carrying a lift log to the basement. "There is no basement,"
+      he tells reporters.
+    when: []
+  - after: 26
+    text: Audit and Housing closed. Residents of floor 21 "temporarily rehoused"
+      downstairs.
+    when: []
+  - after: 27
+    text: 'Lockdown night: arrests at the Tower "higher than ever, as planned".'
+    when:
+    - caught
+  - after: 27
+    text: 'LOCKDOWN: Audit and Records sealed. The Grand Auditor arrives tomorrow.'
+    when: []
+  - after: 27
+    text: Stamp rule moves to Ruu visitors. "It's a lottery," says a stamp-maker.
+    when: []
+  - after: 27
+    text: 'Rumour: the Grand Auditor will "personally test the windows".'
+    when: []
+  - after: 28
+    text: GRAND AUDITOR ARRESTED AT NIGHT WINDOW 3. Released after 40 minutes. "A
+      thorough window," he says, through his teeth.
+    when:
+    - flag:auditor1:security
+  - after: 28
+    text: Grand Auditor passes through the Tower "without incident". Windows "adequate".
+    when:
+    - flag:auditor1:letin
+  - after: 28
+    text: The Grand Audit begins in two nights. Every receptionist's record will
+      be read aloud.
+    when: []
+  - after: 28
+    text: Families queue for clinic passes before the Grand Audit lockdown.
+    when: []
+  - after: 28
+    text: 'The Earth signal returns, one word repeated: "Please."'
+    when: []
+  - after: 29
+    text: Tower receptionist calls security on own sibling. "Rules are rules," says
+      Lattice, approvingly.
+    when:
+    - flag:sel1:security
+  - after: 29
+    text: 'TOMORROW: THE GRAND AUDIT. The Tower locks down at 02:00.'
+    when: []
+  - after: 29
+    text: Every lift in the Tower freshly oiled. "Suspiciously quiet," says Graav.
+    when: []
+  - after: 29
+    text: Moon-readers predict Kesh "will be decisive" tomorrow.
+    when: []
   messages:
+  - id: hearing-act3
+    after: -1
+    from: Supervisor Graav
+    text: "Three strikes in the Basement act. The hearing found your mistakes honest
+      \u2014 this time. Fined 30 shards. I read your answer logs, Ilo. If I ever
+      find a slip you ignored, the next hearing is your last."
+    when:
+    - hearing
+    - act3
+    choices: []
   - id: hearing
     after: -1
     from: Supervisor Graav
@@ -177,6 +702,7 @@ MonoBehaviour:
       30 shards. Your slate is clean. It will not be clean twice.'
     when:
     - hearing
+    - '!act3'
     choices: []
   - id: clinic
     after: -1
@@ -215,12 +741,14 @@ MonoBehaviour:
       flag: promised-stories
       loyalty: 0
       mercy: 0
+      suspicion: 0
       shards: 0
     - text: Work is work, Sel. Rules are rules.
       reply: ...okay. 60% okay.
       flag: rules-first
       loyalty: 1
       mercy: 0
+      suspicion: 0
       shards: 0
   - id: graav-1-good
     after: 1
@@ -287,12 +815,14 @@ MonoBehaviour:
       flag: reported-22b
       loyalty: 1
       mercy: 0
+      suspicion: 0
       shards: 0
     - text: Leave them alone. Gills are private.
       reply: Hmph. On your crest be it.
       flag: protected-22b
       loyalty: 0
       mercy: 1
+      suspicion: 0
       shards: 0
   - id: sel-3-sick
     after: 3
@@ -330,12 +860,14 @@ MonoBehaviour:
       flag: w3-deleted
       loyalty: 1
       mercy: 0
+      suspicion: 0
       shards: 0
     - text: 'Reply: "Who is this?"'
       reply: "Someone who sat at Window 3 once. Like you. \u2014 W3"
       flag: w3-replied
       loyalty: 0
       mercy: 1
+      suspicion: 0
       shards: 0
   - id: w3-missed
     after: 4
@@ -350,12 +882,14 @@ MonoBehaviour:
       flag: w3-deleted
       loyalty: 1
       mercy: 0
+      suspicion: 0
       shards: 0
     - text: 'Reply: "Who is this?"'
       reply: "Someone who sat at Window 3 once. Like you. \u2014 W3"
       flag: w3-replied
       loyalty: 0
       mercy: 1
+      suspicion: 0
       shards: 0
   - id: sel-4
     after: 4
@@ -392,6 +926,701 @@ MonoBehaviour:
       and 50% my drawing of you.
     when: []
     choices: []
+  - id: graav-6-late
+    after: 6
+    from: Supervisor Graav
+    text: You closed the window with visitors still queuing. They complain to me,
+      not to you. Faster tomorrow.
+    when:
+    - sent-home
+    choices: []
+  - id: graav-6
+    after: 6
+    from: Supervisor Graav
+    text: Tomorrow's bulletin names the Vessi. A wanted list is a hint, not a verdict.
+      I've seen windows arrest a whole clan on a hint.
+    when:
+    - '!sent-home'
+    choices: []
+  - id: mira-note
+    after: 7
+    from: Unknown
+    text: "A note under your door, in careful, square handwriting: \"Twice now. My
+      brother was taken at your window before you came. His file is on 14. If you
+      ever see the name SELK, think of me. \u2014 M.\""
+    when:
+    - flag:mira2:letin
+    choices:
+    - text: Burn the note.
+      reply: '(The paper curls. The name stays with you: SELK.)'
+      flag: mira-note-burned
+      loyalty: 1
+      mercy: 0
+      suspicion: 0
+      shards: 0
+    - text: Keep it in the drawer.
+      reply: (You fold it small. Sel's drawings hide it nicely.)
+      flag: mira-note-kept
+      loyalty: 0
+      mercy: 1
+      suspicion: 0
+      shards: 0
+  - id: sel-7
+    after: 7
+    from: Sel
+    text: Can I ask a weird thing? I peeked when you were asleep. You close your
+      eyes when you sleep. Like, all the way. Tuvo says only humans do that. Tuvo's
+      wrong, right?
+    when: []
+    choices:
+    - text: Everyone does it, Sel. Go to sleep.
+      reply: Okay. 70% okay.
+      flag: 
+      loyalty: 0
+      mercy: 0
+      suspicion: 0
+      shards: 0
+    - text: What else have you noticed?
+      reply: Your neck. The gill lines are too straight. Like someone drew them.
+        I like them though!
+      flag: clue-sleep
+      loyalty: 0
+      mercy: 0
+      suspicion: 0
+      shards: 0
+  - id: graav-7
+    after: 7
+    from: Supervisor Graav
+    text: You arrested a real citizen because the bulletin said Vessi. The bulletin
+      also says the sky is up. Think.
+    when:
+    - wrongful
+    choices: []
+  - id: landlord-7
+    after: 7
+    from: Landlord Mott
+    text: The Lattice asks landlords about their tenants now. What they eat, when
+      they sleep. I told them you're boring, Receptionist. Stay boring.
+    when:
+    - '!wrongful'
+    choices: []
+  - id: graav-8-good
+    after: 8
+    from: Supervisor Graav
+    text: Your first cycle is done and your record is good. Good records get noticed
+      upstairs. Some things upstairs are better not noticed. Keep it good anyway.
+    when:
+    - loyal
+    choices: []
+  - id: graav-8
+    after: 8
+    from: Supervisor Graav
+    text: "Your first cycle is done. Your record has\u2026 gaps. Humans walk through
+      your window, and you don't call me. I'm writing that down."
+    when:
+    - '!loyal'
+    choices: []
+  - id: w3-contact
+    after: 8
+    from: Unknown
+    text: "New cycle, receptionist. You've seen enough of us now to know we're not
+      monsters. Some of us are running from a dying world. Some of us are not. Can
+      we talk? \u2014 W3"
+    when: []
+    choices:
+    - text: Report the message to the Lattice.
+      reply: (A Lattice clerk thanks you. Your message is "filed".)
+      flag: w3-reported
+      loyalty: 2
+      mercy: 0
+      suspicion: 0
+      shards: 0
+    - text: '"I''m listening."'
+      reply: "Good. Watch for a courier with a blue thread on their cuff. \u2014
+        W3"
+      flag: w3-listening
+      loyalty: 0
+      mercy: 1
+      suspicion: 0
+      shards: 0
+    - text: Ignore it.
+      reply: 
+      flag: 
+      loyalty: 0
+      mercy: 0
+      suspicion: 0
+      shards: 0
+  - id: sel-8
+    after: 8
+    from: Sel
+    text: New cycle! I'm 80% better and 100% bored. Can you bring home a story about
+      a nice human? Is there such a thing?
+    when: []
+    choices: []
+  - id: sel-9
+    after: 9
+    from: Sel
+    text: Tuvo's family moved away. Overnight. The teacher said "reassigned". Tuvo's
+      mum blinked a lot, I think. Was that why?
+    when: []
+    choices: []
+  - id: graav-9
+    after: 9
+    from: Supervisor Graav
+    text: You reported a contact from "Window 3". Good. Most windows don't. If they
+      write again, tell me first.
+    when:
+    - flag:w3-reported
+    choices: []
+  - id: sel-10
+    after: 10
+    from: Sel
+    text: "The gill-scope ads are everywhere. Should we get one for home? Just to
+      check\u2026 you know. Nobody. Just to check."
+    when: []
+    choices: []
+  - id: w3-10
+    after: 10
+    from: Unknown
+    text: "A courier came through your window tonight. Blue thread on the cuff. Whatever
+      you did, we saw it. \u2014 W3"
+    when:
+    - flag:w3-listening
+    choices: []
+  - id: sel-11
+    after: 11
+    from: Sel
+    text: I'm 70% better! The medicine tastes like burnt moss AND old lanterns now.
+      Progress.
+    when: []
+    choices: []
+  - id: landlord-11
+    after: 11
+    from: Landlord Mott
+    text: Rent goes up next cycle. Lattice says landlords must "verify tenants' gills".
+      I'm not doing that. Rent still goes up.
+    when: []
+    choices: []
+  - id: w3-silent-offer
+    after: 12
+    from: Unknown
+    text: "There's a wire under your desk that isn't on any plan. Connect it and
+      you'll have a button. Press it instead of calling security, and we take them
+      somewhere safe. Nobody upstairs sees a thing. \u2014 W3"
+    when:
+    - flag:w3-listening
+    choices:
+    - text: Wire it in.
+      reply: "Then we're in this together. Press it only when you're sure. \u2014
+        W3"
+      flag: w3-silent
+      loyalty: 0
+      mercy: 1
+      suspicion: 1
+      shards: 0
+    - text: No. I do my job.
+      reply: "Then do it well. We'll still be here. \u2014 W3"
+      flag: 
+      loyalty: 1
+      mercy: 0
+      suspicion: 0
+      shards: 0
+  - id: graav-12
+    after: 12
+    from: Supervisor Graav
+    text: Rumours say someone is turning the night windows. If anyone offers you
+      anything, you tell me.
+    when:
+    - '!flag:w3-listening'
+    choices: []
+  - id: sel-12
+    after: 12
+    from: Sel
+    text: Can we go to Lantern Night tomorrow? Oh. You work. Can I go with Vaun's
+      kids? They're 40% nice.
+    when: []
+    choices: []
+  - id: sel-13
+    after: 13
+    from: Sel
+    text: I found a photo in the old drawer. A woman with ROUND eyes holding a baby,
+      in a blanket with stars on it. Is that from your work?
+    when: []
+    choices:
+    - text: Put it back, Sel. It's nothing.
+      reply: Okay. It's back. (It's not nothing. She looks like you.)
+      flag: 
+      loyalty: 0
+      mercy: 0
+      suspicion: 0
+      shards: 0
+    - text: Let me see it.
+      reply: On the back it says "Tower, C393. Keep her safe." Who's "her"? Who's
+        the baby, Ilo?
+      flag: clue-photo
+      loyalty: 0
+      mercy: 0
+      suspicion: 0
+      shards: 0
+  - id: mira-file
+    after: 13
+    from: Unknown
+    text: "I found my brother's file on 14. And another one, filed right behind it.
+      A baby left at this Tower, cycle 393. Adopted by an Ammaru family. The baby's
+      name was ILO. \u2014 M."
+    when:
+    - flag:mira3:letin
+    choices:
+    - text: Burn it. It's a mistake.
+      reply: (You burn it. You remember every word.)
+      flag: 
+      loyalty: 1
+      mercy: 0
+      suspicion: 0
+      shards: 0
+    - text: '"What else did it say?"'
+      reply: "\"Mother: unknown. Species: see attached.\" The attachment was missing.
+        \u2014 M."
+      flag: clue-file
+      loyalty: 0
+      mercy: 1
+      suspicion: 0
+      shards: 0
+  - id: graav-14
+    after: 14
+    from: Supervisor Graav
+    text: You have the archive now. Use it. A name with no record is a person who
+      doesn't exist. People who don't exist don't complain.
+    when: []
+    choices: []
+  - id: sel-14
+    after: 14
+    from: Sel
+    text: Cough's back. Don't buy food for me tomorrow, buy medicine. I can eat spore-meal
+      crumbs. I'm small.
+    when:
+    - sel-sick
+    choices: []
+  - id: sel-14-well
+    after: 14
+    from: Sel
+    text: I went to Lantern Night! Everyone's lanterns were the same colour except
+      one kid's. The guards took his family. Why do they care about lanterns?
+    when:
+    - '!sel-sick'
+    choices: []
+  - id: graav-15-inspector
+    after: 15
+    from: Supervisor Graav
+    text: You arrested my inspector. He blinked, yes. He had a pass, yes. Read. The.
+      Pass. It's in your file now.
+    when:
+    - flag:inspector1:security
+    choices: []
+  - id: graav-15-good
+    after: 15
+    from: Supervisor Graav
+    text: 'My inspector says you read his pass. Officially, I don''t have inspectors.
+      Unofficially: good.'
+    when:
+    - flag:inspector1:letin
+    choices: []
+  - id: sel-15
+    after: 15
+    from: Sel
+    text: Vaun's kids say the blinking people go to the basement and become lanterns.
+      That's not true, right? Right?
+    when: []
+    choices: []
+  - id: w3-16
+    after: 16
+    from: Unknown
+    text: "You should know something about Window 3, receptionist. The one before
+      you was human. So was the one before her. \u2014 W3"
+    when:
+    - flag:w3-listening
+    choices:
+    - text: '"Why tell me this?"'
+      reply: "Because you should ask who put you there, and why they never check
+        your eyes. \u2014 W3"
+      flag: clue-w3
+      loyalty: 0
+      mercy: 0
+      suspicion: 0
+      shards: 0
+    - text: Delete it.
+      reply: 
+      flag: 
+      loyalty: 1
+      mercy: 0
+      suspicion: 0
+      shards: 0
+  - id: sel-16
+    after: 16
+    from: Sel
+    text: You got a 4th question licence? Ask Graav what's in the basement. Ask him
+      four times.
+    when: []
+    choices: []
+  - id: sel-17
+    after: 17
+    from: Sel
+    text: PARADE!!! The Plo won AGAIN. I cheered for the Ruu. Somebody has to.
+    when: []
+    choices: []
+  - id: graav-17
+    after: 17
+    from: Supervisor Graav
+    text: Too many humans walk through your window, Ilo. Either you're careless or
+      you're kind. The Lattice doesn't have a word for kind.
+    when:
+    - suspected
+    choices: []
+  - id: graav-17-ok
+    after: 17
+    from: Supervisor Graav
+    text: End of cycle. Your record holds. Next cycle the rules tighten, and so will
+      I.
+    when:
+    - '!suspected'
+    choices: []
+  - id: graav-18-kett
+    after: 18
+    from: Supervisor Graav
+    text: The man you let in burned the audit office. A spy, not a refugee. Now do
+      you see why we check?
+    when:
+    - flag:kett1:letin
+    choices: []
+  - id: w3-18
+    after: 18
+    from: Unknown
+    text: "Not all of us are running from something. The one who burned floor 9 wasn't
+      ours. We're sorry. \u2014 W3"
+    when:
+    - flag:w3-listening
+    choices: []
+  - id: sel-18
+    after: 18
+    from: Sel
+    text: New cycle! You look tired. Like 30% tired. I'm making you a lantern. It'll
+      be whatever colour you want.
+    when: []
+    choices: []
+  - id: graav-19
+    after: 19
+    from: Supervisor Graav
+    text: Act three of your career, receptionist. From now on, a hearing isn't a
+      fine. It's the end of you. Three strikes. Count them.
+    when: []
+    choices: []
+  - id: sel-19
+    after: 19
+    from: Sel
+    text: Do you ever wonder if we're the strange ones? Like, from the outside? Tuvo
+      used to say that. Before.
+    when: []
+    choices: []
+  - id: w3-20
+    after: 20
+    from: Unknown
+    text: "We know what's downstairs now. Processing. The people you report go down
+      in the service lift, and they don't come back up. \u2014 W3"
+    when:
+    - flag:w3-silent
+    choices:
+    - text: '"I need proof."'
+      reply: "Then get it. Someone in the Tower keeps a log of every trip down. \u2014
+        W3"
+      flag: w3-proof
+      loyalty: 0
+      mercy: 0
+      suspicion: 0
+      shards: 0
+    - text: '"I don''t want to know."'
+      reply: "Nobody does. That's how it works. \u2014 W3"
+      flag: 
+      loyalty: 1
+      mercy: 0
+      suspicion: 0
+      shards: 0
+  - id: sel-20
+    after: 20
+    from: Sel
+    text: There were two of the same man at the clinic today! Same face! One of them
+      blinked. I didn't tell anyone. Was that right?
+    when: []
+    choices: []
+  - id: mira-copy
+    after: 21
+    from: Unknown
+    text: "As promised. A copy of my brother's processing record: the date he was
+      taken down, the room, the order signed by the Lattice. \u2014 M."
+    when:
+    - flag:mira4:letin
+    choices:
+    - text: Keep the copy hidden.
+      reply: (You tape it under Sel's drawer. Proof. Real proof.)
+      flag: basement-evidence
+      loyalty: 0
+      mercy: 1
+      suspicion: 1
+      shards: 0
+    - text: Burn it.
+      reply: (The paper curls. His name goes with it.)
+      flag: 
+      loyalty: 1
+      mercy: 0
+      suspicion: 0
+      shards: 0
+  - id: mira-silent
+    after: 21
+    from: Unknown
+    text: "Window 3 got me out with the file. Here's a copy for you: proof of what's
+      downstairs. \u2014 M."
+    when:
+    - flag:mira4:silent
+    choices:
+    - text: Keep the copy hidden.
+      reply: (Proof. Under Sel's drawer.)
+      flag: basement-evidence
+      loyalty: 0
+      mercy: 1
+      suspicion: 1
+      shards: 0
+    - text: Burn it.
+      reply: 
+      flag: 
+      loyalty: 1
+      mercy: 0
+      suspicion: 0
+      shards: 0
+  - id: graav-21
+    after: 21
+    from: Supervisor Graav
+    text: Second inspector, second arrest. Still gills, valid pass. You don't read,
+      Ilo. You react.
+    when:
+    - flag:inspector2:security
+    choices: []
+  - id: sel-21
+    after: 21
+    from: Sel
+    text: I'm drawing everyone at the Tower. Duun has the best face. Graav has the
+      worst face. You have a nice face. A weird nice face.
+    when: []
+    choices: []
+  - id: clinic-scan
+    after: 22
+    from: Lattice Clinic
+    text: "Routine gill scan for Tower staff, Receptionist Ilo: \"Gill lines unusually
+      regular. Scar tissue at the neck consistent with\u2026\" The rest of the report
+      is marked RESTRICTED."
+    when: []
+    choices:
+    - text: Ignore it. Routine.
+      reply: (Routine. Everything is routine.)
+      flag: 
+      loyalty: 0
+      mercy: 0
+      suspicion: 0
+      shards: 0
+    - text: Ask the nurse what it means.
+      reply: The nurse looks at your eyes for a long time. "Surgical," she says quietly.
+        "Very old. Very good work."
+      flag: clue-scar
+      loyalty: 0
+      mercy: 0
+      suspicion: 0
+      shards: 0
+  - id: sel-22
+    after: 22
+    from: Sel
+    text: Curfew means the clinic shuts at midnight. I'll be fine. 50% fine.
+    when:
+    - sel-sick
+    choices: []
+  - id: landlord-22
+    after: 22
+    from: Landlord Mott
+    text: Curfew. Lattice says lights out at midnight. Your lamp was on till 03:00.
+      I didn't see it. This time.
+    when:
+    - '!sel-sick'
+    choices: []
+  - id: sel-23
+    after: 23
+    from: Sel
+    text: The Earth song stopped. I liked it. Is it bad that I liked it?
+    when: []
+    choices: []
+  - id: graav-23
+    after: 23
+    from: Supervisor Graav
+    text: Tomorrow I watch your window from the gallery. All night. Give me a reason,
+      Ilo. I'm hoping you won't.
+    when:
+    - suspected
+    choices: []
+  - id: w3-log
+    after: 24
+    from: Unknown
+    text: "Duun from Maintenance kept a copy of the lift log. Every trip down, every
+      name. He'll hand it to someone he trusts. Is that you? \u2014 W3"
+    when:
+    - flag:w3-proof
+    - '!flag:duun*:security'
+    choices:
+    - text: Ask Duun for the log.
+      reply: Duun slips you the log in a lantern box. "80% scared," he whispers.
+        "20% proud."
+      flag: basement-evidence
+      loyalty: 0
+      mercy: 0
+      suspicion: 2
+      shards: 0
+    - text: Too risky.
+      reply: "Then we wait. Waiting is also a choice. \u2014 W3"
+      flag: 
+      loyalty: 0
+      mercy: 0
+      suspicion: 0
+      shards: 0
+  - id: sel-24
+    after: 24
+    from: Sel
+    text: Graav came to Block 22 today and asked the landlord about us. He was 0%
+      friendly. Are we in trouble?
+    when: []
+    choices: []
+  - id: graav-25
+    after: 25
+    from: Supervisor Graav
+    text: Copied faces. Copied names. Copied papers. The only thing they can't copy
+      is how a citizen behaves. Watch behaviour.
+    when: []
+    choices: []
+  - id: sel-25
+    after: 25
+    from: Sel
+    text: No medicine again. It's okay. I know it's expensive. I know you're trying.
+    when:
+    - meds-missed
+    choices: []
+  - id: graav-26
+    after: 26
+    from: Supervisor Graav
+    text: Three inspectors. Three arrests. At the Grand Audit, that number will be
+      read aloud.
+    when:
+    - flag:inspector3:security
+    choices: []
+  - id: sel-26
+    after: 26
+    from: Sel
+    text: Next cycle I'm going to apply for the Tower junior programme. I want to
+      be a window person. Like you!
+    when: []
+    choices: []
+  - id: graav-27
+    after: 27
+    from: Supervisor Graav
+    text: The Grand Auditor arrives tomorrow and will test the windows in person.
+      Do your job. Just your job. Nothing extra.
+    when: []
+    choices: []
+  - id: w3-27
+    after: 27
+    from: Unknown
+    text: "The Grand Audit is our one chance. Every lift in the Tower opens for the
+      inspection. If the city sees the basement, it can't pretend anymore. Get ready.
+      \u2014 W3"
+    when:
+    - flag:w3-silent
+    choices: []
+  - id: graav-28-auditor
+    after: 28
+    from: Supervisor Graav
+    text: You arrested the Grand Auditor. He was released. You will not be, if it
+      happens again.
+    when:
+    - flag:auditor1:security
+    choices: []
+  - id: sel-28
+    after: 28
+    from: Sel
+    text: I have a clinic appointment tomorrow night. At YOUR window! Is that allowed?
+      I'm bringing you dinner. Don't tell Graav.
+    when: []
+    choices: []
+  - id: finale-w3
+    after: 29
+    from: Unknown
+    text: "Tomorrow at 02:00, open the service lift for us. With proof, the city
+      sees the basement. Without it\u2026 we just walk into a trap. Your choice,
+      Ilo. \u2014 W3"
+    when:
+    - flag:w3-silent
+    choices:
+    - text: '"I''ll open it."'
+      reply: "Then tomorrow, everything changes. \u2014 W3"
+      flag: finale-open
+      loyalty: 0
+      mercy: 1
+      suspicion: 0
+      shards: 0
+    - text: '"No. I''m done."'
+      reply: "Then thank you for everyone you already let through. \u2014 W3"
+      flag: 
+      loyalty: 1
+      mercy: 0
+      suspicion: 0
+      shards: 0
+  - id: finale-graav
+    after: 29
+    from: Supervisor Graav
+    text: Do tomorrow right and floor 9 is yours. An office. A real salary. Sel's
+      medicine, every night, for life. Think about it.
+    when:
+    - loyal
+    choices:
+    - text: '"Yes, Supervisor."'
+      reply: Good. Don't make me regret it.
+      flag: finale-loyal
+      loyalty: 2
+      mercy: 0
+      suspicion: 0
+      shards: 0
+    - text: Say nothing.
+      reply: (He waits. You don't answer.)
+      flag: 
+      loyalty: 0
+      mercy: 0
+      suspicion: 0
+      shards: 0
+  - id: sel-29
+    after: 29
+    from: Sel
+    text: Tomorrow's the big night! Whatever happens at the Tower, I'm 100% proud
+      of you. Even if you blink. I know you blink. It's okay.
+    when:
+    - '!flag:sel1:security'
+    choices: []
+  - id: sel-29-arrested
+    after: 29
+    from: Lattice Clinic
+    text: Your sibling Sel was released from Tower security at 03:00 and is resting
+      at home. Sel has not said a word since. Sel left your dinner on the table.
+    when:
+    - flag:sel1:security
+    choices: []
+  - id: lattice-29
+    after: 29
+    from: Civic Lattice
+    text: GRAND AUDIT NOTICE. All Night Window staff report at 20:00. Every decision
+      tonight will be reviewed. At 02:00 the Tower locks down. Glory to the Lattice.
+    when: []
+    choices: []
   upgrades:
   - id: uv-lamp
     name: UV lamp
@@ -400,6 +1629,18 @@ MonoBehaviour:
     price: 60
     unlockShift: 6
     tool: uv
+  - id: gill-scope
+    name: Gill-scope
+    text: 'Shows the neck up close: real gills pulse, a suit''s gills sit still.'
+    price: 80
+    unlockShift: 11
+    tool: gillscope
+  - id: fourth-question
+    name: 4th question licence
+    text: One more question for every visitor.
+    price: 120
+    unlockShift: 16
+    tool: q4
   tutorial:
     shift: 1
     visitors:
@@ -488,3 +1729,909 @@ MonoBehaviour:
       wait: tap
       text: 'That''s the job. Humans: CALL SECURITY. Rule-breakers: TURN AWAY. Everyone
         else: LET IN. The rest of tonight is up to you!'
+  story:
+  - id: mira
+    name: MIRA SELK
+    visits:
+    - visit: 0
+      shift: 4
+      position: 4
+      kind: ClumsyHuman
+      alias: ESSA-VESSI MURR
+      look:
+        clan: Vessi
+        head: 3
+        mouth: 6
+        pattern: 1
+        outfit: 4
+        tone: 0
+      tells:
+      - RoundPupils
+      - SaysFine
+      - Sweats
+      violation: 
+      quirk: 
+      motive: Refugee
+      greeting: "I am\u2026 60% content? Yes. Sixty. I have an appointment."
+      letin: Thank you. Thank you. You didn't see me.
+      away: "Okay. Okay. I'll\u2026 find another window."
+      security: "Wait \u2014 please, I'm not here to hurt any\u2014"
+      silent: 
+      when: []
+      note: Mira Selk, a refugee from Earth, in her first stolen suit.
+    - visit: 2
+      shift: 7
+      position: 3
+      kind: SkilledHuman
+      alias: PELL-PLO ASKO
+      look:
+        clan: Plo
+        head: 1
+        mouth: 2
+        pattern: 5
+        outfit: 6
+        tone: 1
+      tells:
+      - Blinks
+      violation: 
+      quirk: 
+      motive: Refugee
+      greeting: I am 70% calm. Floor 2, the clinic. I have a slip.
+      letin: "\u2026Thank you. Last time you sent me away. I hoped you'd forget my
+        eyes."
+      away: Twice. Fine. There are other windows, receptionist.
+      security: You remember me. Of course you do. Tell them I came back for my brother.
+      silent: 
+      when:
+      - flag:mira1:away
+      note: 'Mira Selk again, in a better suit: she learned from last time. Only
+        her blinking gives her away.'
+    - visit: 2
+      shift: 7
+      position: 3
+      kind: ClumsyHuman
+      alias: PELL-PLO ASKO
+      look:
+        clan: Plo
+        head: 1
+        mouth: 2
+        pattern: 5
+        outfit: 6
+        tone: 1
+      tells:
+      - HumanEar
+      - LaughsAtTrap
+      violation: 
+      quirk: 
+      motive: Refugee
+      greeting: I am 70% calm. Floor 2, the clinic. I have a slip.
+      letin: "You did it again. I won't forget it. My brother's file is on 14 \u2014
+        one day I'll need it."
+      away: That's fair. You took a risk for me once already.
+      security: "I thought\u2026 never mind what I thought."
+      silent: 
+      when:
+      - flag:mira1:letin
+      note: Mira Selk, back in a new suit. Last time you let her in; tonight she's
+        looking for her brother's file.
+    - visit: 3
+      shift: 13
+      position: 4
+      kind: ClumsyHuman
+      alias: TIBB-RUU KOLO
+      look:
+        clan: Ruu
+        head: 2
+        mouth: 7
+        pattern: 4
+        outfit: 1
+        tone: 0
+      tells:
+      - HumanEar
+      - WrongKesh
+      violation: 
+      quirk: 
+      motive: Refugee
+      greeting: I am 50% content. It's me. Different suit, same nervous hands.
+      letin: Records, floor 14. My brother's file. I'll find it tonight.
+      away: I understand. You've done enough for me.
+      security: "After everything? \u2026Okay. Okay."
+      silent: Window 3? You found them. Good.
+      when:
+      - '!flag:mira*:security'
+      - flag:mira*:letin
+      note: Mira Selk in her third suit. She trusts you now.
+    - visit: 3
+      shift: 13
+      position: 4
+      kind: SkilledHuman
+      alias: TIBB-RUU KOLO
+      look:
+        clan: Ruu
+        head: 2
+        mouth: 7
+        pattern: 4
+        outfit: 1
+        tone: 0
+      tells:
+      - EarthDate
+      violation: 
+      quirk: 
+      motive: Refugee
+      greeting: I am 60% content. Appointment on 14.
+      letin: "\u2026Thank you. You don't know who I am, do you?"
+      away: Three times now. You're very good at this.
+      security: You finally got me.
+      silent: "\u2026Window 3? Then you're not what I thought."
+      when:
+      - '!flag:mira*:security'
+      - '!flag:mira*:letin'
+      note: 'Mira Selk in her best suit yet: only a date written the Earth way gives
+        her away.'
+    - visit: 4
+      shift: 21
+      position: 5
+      kind: SkilledHuman
+      alias: ANSE-VESSI TIRR
+      look:
+        clan: Vessi
+        head: 5
+        mouth: 1
+        pattern: 6
+        outfit: 3
+        tone: 1
+      tells:
+      - NoRecord
+      violation: 
+      quirk: 
+      motive: Refugee
+      greeting: I am 40% content. I found the file. I need to put it back before
+        they notice.
+      letin: Thank you. Tomorrow you'll get a copy. Then you'll know what's downstairs.
+      away: Then the file stays with me. I'll find another way.
+      security: Take the file, then. Read it. Page four.
+      silent: Window 3. Good. You know about them.
+      when:
+      - '!flag:mira*:security'
+      note: Mira Selk, carrying her brother's processing file. The archive has no
+        record of her alias.
+    - visit: 5
+      shift: 30
+      position: 3
+      kind: SkilledHuman
+      alias: YELN-AMMARU DRAA
+      look:
+        clan: Ammaru
+        head: 7
+        mouth: 3
+        pattern: 0
+        outfit: 5
+        tone: 0
+      tells:
+      - Blinks
+      violation: 
+      quirk: 
+      motive: Refugee
+      greeting: I am 90% ready. It's tonight, isn't it?
+      letin: See you on the other side of the door.
+      away: I'll wait. I'm good at waiting.
+      security: I always wondered if it would end like this.
+      silent: Thank you, Ilo.
+      when:
+      - '!flag:mira*:security'
+      note: Mira Selk, one last time.
+  - id: duun
+    name: DUUN-RUU PELL
+    visits:
+    - visit: 0
+      shift: 2
+      position: 3
+      kind: OrdinaryCitizen
+      alias: 
+      look:
+        clan: Ruu
+        head: 6
+        mouth: 4
+        pattern: 3
+        outfit: 2
+        tone: 1
+      tells: []
+      violation: 
+      quirk: 
+      motive: 
+      greeting: 'I am 85% cheerful! Duun, maintenance. Fair warning: the pipes on
+        14 are humming again. Pipes shouldn''t hum.'
+      letin: Glow on, new window!
+      away: "Away? But the pipes\u2026"
+      security: Me?! I fix the lifts!
+      silent: 
+      when: []
+      note: Duun, the night maintenance worker. Always cheerful, always gossiping.
+    - visit: 0
+      shift: 3
+      position: 5
+      kind: OrdinaryCitizen
+      alias: 
+      look:
+        clan: Ruu
+        head: 6
+        mouth: 4
+        pattern: 3
+        outfit: 2
+        tone: 1
+      tells: []
+      violation: 
+      quirk: 
+      motive: 
+      greeting: I am 90% chatty, sorry. The service lift goes lower than B1. It's
+        not on any plan. I've heard it.
+      letin: Same time tomorrow!
+      away: Rules are rules. 40% fair.
+      security: I just fix things!
+      silent: 
+      when:
+      - '!flag:duun1:security'
+      note: Duun again. The service lift goes lower than the plans say.
+    - visit: 0
+      shift: 5
+      position: 6
+      kind: OrdinaryCitizen
+      alias: 
+      look:
+        clan: Ruu
+        head: 6
+        mouth: 4
+        pattern: 3
+        outfit: 2
+        tone: 1
+      tells: []
+      violation: 
+      quirk: 
+      motive: 
+      greeting: I am 70% sleepy. Someone takes the service lift down at 03:00. Every
+        night. Comes back up empty.
+      letin: If you hear a hum, it's not me.
+      away: Hm. Fair.
+      security: I'm the one who REPORTED the lift!
+      silent: 
+      when:
+      - '!flag:duun1:security'
+      - '!flag:duun2:security'
+      note: Duun. Someone rides the service lift down every night at 03:00.
+    - visit: 0
+      shift: 6
+      position: 2
+      kind: OrdinaryCitizen
+      alias: 
+      look:
+        clan: Ruu
+        head: 6
+        mouth: 4
+        pattern: 3
+        outfit: 2
+        tone: 1
+      tells: []
+      violation: 
+      quirk: 
+      motive: 
+      greeting: I am 60% worried. They took Fenn from Lift Repair in for questioning.
+        For humming. Humming!
+      letin: Keep your head down, window.
+      away: Even me? Tonight?
+      security: Not you too.
+      silent: 
+      when:
+      - '!flag:duun1:security'
+      - '!flag:duun2:security'
+      - '!flag:duun3:security'
+      note: Duun. A colleague was taken in for humming the "basement song".
+    - visit: 0
+      shift: 8
+      position: 4
+      kind: OrdinaryCitizen
+      alias: 
+      look:
+        clan: Ruu
+        head: 6
+        mouth: 4
+        pattern: 3
+        outfit: 2
+        tone: 1
+      tells: []
+      violation: 
+      quirk: 
+      motive: 
+      greeting: I am 50% content. Graav asked which floors I service. All of them,
+        I said. "Not the basement," he said. Funny.
+      letin: See you next cycle. If there is one.
+      away: Graav's orders? Thought so.
+      security: So it's like that now.
+      silent: 
+      when:
+      - '!flag:duun1:security'
+      - '!flag:duun2:security'
+      - '!flag:duun3:security'
+      - '!flag:duun4:security'
+      note: Duun. Graav told him the basement isn't one of his floors.
+    - visit: 0
+      shift: 10
+      position: 2
+      kind: OrdinaryCitizen
+      alias: 
+      look:
+        clan: Ruu
+        head: 6
+        mouth: 4
+        pattern: 3
+        outfit: 2
+        tone: 1
+      tells: []
+      violation: 
+      quirk: 
+      motive: 
+      greeting: I am 75% cheerful. New cycle, new lift codes. Mine don't work below
+        B1 anymore. Funny, eh?
+      letin: Glow on, window.
+      away: Hm. New rules?
+      security: I've worked here forty cycles!
+      silent: 
+      when:
+      - '!flag:duun*:security'
+      note: Duun. His lift codes stopped working below B1.
+    - visit: 0
+      shift: 12
+      position: 5
+      kind: OrdinaryCitizen
+      alias: 
+      look:
+        clan: Ruu
+        head: 6
+        mouth: 4
+        pattern: 3
+        outfit: 2
+        tone: 1
+      tells: []
+      violation: 
+      quirk: 
+      motive: 
+      greeting: I am 65% puzzled. The basement stop vanished from the lift panel.
+        Painted over. Paint was still warm.
+      letin: Mind the paint.
+      away: Fair. Rules.
+      security: For paint?!
+      silent: 
+      when:
+      - '!flag:duun*:security'
+      note: Duun. Someone painted over the basement button.
+    - visit: 0
+      shift: 14
+      position: 3
+      kind: OrdinaryCitizen
+      alias: 
+      look:
+        clan: Ruu
+        head: 6
+        mouth: 4
+        pattern: 3
+        outfit: 2
+        tone: 1
+      tells: []
+      violation: 
+      quirk: 
+      motive: 
+      greeting: I am 80% busy. They want the archive lifts serviced. Lot of files
+        going down lately. Down.
+      letin: Down, always down.
+      away: The files can wait, I suppose.
+      security: I'm just the lift man!
+      silent: 
+      when:
+      - '!flag:duun*:security'
+      note: Duun. Lattice files keep going down, not up.
+    - visit: 0
+      shift: 17
+      position: 2
+      kind: OrdinaryCitizen
+      alias: 
+      look:
+        clan: Ruu
+        head: 6
+        mouth: 4
+        pattern: 3
+        outfit: 2
+        tone: 1
+      tells: []
+      violation: 
+      quirk: 
+      motive: 
+      greeting: I am 70% content. Parade tonight! I'm not going. Someone has to listen
+        to the lifts.
+      letin: Enjoy the music.
+      away: On parade night?
+      security: Not on parade night!
+      silent: 
+      when:
+      - '!flag:duun*:security'
+      note: Duun, skipping the parade to listen to the lifts.
+    - visit: 0
+      shift: 20
+      position: 9
+      kind: OrdinaryCitizen
+      alias: 
+      look:
+        clan: Ruu
+        head: 6
+        mouth: 4
+        pattern: 3
+        outfit: 2
+        tone: 1
+      tells: []
+      violation: 
+      quirk: 
+      motive: 
+      greeting: I am 55% content. I heard voices in the service shaft. Not lift voices.
+        People voices.
+      letin: If you hear them too, you're not mad.
+      away: Maybe I shouldn't go back in.
+      security: I only said what I heard!
+      silent: 
+      when:
+      - '!flag:duun*:security'
+      note: Duun. He heard people in the service shaft.
+    - visit: 0
+      shift: 23
+      position: 4
+      kind: OrdinaryCitizen
+      alias: 
+      look:
+        clan: Ruu
+        head: 6
+        mouth: 4
+        pattern: 3
+        outfit: 2
+        tone: 1
+      tells: []
+      violation: 
+      quirk: 
+      motive: 
+      greeting: I am 40% content. I keep the lift log, you know. Every trip down.
+        Somebody should read it.
+      letin: Somebody should.
+      away: Not you, then.
+      security: It's just a log!
+      silent: 
+      when:
+      - '!flag:duun*:security'
+      note: Duun keeps a log of every trip to the basement.
+    - visit: 0
+      shift: 26
+      position: 3
+      kind: OrdinaryCitizen
+      alias: 
+      look:
+        clan: Ruu
+        head: 6
+        mouth: 4
+        pattern: 3
+        outfit: 2
+        tone: 1
+      tells: []
+      violation: 
+      quirk: 
+      motive: 
+      greeting: I am 35% content. Graav took my lift log away for "review". I'd made
+        a copy. Don't tell anyone.
+      letin: You didn't hear it from me.
+      away: Right. Quiet. Got it.
+      security: So you're one of his.
+      silent: 
+      when:
+      - '!flag:duun*:security'
+      note: Duun. Graav confiscated the lift log, but Duun kept a copy.
+    - visit: 0
+      shift: 29
+      position: 2
+      kind: OrdinaryCitizen
+      alias: 
+      look:
+        clan: Ruu
+        head: 6
+        mouth: 4
+        pattern: 3
+        outfit: 2
+        tone: 1
+      tells: []
+      violation: 
+      quirk: 
+      motive: 
+      greeting: I am 90% cheerful! Big night tomorrow. Grand Audit. I'm oiling every
+        lift in the Tower. Every single one.
+      letin: Every single one!
+      away: I'll oil them from outside, then.
+      security: The night before?!
+      silent: 
+      when:
+      - '!flag:duun*:security'
+      note: Duun, oiling every lift before the Grand Audit. Every single one.
+  - id: courier
+    name: WINDOW 3 COURIER
+    visits:
+    - visit: 0
+      shift: 10
+      position: 6
+      kind: SkilledHuman
+      alias: QUILL-VESSI ASKO
+      look:
+        clan: Vessi
+        head: 4
+        mouth: 2
+        pattern: 7
+        outfit: 0
+        tone: 1
+      tells:
+      - WrongTime
+      violation: 
+      quirk: 
+      motive: Refugee
+      greeting: I am 70% content. (A blue thread is tied round one cuff.)
+      letin: The thread holds. Thank you.
+      away: Another night, then.
+      security: So you chose them.
+      silent: W3 will take it from here.
+      when:
+      - flag:w3-listening
+      note: 'A Window 3 courier: the blue thread on the cuff is their sign.'
+    - visit: 0
+      shift: 13
+      position: 8
+      kind: SkilledHuman
+      alias: HESK-PLO VENN
+      look:
+        clan: Plo
+        head: 0
+        mouth: 6
+        pattern: 2
+        outfit: 7
+        tone: 0
+      tells:
+      - EarthDate
+      violation: 
+      quirk: 
+      motive: Refugee
+      greeting: I am 65% content. (A blue thread is tied round one cuff.)
+      letin: The thread holds.
+      away: We'll try the next window.
+      security: W3 trusted you.
+      silent: Understood.
+      when:
+      - flag:w3-listening
+      note: A Window 3 courier, blue thread on the cuff.
+    - visit: 0
+      shift: 16
+      position: 4
+      kind: SkilledHuman
+      alias: LORU-AMMARU PHAE
+      look:
+        clan: Ammaru
+        head: 3
+        mouth: 5
+        pattern: 1
+        outfit: 2
+        tone: 1
+      tells:
+      - NameMismatch
+      violation: 
+      quirk: 
+      motive: Refugee
+      greeting: I am 70% content. (A blue thread is tied round one cuff.)
+      letin: Thank you, Window 3.
+      away: Careful. Graav counts the ones you turn away too.
+      security: We'll remember this.
+      silent: Good. Quietly.
+      when:
+      - flag:w3-listening
+      note: A Window 3 courier. The forger misspelled the slip.
+    - visit: 0
+      shift: 19
+      position: 5
+      kind: SkilledHuman
+      alias: FENN-RUU MURR
+      look:
+        clan: Ruu
+        head: 1
+        mouth: 0
+        pattern: 5
+        outfit: 6
+        tone: 0
+      tells:
+      - NoRecord
+      violation: 
+      quirk: 
+      motive: Refugee
+      greeting: I am 60% content. (A blue thread is tied round one cuff.)
+      letin: Through the front door? Bold.
+      away: We'll find a quieter way.
+      security: You pressed the wrong button.
+      silent: That's the one. Thank you.
+      when:
+      - flag:w3-silent
+      note: 'A Window 3 courier with an invented name: no archive record.'
+    - visit: 0
+      shift: 22
+      position: 7
+      kind: SkilledHuman
+      alias: BRIN-VESSI KOLO
+      look:
+        clan: Vessi
+        head: 6
+        mouth: 3
+        pattern: 0
+        outfit: 1
+        tone: 0
+      tells:
+      - Blinks
+      violation: 
+      quirk: 
+      motive: Refugee
+      greeting: I am 55% content. (A blue thread is tied round one cuff.)
+      letin: Thank you.
+      away: Curfew's getting closer.
+      security: Even now?
+      silent: W3 owes you.
+      when:
+      - flag:w3-silent
+      note: A Window 3 courier who can't stop blinking.
+  - id: inspector
+    name: LATTICE INSPECTOR
+    visits:
+    - visit: 0
+      shift: 15
+      position: 5
+      kind: OddCitizen
+      alias: MOTT-AMMARU SOLVE
+      look:
+        clan: Ammaru
+        head: 4
+        mouth: 1
+        pattern: 3
+        outfit: 7
+        tone: 1
+      tells: []
+      violation: 
+      quirk: LidReflex
+      motive: 
+      greeting: 
+      letin: Correct. I'll tell Graav you read the pass.
+      away: A citizen with valid papers, turned away. Noted.
+      security: Wrong. I'm from Graav's office. This goes in your file.
+      silent: "\u2026What button was that?"
+      when: []
+      note: 'Graav''s inspector: a real citizen sent to test you. The medical pass
+        explains the blinking.'
+    - visit: 0
+      shift: 21
+      position: 8
+      kind: OddCitizen
+      alias: MOTT-PLO SOLVE
+      look:
+        clan: Plo
+        head: 4
+        mouth: 1
+        pattern: 3
+        outfit: 7
+        tone: 1
+      tells: []
+      violation: 
+      quirk: GillRot
+      motive: 
+      greeting: 
+      letin: Correct again. Graav will be disappointed.
+      away: Turned away. Graav will want to know why.
+      security: Twice now? Graav was right about you.
+      silent: Interesting. Very interesting.
+      when: []
+      note: Graav's inspector again, with still gills and a medical pass.
+    - visit: 0
+      shift: 26
+      position: 6
+      kind: OddCitizen
+      alias: MOTT-VESSI SOLVE
+      look:
+        clan: Vessi
+        head: 4
+        mouth: 1
+        pattern: 3
+        outfit: 7
+        tone: 1
+      tells: []
+      violation: 
+      quirk: LidReflex
+      motive: 
+      greeting: 
+      letin: You pass. This time.
+      away: Hm. Rules over people. Graav will like that.
+      security: That's three times, receptionist.
+      silent: So the rumours are true.
+      when: []
+      note: Graav's inspector, last test. A blinking citizen with a valid pass.
+  - id: twin
+    name: ORR-VESSI TALM
+    visits:
+    - visit: 0
+      shift: 20
+      position: 3
+      kind: OrdinaryCitizen
+      alias: 
+      look:
+        clan: Vessi
+        head: 2
+        mouth: 5
+        pattern: 1
+        outfit: 4
+        tone: 0
+      tells: []
+      violation: 
+      quirk: 
+      motive: 
+      greeting: I am 60% content. Floor 2, the clinic.
+      letin: Thank you.
+      away: But my papers are real!
+      security: I AM Orr-Vessi Talm!
+      silent: 
+      when: []
+      note: The real Orr-Vessi Talm.
+    - visit: 0
+      shift: 20
+      position: 6
+      kind: ClumsyHuman
+      alias: 
+      look:
+        clan: Vessi
+        head: 2
+        mouth: 5
+        pattern: 1
+        outfit: 4
+        tone: 0
+      tells:
+      - Blinks
+      - EarthDate
+      violation: 
+      quirk: 
+      motive: Runaway
+      greeting: I am 60% content. Floor 2, the clinic.
+      letin: Thanks!
+      away: "Wait, I'm\u2014fine. Fine."
+      security: "But \u2014 I'm Orr-Vessi Talm!"
+      silent: "\u2026Thank you."
+      when: []
+      note: A human wearing Orr-Vessi Talm's face, three visitors behind the real
+        one.
+    - visit: 0
+      shift: 25
+      position: 2
+      kind: OrdinaryCitizen
+      alias: DOSK-PLO PHAE
+      look:
+        clan: Plo
+        head: 5
+        mouth: 6
+        pattern: 2
+        outfit: 0
+        tone: 1
+      tells: []
+      violation: 
+      quirk: 
+      motive: 
+      greeting: I am 70% content. Permits office.
+      letin: Thank you.
+      away: Unbelievable.
+      security: I'm the REAL one!
+      silent: 
+      when: []
+      note: The real Dosk-Plo Phae.
+    - visit: 0
+      shift: 25
+      position: 7
+      kind: SkilledHuman
+      alias: DOSK-PLO PHAE
+      look:
+        clan: Plo
+        head: 5
+        mouth: 6
+        pattern: 2
+        outfit: 0
+        tone: 1
+      tells:
+      - PhotoRoundPupils
+      violation: 
+      quirk: 
+      motive: Spy
+      greeting: I am 70% content. Permits office.
+      letin: Much obliged.
+      away: Pity.
+      security: How did you know?
+      silent: W3? I don't work for them.
+      when: []
+      note: A human copy of Dosk-Plo Phae. The ID photo has round pupils.
+  - id: kett
+    name: KETT
+    visits:
+    - visit: 0
+      shift: 18
+      position: 6
+      kind: ClumsyHuman
+      alias: KETT-AMMARU OURI
+      look:
+        clan: Ammaru
+        head: 1
+        mouth: 4
+        pattern: 5
+        outfit: 3
+        tone: 0
+      tells:
+      - DeadGlow
+      - Sweats
+      violation: 
+      quirk: 
+      motive: Spy
+      greeting: I am 80% content. Floor 9. The audit office expects me.
+      letin: Much obliged, receptionist.
+      away: Pity. I'll come back with better papers.
+      security: You have no idea what you've just stopped.
+      silent: W3? I'm not one of them, you fool.
+      when: []
+      note: Kett, an Earth spy sent to sabotage the audit office. Not every human
+        here is a refugee.
+  - id: auditor
+    name: GRAND AUDITOR VAUN-PLO SOLVE
+    visits:
+    - visit: 0
+      shift: 28
+      position: 5
+      kind: OrdinaryCitizen
+      alias: VAUN-PLO SOLVE
+      look:
+        clan: Plo
+        head: 7
+        mouth: 2
+        pattern: 6
+        outfit: 5
+        tone: 1
+      tells: []
+      violation: 
+      quirk: 
+      motive: 
+      greeting: I am 30% patient. I am the Grand Auditor. Do your job.
+      letin: Adequate.
+      away: You turned away the Grand Auditor. Bold.
+      security: Do you know who I AM?
+      silent: 
+      when: []
+      note: The Grand Auditor, testing the windows in person.
+  - id: sel
+    name: SEL-AMMARU VENN
+    visits:
+    - visit: 0
+      shift: 29
+      position: 6
+      kind: OrdinaryCitizen
+      alias: 
+      look:
+        clan: Ammaru
+        head: 0
+        mouth: 0
+        pattern: 2
+        outfit: 3
+        tone: 0
+      tells: []
+      violation: 
+      quirk: 
+      motive: 
+      greeting: I am 100% excited! I brought you spore-meal. Is that allowed? I have
+        a slip and everything.
+      letin: Bye, window person!
+      away: Rules are rules. I KNOW.
+      security: ILO?! It's ME!
+      silent: 
+      when: []
+      note: "Sel, with a real clinic appointment \u2014 and your dinner."

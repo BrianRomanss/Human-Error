@@ -39,6 +39,10 @@ namespace HumanError.Model
         public int strikes;
         /// <summary>The shift's strikes reached three: a disciplinary hearing (GDD §4).</summary>
         public bool hearing;
+        /// <summary>Visitors still queuing when the window closed at 02:00.</summary>
+        public int sentHome;
+        /// <summary>Humans marked for Window 3 with the silent button.</summary>
+        public int hidden;
     }
 
     /// <summary>
@@ -67,10 +71,18 @@ namespace HumanError.Model
         public bool foodMissed;
         public int humansCaught;
         public int humansLetIn;
+        public int humansHidden;
+        /// <summary>How closely the Lattice watches you (GDD §3 Act 3 "Graav watches you"): invaders let in, citizens shown to W3.</summary>
+        public int suspicion;
         public List<string> flags = new List<string>();
         /// <summary>Desk tools bought at Home (GDD §5.6), e.g. "uv".</summary>
         public List<string> tools = new List<string>();
         public ShiftSummary last = new ShiftSummary();
+        /// <summary>Set when the story is over (<see cref="Model.Ending"/> as a number; 0 = still playing).</summary>
+        public int ending;
+
+        public Ending Ending => (Ending)ending;
+        public bool Finished => ending != 0;
 
         public bool Has(string flag) => flags.Contains(flag);
 
@@ -92,14 +104,21 @@ namespace HumanError.Model
         public const int ShiftWage = 30;
         public const int StrikesForHearing = 3, HearingFine = 30;
         public const int SelWell = 3;
+        /// <summary>Suspicion at which Graav starts watching you (news and messages react).</summary>
+        public const int SuspicionWatched = 4;
+        /// <summary>Story flag that unlocks the silent button (a Window 3 message choice in Act 2).</summary>
+        public const string SilentFlag = "w3-silent";
 
         public static SaveData NewGame(int seed) => new SaveData { seed = seed, shards = StartingShards };
 
         /// <summary>Each shift's queue comes from the campaign seed, so quitting mid-shift replays the same visitors.</summary>
         public static ulong ShiftSeed(SaveData s, int shift) => (ulong)(uint)s.seed * 1000003UL + (ulong)shift;
 
-        /// <summary>Books a finished shift: shards, strikes (a hearing at three), Loyalty and Mercy. Moves the save to Home.</summary>
-        public static void FinishShift(SaveData s, ShiftSession session)
+        /// <summary>
+        /// Books a finished shift: shards, strikes (a hearing at three), Loyalty and Mercy. Moves the save to Home —
+        /// or ends the story: a hearing from Act 3 on is an arrest (GDD §4), and the last shift decides the ending.
+        /// </summary>
+        public static void FinishShift(SaveData s, ShiftSession session, int lastShift = int.MaxValue)
         {
             int shift = session.Context.ShiftNumber;
             var results = session.Results;
@@ -114,14 +133,35 @@ namespace HumanError.Model
                 mistakes = results.Count(r => !r.Verdict.IsGood),
                 strikes = session.Strikes,
                 wage = ShiftWage,
+                sentHome = session.SentHome,
+                hidden = session.HumansHidden,
             };
             s.shards += session.Net + ShiftWage;
-            foreach (var r in results.Where(r => r.Visitor.Truth.IsHuman))
+            foreach (var r in results)
             {
+                // Story characters remember what you did: "mira1:security", "duun3:letin"…
+                if (r.Visitor.Story != null) s.Set(r.Visitor.Story.FlagFor(r.Verdict.Decision));
+                if (r.Verdict.Outcome == Outcome.Leak) s.suspicion++;
+                if (!r.Visitor.Truth.IsHuman) continue;
                 // GDD §5.5: arresting a human adds Loyalty; letting one in adds Mercy.
-                if (r.Verdict.Decision == Decision.Security) { s.loyalty++; s.humansCaught++; }
-                else if (r.Verdict.Decision == Decision.LetIn) { s.mercy++; s.humansLetIn++; }
+                switch (r.Verdict.Decision)
+                {
+                    case Decision.Security: s.loyalty++; s.humansCaught++; break;
+                    case Decision.LetIn:
+                        s.mercy++;
+                        s.humansLetIn++;
+                        // Graav reads the answer logs: a human let in after an obvious slip in front of you ("Fine, thanks",
+                        // a laugh, five fingers) looks deliberate. A tell you never uncovered, or a subtle one (a wrong
+                        // date or time), is an honest mistake: a strike, not suspicion.
+                        if (r.Asked.Any(a => a.Reveals.HasValue && Tells.Difficulty(a.Reveals.Value) <= 2)) s.suspicion++;
+                        break;
+                    case Decision.Silent: s.mercy++; s.humansHidden++; break;
+                }
             }
+
+            // Story characters still queuing at 02:00 went home: for their story, that's being turned away.
+            foreach (var v in session.Queue.Skip(session.Index).Where(v => v.Story != null))
+                s.Set(v.Story.FlagFor(Decision.TurnAway));
 
             s.strikes += session.Strikes;
             if (s.strikes >= StrikesForHearing)
@@ -135,6 +175,11 @@ namespace HumanError.Model
             if (Acts.For(s.nextShift) != Acts.For(shift)) s.strikes = 0;
             s.atHome = true;
             s.last = sum;
+
+            // GDD §4: three strikes are "not a game over until Act 3" — and then only for someone the Lattice already
+            // suspects (GDD §3 Exposed: "too many suspicious mistakes"). Honest mistakes cost a fine and a warning.
+            if (sum.hearing && Acts.For(shift) >= 3 && s.suspicion >= SuspicionWatched) s.Set(Endings.ArrestedFlag);
+            if (s.Has(Endings.ArrestedFlag) || shift >= lastShift) s.ending = (int)Endings.Decide(s);
         }
     }
 
@@ -146,8 +191,9 @@ namespace HumanError.Model
     {
         public static readonly string[] Known =
         {
-            "caught", "invader", "wrongful", "perfect", "sloppy", "hearing",
+            "caught", "invader", "wrongful", "perfect", "sloppy", "hearing", "sent-home", "hid",
             "sel-sick", "sel-hospital", "meds-missed", "food-missed", "debt", "broke",
+            "loyal", "merciful", "suspected", "act3",
         };
 
         public static bool IsKnown(string token)
@@ -158,13 +204,22 @@ namespace HumanError.Model
             return Array.IndexOf(Known, t) >= 0;
         }
 
+        /// <summary>A flag, or a pattern with one '*' ("mira*:security" = Mira was arrested on any visit).</summary>
+        static bool HasFlag(SaveData s, string name)
+        {
+            int star = name.IndexOf('*');
+            if (star < 0) return s.Has(name);
+            string head = name.Substring(0, star), tail = name.Substring(star + 1);
+            return s.flags.Any(f => f.Length >= head.Length + tail.Length && f.StartsWith(head) && f.EndsWith(tail));
+        }
+
         public static bool All(IEnumerable<string> tokens, SaveData s) => tokens == null || tokens.All(t => Holds(t, s));
 
         public static bool Holds(string token, SaveData s)
         {
             if (token.StartsWith("!")) return !Holds(token.Substring(1), s);
             var last = s.last ?? new ShiftSummary();
-            if (token.StartsWith("flag:")) return s.Has(token.Substring(5));
+            if (token.StartsWith("flag:")) return HasFlag(s, token.Substring(5));
             switch (token)
             {
                 case "caught": return last.caught > 0;
@@ -174,6 +229,14 @@ namespace HumanError.Model
                 // Under 60% right.
                 case "sloppy": return last.visitors > 0 && last.mistakes * 5 > last.visitors * 2;
                 case "hearing": return last.hearing;
+                case "sent-home": return last.sentHome > 0;
+                case "hid": return last.hidden > 0;
+                // Where your heart is so far (GDD §3: Loyalty to the Lattice, Mercy to humans).
+                case "loyal": return s.loyalty > s.mercy;
+                case "merciful": return s.mercy > s.loyalty;
+                case "suspected": return s.suspicion >= Campaign.SuspicionWatched;
+                // The last shift was in Act 3 or later: hearings there can end the story.
+                case "act3": return Acts.For(last.shift) >= 3;
                 case "sel-sick": return s.selHealth <= 1;
                 case "sel-hospital": return s.hospitalDue;
                 case "meds-missed": return s.medsMissed;

@@ -3,7 +3,8 @@ using System.Linq;
 
 namespace HumanError.Model
 {
-    public enum Decision { LetIn, TurnAway, Security }
+    /// <summary>Silent: the Act 2 button that marks a visitor for Window 3 (the resistance) instead of security (GDD §5.6).</summary>
+    public enum Decision { LetIn, TurnAway, Security, Silent }
 
     public enum Outcome
     {
@@ -13,6 +14,10 @@ namespace HumanError.Model
         Citation,
         InvaderInside,
         WrongfulArrest,
+        /// <summary>A human marked for Window 3: hidden by the resistance. No pay, no strike, more Mercy.</summary>
+        Hidden,
+        /// <summary>A citizen marked for Window 3: someone outside the resistance now knows about it.</summary>
+        Leak,
     }
 
     public sealed class Verdict
@@ -23,7 +28,7 @@ namespace HumanError.Model
         public bool Strike;
         public bool Complaint;
 
-        public bool IsGood => Outcome == Outcome.Correct || Outcome == Outcome.Safe;
+        public bool IsGood => Outcome == Outcome.Correct || Outcome == Outcome.Safe || Outcome == Outcome.Hidden;
 
         public string Label
         {
@@ -35,6 +40,8 @@ namespace HumanError.Model
                     case Outcome.Safe: return "Safe — no bounty";
                     case Outcome.Citation: return "Wrong — citation";
                     case Outcome.InvaderInside: return "Invader got in";
+                    case Outcome.Hidden: return "Hidden by Window 3";
+                    case Outcome.Leak: return "Wrong — a citizen saw W3";
                     default: return "Wrongful arrest";
                 }
             }
@@ -48,6 +55,8 @@ namespace HumanError.Model
         public const int TurnAwayHuman = 5, Bounty = 25, InvaderPenalty = -30, WrongfulArrestPenalty = -40;
         /// <summary>A citizen pushed with two or more pressure/trap questions files a complaint (GDD §5.3).</summary>
         public const int ComplaintPenalty = -5, AnnoyanceForComplaint = 2;
+        /// <summary>Marking a citizen for Window 3 costs like a citation (and raises suspicion in the campaign).</summary>
+        public const int LeakPenalty = -10;
 
         /// <summary>The decision the rules call for (humans: security; rule-breakers: turn away; else let in).</summary>
         public static Decision Best(VisitorInstance v, ShiftContext ctx) =>
@@ -67,6 +76,12 @@ namespace HumanError.Model
         public static Verdict Decide(VisitorInstance v, ShiftContext ctx, Decision d)
         {
             var verdict = new Verdict { Decision = d };
+            if (d == Decision.Silent)
+            {
+                if (v.Truth.IsHuman) verdict.Outcome = Outcome.Hidden;
+                else { verdict.Outcome = Outcome.Leak; verdict.Shards = LeakPenalty; }
+                return verdict;
+            }
             if (v.Truth.IsHuman)
             {
                 switch (d)

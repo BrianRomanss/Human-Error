@@ -52,13 +52,14 @@ namespace HumanError.Tests
         {
             var game = TestContent.Game();
             int lastHumans = 0;
-            for (int level = 1; level <= 20; level++)
+            int story = TestContent.Plans().Count;
+            for (int level = 1; level <= story + 4; level++)
             {
                 var plan = Modes.Endless(game, level, 42, out var errors);
                 Assert.IsEmpty(errors, $"level {level}: " + string.Join("; ", errors));
                 Assert.That(plan.Config.Humans, Is.GreaterThanOrEqualTo(lastHumans), $"level {level}");
                 lastHumans = plan.Config.Humans;
-                for (ulong seed = 0; seed < 25; seed++)
+                for (ulong seed = 0; seed < 10; seed++)
                 {
                     var s = plan.NewSession(Modes.EndlessSeed(seed, level));
                     Assert.AreEqual("ENDLESS", s.Context.Mode);

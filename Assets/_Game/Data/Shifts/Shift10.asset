@@ -1,0 +1,50 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6ea7988840a5bd488445465412f2c6d, type: 3}
+  m_Name: Shift10
+  m_EditorClassIdentifier: 
+  data:
+    number: 10
+    title: Gossip
+    cycle: 413
+    day: 2
+    kesh: 
+    visitors: 9
+    humans: 2
+    ruleBreakers: 2
+    oddCitizens: 2
+    skilledShare: 0.5
+    clumsyMinTells: 0
+    clumsyMaxTells: 2
+    skilledTells: 0
+    maxForgedFields: 2
+    questionBudget: 3
+    questions:
+    - well
+    - kesh
+    - cycle
+    - hatched
+    - when
+    - palm
+    - grille
+    - shaking
+    tells: []
+    closedFloors: 15000000
+    rules:
+    - clan-stamp
+    tools: []
+    briefing: Two citizens with medical passes are booked tonight. A blinking elder
+      is not an invader. Housing (21) is closed.
+    supervisor: Arrest a sick elder and I'll have you arrested.
+    revealEach: 0
+    untimed: 0
+    wanted: 

@@ -22,7 +22,17 @@ namespace HumanError.View
     ///   --he-screen briefing|desk|rulebook|report  a single shift with no save: --he-shift N, --he-seed N,
     ///       --he-visitor N, --he-find KIND|TELL, --he-ask id,id, --he-uv, --he-decide letin|away|security, --he-autoplay best|letin,
     ///       --he-step N (shift 1: start the tutorial at step N)
-    ///   --he-screen endless [--he-level N] | daily [--he-date yyyy-MM-dd]   score modes (add --he-autoplay best for their report)
+        ///   --he-screen endless [--he-level N] | daily [--he-date yyyy-MM-dd]   score modes (add --he-autoplay best for their report)
+    ///   --he-tools uv,gillscope,archive,q4  --he-silent  --he-scope  --he-lookup  --he-rulebook   desk tools in a debug shift
+    ///   --he-screen settings | act [--he-act N] | ending [--he-ending 1-5]
+    ///   --he-colourblind  --he-tell-assist   force those settings for a screenshot
+    ///   --he-phone WxH   lay out as a phone of that size (e.g. 1080x2340), letterboxed in the window: portrait screenshots
+    ///   --he-rotate      with --he-phone: turn the phone sideways after a second (tests the rebuild on rotation)
+    ///   --he-store       store screenshots: hide debug-only buttons (the report's REPLAY SHIFT)
+    ///   --he-demo        play as the demo edition (shifts 1–5, Endless locked); --he-screen credits
+    ///
+    /// Layout (M6): screens are built on a stage (see <see cref="Layout"/>) that is 1920×1080 in landscape and 1080×1920+
+    /// in portrait, inside the safe area. Rotating or resizing rebuilds the current screen with its state.
     /// </summary>
     public sealed class GameFlow : MonoBehaviour
     {
@@ -30,7 +40,12 @@ namespace HumanError.View
         [SerializeField] ContentCatalogSO catalog;
 
         RectTransform _root;
-        GameObject _screen, _pause;
+        StageCanvas _stage;
+        /// <summary>The layout changed while the desk was mid-verdict: rebuild once it's free.</summary>
+        bool _layoutDirty;
+        GameObject _screen, _pause, _settings, _rulebook;
+        /// <summary>Redraws the current screen (after a settings change that affects layout), keeping its state.</summary>
+        Action _rebuild;
         GameContent _game;
         SaveData _save;
         /// <summary>Save slot in use; 0 = don't persist (debug runs).</summary>
@@ -49,10 +64,19 @@ namespace HumanError.View
         {
             Application.targetFrameRate = 60;
             EnsureEventSystem();
+            BuildInfo.ApplyDebugFlags();
             Theme.Init(art);
-            var canvas = UiBuild.Canvas("GameCanvas", new Vector2(1920, 1080));
-            canvas.transform.SetParent(transform, false);
-            _root = (RectTransform)canvas.transform;
+            SettingsStore.Apply();
+            var phone = LaunchScreenshot.Arg("--he-phone");
+            if (phone != null && phone.Split('x') is var wh && wh.Length == 2 && int.TryParse(wh[0], out var pw) && int.TryParse(wh[1], out var ph))
+                StageCanvas.SimulatedScreen = new Vector2Int(pw, ph);
+            _stage = StageCanvas.Create("GameCanvas", transform, Palette.Ink);
+            _root = _stage.Stage;
+            Layout.From(_stage);
+            _stage.LayoutChanged += () => _layoutDirty = true;
+            // --he-rotate: turn the simulated phone sideways after a second, to exercise the relayout path.
+            if (LaunchScreenshot.HasFlag("--he-rotate") && StageCanvas.SimulatedScreen.x > 0)
+                Tween.Delay(this, 1f, () => StageCanvas.SimulatedScreen = new Vector2Int(StageCanvas.SimulatedScreen.y, StageCanvas.SimulatedScreen.x), "rotate");
 
             List<string> errors = null;
             _game = catalog != null ? catalog.LoadGame(out errors) : null;
@@ -78,6 +102,14 @@ namespace HumanError.View
                 case "rulebook": StartDesk(NewDebugSession(), ShowDebugReport); OpenRulebook(); return;
                 case "report": DebugReport(); return;
                 case "slots": ShowSlots(LaunchScreenshot.HasFlag("--he-new")); return;
+                case "settings": ShowTitle(); OpenSettings(); return;
+                case "credits": ShowCredits(); return;
+                case "ending": DebugEnding(); return;
+                case "act":
+                    int debugAct = int.TryParse(LaunchScreenshot.Arg("--he-act"), out var act) ? act : 2;
+                    void DebugAct() => Show(Screens.ActCard(_root, debugAct, ShowTitle), DebugAct);
+                    DebugAct();
+                    return;
                 case "endless":
                     StartEndless(int.TryParse(LaunchScreenshot.Arg("--he-level"), out var lv) ? lv : 1);
                     return;
@@ -95,11 +127,67 @@ namespace HumanError.View
             DontDestroyOnLoad(go);
         }
 
-        void Show(GameObject screen)
+        void Show(GameObject screen, Action rebuild = null)
         {
+            // Destroy waits for the end of the frame: clear the fields too, so a relayout can reopen overlays at once.
             if (_pause != null) Destroy(_pause);
+            if (_settings != null) Destroy(_settings);
+            if (_rulebook != null) Destroy(_rulebook);
             if (_screen != null) Destroy(_screen);
+            _pause = _settings = _rulebook = null;
             _screen = screen;
+            _rebuild = rebuild;
+        }
+
+        void Update()
+        {
+            if (!_layoutDirty) return;
+            // Don't pull the desk out from under a verdict animation: wait for the next visitor.
+            var desk = _screen != null ? _screen.GetComponent<DeskScreen>() : null;
+            if (desk != null && desk.Busy) return;
+            _layoutDirty = false;
+            Relayout();
+        }
+
+        /// <summary>The phone rotated or the window changed shape: redraw the current screen and any open overlay.</summary>
+        void Relayout()
+        {
+            Layout.From(_stage);
+            bool settings = _settings != null, pause = _pause != null, rulebook = _rulebook != null;
+            _rebuild?.Invoke();
+            if (pause) OpenPause();
+            if (rulebook) OpenRulebook();
+            if (settings) OpenSettings();
+        }
+
+        /// <summary>Crossfades to one music loop; the desk adds the tension layer on top (GDD §10).</summary>
+        static void Music(string track, bool tension = false)
+        {
+            AudioPlayer.PlayLayer(track, Theme.Clip(track), 1f);
+            if (tension) AudioPlayer.PlayLayer("tension", Theme.Clip("music_tension"), 0.15f);
+            AudioPlayer.OnlyLayers(tension ? new[] { track, "tension" } : new[] { track });
+        }
+
+        void OpenSettings()
+        {
+            if (_settings != null) return;
+            string layout = SettingsStore.Current.LayoutKey;
+            _settings = MenuScreens.Settings(_root, SettingsStore.Current, s =>
+            {
+                string before = SettingsStore.Current.LayoutKey;
+                SettingsStore.Save(s);
+                if (before == s.LayoutKey) return;
+                // Text size and palette are baked into widgets: redraw the settings card at once.
+                Destroy(_settings);
+                _settings = null;
+                OpenSettings();
+            }, () =>
+            {
+                _settings = null;
+                if (SettingsStore.Current.LayoutKey != layout) _rebuild?.Invoke();
+                var desk = _screen != null ? _screen.GetComponent<DeskScreen>() : null;
+                if (desk != null) desk.TimerOff = SettingsStore.Current.timerOff;
+            });
         }
 
         void Persist()
@@ -117,16 +205,30 @@ namespace HumanError.View
             Show(MenuScreens.Title(_root, new MenuScreens.TitleActions
             {
                 Continue = latest != null ? () => Resume(recent) : (Action)null,
-                ContinueInfo = latest != null ? $"Slot {recent} · shift {latest.nextShift} · {Theme.Balance(latest.shards)}" : null,
+                ContinueInfo = latest == null ? null : latest.Finished ? $"Slot {recent} · {Endings.Title(latest.Ending)}"
+                    : $"Slot {recent} · shift {latest.nextShift} · {Theme.Balance(latest.shards)}",
                 NewGame = () => ShowSlots(newGame: true),
                 LoadGame = () => ShowSlots(newGame: false),
-                Endless = () => StartEndless(1),
-                EndlessInfo = scores.endlessBest > 0 ? $"Best {scores.endlessBest} · level {scores.endlessBestLevel}" : "Survive shift after shift",
+                Endless = Edition.EndlessUnlocked ? () => StartEndless(1) : (Action)null,
+                EndlessInfo = !Edition.EndlessUnlocked ? "In the full game"
+                    : scores.endlessBest > 0 ? $"Best {scores.endlessBest} · level {scores.endlessBestLevel}" : "Survive shift after shift",
+                Credits = ShowCredits,
                 Daily = () => StartDaily(DateTime.Now),
+                Settings = OpenSettings,
+                BuildInfo = Edition.IsDemo ? $"DEMO · shifts 1–{Edition.DemoShifts} · {View.BuildInfo.Stamp}"
+                    : $"Story shifts 1–{Plans.Count} · Endless · Daily · {View.BuildInfo.Stamp}",
                 DailyInfo = scores.DailyBestFor(Modes.DayKey(DateTime.Now)) is int today && today > 0
                     ? $"Today's best {today}" : "Same visitors for everyone today",
-                Quit = Application.platform == RuntimePlatform.WebGLPlayer ? (Action)null : Application.Quit,
-            }));
+                Quit = Application.platform == RuntimePlatform.WebGLPlayer || Application.isMobilePlatform ? (Action)null : Application.Quit,
+            }), ShowTitle);
+            Music("music_title");
+        }
+
+        static Edition Edition => View.BuildInfo.Edition;
+
+        void ShowCredits()
+        {
+            Show(MenuScreens.Credits(_root, View.BuildInfo.Stamp, Edition.Name, ShowTitle), ShowCredits);
         }
 
         void ShowSlots(bool newGame)
@@ -141,7 +243,7 @@ namespace HumanError.View
             {
                 if (newGame) NewGame(slot);
                 else Resume(slot);
-            }, ShowTitle));
+            }, ShowTitle), () => ShowSlots(newGame));
         }
 
         void NewGame(int slot)
@@ -158,16 +260,20 @@ namespace HumanError.View
             if (save == null) { ShowSlots(newGame: false); return; }
             _slot = slot;
             _save = save;
-            if (_save.atHome) ShowHome();
+            if (_save.Finished) ShowEnding();
+            else if (_save.atHome) ShowHome();
             else PlayCampaignShift();
         }
 
         // ---------------------------------------------------------------- campaign
 
-        void ShowHome()
+        void ShowHome() => ShowHome(new Home(_save, _game.Home));
+
+        /// <summary>Home keeps tonight's ticks and choices across a redraw (settings), so it's built from an existing evening.</summary>
+        void ShowHome(Home home)
         {
-            var home = new Home(_save, _game.Home);
-            var next = _game.Shift(_save.nextShift);
+            // The demo stops at Home after its last shift, with a note about the full game.
+            var next = Edition.CanPlay(_save.nextShift) ? _game.Shift(_save.nextShift) : null;
             Show(HomeScreen.Create(_root, home, next?.ContextWith(Campaign.ShiftSeed(_save, _save.nextShift), _save.tools),
                 new HomeScreen.Actions
                 {
@@ -178,20 +284,52 @@ namespace HumanError.View
                         PlayCampaignShift();
                     },
                     Menu = ShowTitle,
-                }).gameObject);
+                    EndLabel = Edition.DemoFinished(_save) ? "END OF THE DEMO" : null,
+                    EndNote = Edition.DemoFinished(_save)
+                        ? $"Thank you for playing! The full game has {LastShift} shifts, five endings, Endless and Daily."
+                        : null,
+                }).gameObject, () => ShowHome(home));
+            Music("music_home");
         }
 
         void PlayCampaignShift()
         {
-            var plan = _game.Shift(_save.nextShift);
+            var plan = Edition.CanPlay(_save.nextShift) ? _game.Shift(_save.nextShift) : null;
             if (plan == null) { _save.atHome = true; ShowHome(); return; }
-            var session = plan.NewSession(Campaign.ShiftSeed(_save, plan.Data.number), _save.tools);
-            ShowBriefing(session, finished =>
+            var session = plan.NewSession(Campaign.ShiftSeed(_save, plan.Data.number), _save.tools, _save);
+            void Briefing() => ShowBriefing(session, finished =>
             {
-                Campaign.FinishShift(_save, finished);
+                Campaign.FinishShift(_save, finished, LastShift);
                 Persist();
-                Show(Screens.Report(_root, finished, ShowHome, "GO HOME"));
+                // The last shift, or an arrest at an Act 3 hearing, ends the story (GDD §3 endings).
+                if (_save.Finished) ShowReport(finished, ShowEnding, "WHAT HAPPENED NEXT");
+                else ShowReport(finished, ShowHome, "GO HOME");
             });
+            // A new act opens with its title card (GDD §3 narrative arc).
+            int n = plan.Data.number;
+            if (n == 1 || Acts.For(n) != Acts.For(n - 1))
+            {
+                void Card() => Show(Screens.ActCard(_root, Acts.For(n), Briefing), Card);
+                Card();
+                Music("music_title");
+            }
+            else Briefing();
+        }
+
+        int LastShift => Plans.Max(p => p.Data.number);
+
+        void ShowEnding()
+        {
+            Show(Screens.Ending(_root, _save, ShowTitle), ShowEnding);
+            Music("music_title");
+        }
+
+        void ShowReport(ShiftSession s, Action next, string nextLabel, Action replay = null, string replayLabel = "REPLAY SHIFT",
+            ScoreRun score = null, string note = null)
+        {
+            Show(Screens.Report(_root, s, next, nextLabel, replay, replayLabel, score, note),
+                () => ShowReport(s, next, nextLabel, replay, replayLabel, score, note));
+            Music("music_desk");
         }
 
         // ---------------------------------------------------------------- one shift
@@ -207,7 +345,9 @@ namespace HumanError.View
         {
             // Shift 1's questions are all new: the briefing already explains them. Score modes skip the list.
             var fresh = session.Context.ShiftNumber > 1 && !session.Context.IsMode ? NewQuestions(session.Context) : null;
-            Show(Screens.Briefing(_root, session.Context, fresh, () => StartDesk(session, finished, score)));
+            Show(Screens.Briefing(_root, session.Context, fresh, () => StartDesk(session, finished, score)),
+                () => ShowBriefing(session, finished, score));
+            Music("music_desk");
         }
 
         DeskScreen StartDesk(ShiftSession session, Action<ShiftSession> finished, ScoreRun score = null)
@@ -219,7 +359,10 @@ namespace HumanError.View
                 OpenRulebook = OpenRulebook,
                 OpenMenu = OpenPause,
             }, score);
-            Show(desk.gameObject);
+            desk.ClockHeld = () => _pause != null || _settings != null;
+            desk.TimerOff = SettingsStore.Current.timerOff;
+            Show(desk.gameObject, () => StartDesk(desk.Session, finished, score));
+            Music("music_desk", tension: true);
             // The guided night (content.json "tutorial"): resumes at the visitor now at the window.
             var tutorial = session.Context.IsMode ? null : _game.Shift(session.Context.ShiftNumber)?.Tutorial;
             if (tutorial != null && !session.IsOver)
@@ -234,13 +377,18 @@ namespace HumanError.View
         {
             var desk = _screen != null ? _screen.GetComponent<DeskScreen>() : null;
             if (desk == null) return;
-            Screens.Rulebook(_root, desk.Session.Context, null);
+            var ctx = desk.Session.Context;
+            // Last night's rulebook, so tonight's new lines can be flagged (not in score modes).
+            var previous = ctx.IsMode ? null : _game.Shift(ctx.ShiftNumber - 1)?.ContextWith(1, ctx.Tools);
+            if (_rulebook != null) Destroy(_rulebook);
+            _rulebook = Screens.Rulebook(_root, ctx, null, previous);
         }
 
         void OpenPause()
         {
             if (_pause != null) { Destroy(_pause); return; }
-            _pause = MenuScreens.Pause(_root, null, OpenRulebook, () =>
+            if (_screen == null || _screen.GetComponent<DeskScreen>() == null) return;
+            _pause = MenuScreens.Pause(_root, null, OpenRulebook, OpenSettings, () =>
             {
                 // A campaign shift restarts from its briefing on Continue; debug runs just go to the title.
                 ShowTitle();
@@ -271,13 +419,13 @@ namespace HumanError.View
                     SaveStore.SaveScores(scores);
                     string note = best ? $"Three strikes. NEW BEST: {run.Score} on level {level}!"
                         : $"Three strikes. Run over on level {level}. Best: {scores.endlessBest}.";
-                    Show(Screens.Report(_root, s, ShowTitle, "BACK TO TITLE", () => StartEndless(1), "NEW RUN", run, note));
+                    ShowReport(s, ShowTitle, "BACK TO TITLE", () => StartEndless(1), "NEW RUN", run, note);
                 }
                 else
                 {
                     string note = $"Level {level} cleared. Score {run.Score}. Strikes {run.Strikes} of {ScoreRun.StrikesAllowed}.";
-                    Show(Screens.Report(_root, s, () => PlayEndless(run, runSeed, level + 1), $"NEXT: LEVEL {level + 1}",
-                        () => EndEndless(run, level), "END RUN", run, note));
+                    ShowReport(s, () => PlayEndless(run, runSeed, level + 1), $"NEXT: LEVEL {level + 1}",
+                        () => EndEndless(run, level), "END RUN", run, note);
                 }
             }
             if (LaunchScreenshot.Arg("--he-autoplay") != null) { Autoplay(session, run); Finished(session); return; }
@@ -297,7 +445,7 @@ namespace HumanError.View
         /// <summary>Daily: one twelve-visitor shift from today's date; everyone gets the same visitors.</summary>
         void StartDaily(DateTime date)
         {
-            var plan = Modes.Daily(_game, date, out var errors);
+            var plan = Modes.Daily(_game, date, out var errors, Edition.LastDailyBase);
             if (errors.Count > 0) { ShowModeError(errors); return; }
             var run = new ScoreRun();
             var session = plan.NewSession(Modes.DailySeed(date));
@@ -308,7 +456,7 @@ namespace HumanError.View
                 bool best = scores.RecordDaily(day, run.Score);
                 SaveStore.SaveScores(scores);
                 string note = best ? $"NEW BEST for today: {run.Score}!" : $"Score {run.Score}. Today's best: {scores.DailyBestFor(day)}.";
-                Show(Screens.Report(_root, s, ShowTitle, "BACK TO TITLE", () => StartDaily(date), "PLAY AGAIN", run, note));
+                ShowReport(s, ShowTitle, "BACK TO TITLE", () => StartDaily(date), "PLAY AGAIN", run, note);
             }
             if (LaunchScreenshot.Arg("--he-autoplay") != null) { Autoplay(session, run); Finished(session); return; }
             if (LaunchScreenshot.HasFlag("--he-desk")) StartDesk(session, Finished, run);
@@ -324,14 +472,23 @@ namespace HumanError.View
         // ---------------------------------------------------------------- debug (automated screenshots)
 
         ShiftPlan DebugPlan => Plans[_shiftIndex];
-        ShiftSession NewDebugSession() => DebugPlan.NewSession(_seed, LaunchScreenshot.HasFlag("--he-uv") ? new[] { Tools.UvLamp } : null);
+
+        /// <summary>--he-tools uv,gillscope,q4 (or --he-uv) and --he-silent: a debug shift with those tools and the W3 button.</summary>
+        ShiftSession NewDebugSession()
+        {
+            var tools = (LaunchScreenshot.Arg("--he-tools") ?? "").Split(',').Where(t => t.Length > 0).ToList();
+            if (LaunchScreenshot.HasFlag("--he-uv")) tools.Add(Tools.UvLamp);
+            SaveData save = null;
+            if (LaunchScreenshot.HasFlag("--he-silent")) { save = new SaveData(); save.Set(Campaign.SilentFlag); }
+            return DebugPlan.NewSession(_seed, tools, save);
+        }
 
         void PlayDebugShift() => ShowBriefing(NewDebugSession(), ShowDebugReport);
 
         void ShowDebugReport(ShiftSession session)
         {
             bool last = _shiftIndex >= Plans.Count - 1;
-            Show(Screens.Report(_root, session,
+            ShowReport(session,
                 () =>
                 {
                     _shiftIndex = last ? 0 : _shiftIndex + 1;
@@ -339,7 +496,7 @@ namespace HumanError.View
                     PlayDebugShift();
                 },
                 last ? "BACK TO SHIFT 1" : $"NEXT: SHIFT {DebugPlan.Data.number + 1}",
-                replay: PlayDebugShift));
+                replay: LaunchScreenshot.HasFlag("--he-store") ? (Action)null : PlayDebugShift);
         }
 
         /// <summary>--he-find: if tonight's seed has no such visitor, try the next seeds until one does.</summary>
@@ -380,6 +537,9 @@ namespace HumanError.View
                 desk = StartDesk(session, ShowDebugReport);
             }
             if (LaunchScreenshot.HasFlag("--he-uv")) desk.SendMessage("ToggleUv");
+            if (LaunchScreenshot.HasFlag("--he-scope")) desk.SendMessage("ToggleScope");
+            if (LaunchScreenshot.HasFlag("--he-lookup")) desk.SendMessage("LookUp");
+            if (LaunchScreenshot.HasFlag("--he-rulebook")) OpenRulebook();
             var ask = LaunchScreenshot.Arg("--he-ask");
             if (!string.IsNullOrEmpty(ask)) foreach (var id in ask.Split(',')) desk.Ask(id.Trim());
             switch (LaunchScreenshot.Arg("--he-decide"))
@@ -413,6 +573,22 @@ namespace HumanError.View
             ShowDebugReport(session);
         }
 
+        /// <summary>--he-screen ending [--he-ending 1-5]: a finished campaign's ending screen.</summary>
+        void DebugEnding()
+        {
+            _save = Campaign.NewGame(1);
+            _save.nextShift = LastShift + 1;
+            _save.humansCaught = 41;
+            _save.humansLetIn = 6;
+            _save.humansHidden = 9;
+            _save.loyalty = 30;
+            _save.mercy = 15;
+            _save.Set("mira2:letin");
+            _save.Set("mira3:letin");
+            _save.ending = int.TryParse(LaunchScreenshot.Arg("--he-ending"), out var e) ? Mathf.Clamp(e, 1, 5) : 1;
+            ShowEnding();
+        }
+
         /// <summary>--he-home-after N: a fresh campaign autoplayed through N shifts, then Home.</summary>
         void DebugHome()
         {
@@ -424,12 +600,14 @@ namespace HumanError.View
                 var home = new Home(_save, _game.Home);
                 if (LaunchScreenshot.HasFlag("--he-skip-meds") && home.HasBills) home.Toggle(home.Bill("meds"));
                 home.Leave();
-                var session = _game.Shift(shift).NewSession(Campaign.ShiftSeed(_save, shift), _save.tools);
+                var session = _game.Shift(shift).NewSession(Campaign.ShiftSeed(_save, shift), _save.tools, _save);
                 Autoplay(session);
-                Campaign.FinishShift(_save, session);
+                Campaign.FinishShift(_save, session, LastShift);
+                if (_save.Finished) break;
             }
             Persist();
-            ShowHome();
+            if (_save.Finished) ShowEnding();
+            else ShowHome();
         }
     }
 }

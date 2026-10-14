@@ -1,0 +1,53 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6ea7988840a5bd488445465412f2c6d, type: 3}
+  m_Name: Shift30
+  m_EditorClassIdentifier: 
+  data:
+    number: 30
+    title: Window 3
+    cycle: 415
+    day: 4
+    kesh: 
+    visitors: 12
+    humans: 4
+    ruleBreakers: 3
+    oddCitizens: 3
+    skilledShare: 0.8
+    clumsyMinTells: 0
+    clumsyMaxTells: 2
+    skilledTells: 0
+    maxForgedFields: 3
+    questionBudget: 3
+    questions:
+    - greeting
+    - kesh
+    - date
+    - blessed
+    - floor
+    - hands
+    - breathe
+    - trap
+    tells: []
+    closedFloors: 090000000e000000
+    rules:
+    - clan-stamp
+    - curfew
+    tools:
+    - archive
+    briefing: THE GRAND AUDIT. Every window, every visitor, every decision is reviewed
+      tonight. The stamp rule is back on AMMARU visitors. At 02:00 the Tower locks
+      down for good.
+    supervisor: Whatever you've been doing at that window, Ilo, tonight it counts.
+    revealEach: 0
+    untimed: 0
+    wanted: 

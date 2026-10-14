@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6ea7988840a5bd488445465412f2c6d, type: 3}
+  m_Name: Shift08
+  m_EditorClassIdentifier: 
+  data:
+    number: 8
+    title: Review
+    cycle: 412
+    day: 9
+    kesh: 
+    visitors: 10
+    humans: 3
+    ruleBreakers: 2
+    oddCitizens: 2
+    skilledShare: 0.67
+    clumsyMinTells: 0
+    clumsyMaxTells: 2
+    skilledTells: 0
+    maxForgedFields: 3
+    questionBudget: 3
+    questions:
+    - evening
+    - kesh
+    - date
+    - home
+    - floor
+    - palm
+    - breathe
+    - trap
+    tells: []
+    closedFloors: 090000000e000000
+    rules:
+    - clan-stamp
+    tools: []
+    briefing: 'Last night of the cycle. Supervisor Graav reviews every decision you
+      make tonight. Audit (9) and Records (14) are both closed: someone upstairs
+      doesn''t want visitors near the files.'
+    supervisor: I'll be reading your report personally. Make it boring.
+    revealEach: 0
+    untimed: 0
+    wanted: 

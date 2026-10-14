@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6ea7988840a5bd488445465412f2c6d, type: 3}
+  m_Name: Shift22
+  m_EditorClassIdentifier: 
+  data:
+    number: 22
+    title: Curfew
+    cycle: 414
+    day: 5
+    kesh: 
+    visitors: 11
+    humans: 4
+    ruleBreakers: 3
+    oddCitizens: 2
+    skilledShare: 0.75
+    clumsyMinTells: 0
+    clumsyMaxTells: 2
+    skilledTells: 0
+    maxForgedFields: 3
+    questionBudget: 3
+    questions:
+    - mood
+    - lantern
+    - stamped
+    - nest
+    - when
+    - wave
+    - whistle
+    - cold
+    tells: []
+    closedFloors: 09000000
+    rules:
+    - clan-stamp:Plo
+    - curfew
+    tools:
+    - archive
+    briefing: 'CURFEW: no appointments after midnight. A slip timed 00:00 or later
+      is turned away, however real the visitor. Audit (9) is closed.'
+    supervisor: The rules tighten. So do I.
+    revealEach: 0
+    untimed: 0
+    wanted: 

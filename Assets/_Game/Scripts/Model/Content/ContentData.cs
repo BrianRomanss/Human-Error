@@ -60,6 +60,10 @@ namespace HumanError.Model.Content
         public string supervisor;
         /// <summary>Show the truth after every decision (the training night); otherwise only the Shift Report does (GDD §7.2).</summary>
         public bool revealEach;
+        /// <summary>The clock only moves when you act (the training night): no early closing.</summary>
+        public bool untimed;
+        /// <summary>Clan name for "invaders seen wearing X suits" on tonight's bulletin; empty = none.</summary>
+        public string wanted;
     }
 
     /// <summary>A news headline at Home (GDD §8: 3 per shift, reacting to your choices).</summary>
@@ -84,6 +88,8 @@ namespace HumanError.Model.Content
         public string flag;
         public int loyalty;
         public int mercy;
+        /// <summary>How much more closely the Lattice watches you after this choice.</summary>
+        public int suspicion;
         /// <summary>Shards gained (or spent, if negative) tonight.</summary>
         public int shards;
     }
@@ -147,9 +153,64 @@ namespace HumanError.Model.Content
         public TutorialStepData[] steps = new TutorialStepData[0];
     }
 
+    /// <summary>A fixed face from the kit (free slots 0–7, tone 0–1).</summary>
+    [Serializable]
+    public class LookData
+    {
+        public string clan;
+        public int head;
+        public int mouth;
+        public int pattern;
+        public int outfit;
+        public int tone;
+    }
+
+    /// <summary>One appearance of a story character at the window.</summary>
+    [Serializable]
+    public class StoryVisitData
+    {
+        /// <summary>Visit number for flags ("mira2:letin"); 0 = the next one. Alternatives for the same visit share it.</summary>
+        public int visit;
+        public int shift;
+        /// <summary>1-based place in the queue.</summary>
+        public int position;
+        /// <summary>VisitorKind name; the visitor replaces a generated one of this kind.</summary>
+        public string kind;
+        /// <summary>Name on tonight's papers; empty = the character's name.</summary>
+        public string alias;
+        /// <summary>Tonight's suit (or face); null = rolled.</summary>
+        public LookData look;
+        /// <summary>Humans: exactly these tells; empty = rolled by kind.</summary>
+        public string[] tells = new string[0];
+        public string violation;
+        public string quirk;
+        public string motive;
+        /// <summary>Arrival line. States a mood ("I am 60% …") unless the visitor greets with small talk.</summary>
+        public string greeting;
+        /// <summary>What they say as you let them in, turn them away, call security or press the silent button.</summary>
+        public string letin;
+        public string away;
+        public string security;
+        public string silent;
+        /// <summary>Condition tokens that must hold (e.g. "!flag:mira1:security").</summary>
+        public string[] when = new string[0];
+        /// <summary>Who they really are, for the reveal and the Shift Report.</summary>
+        public string note;
+    }
+
+    /// <summary>A recurring character (GDD §6): Mira, Duun, the Inspector, the Twins, Window 3's couriers.</summary>
+    [Serializable]
+    public class StoryData
+    {
+        public string id;
+        public string name;
+        public StoryVisitData[] visits = new StoryVisitData[0];
+    }
+
     [Serializable]
     public class ContentFile
     {
+        public StoryData[] story = new StoryData[0];
         public QuestionData[] questions = new QuestionData[0];
         public ShiftData[] shifts = new ShiftData[0];
         public NewsData[] news = new NewsData[0];

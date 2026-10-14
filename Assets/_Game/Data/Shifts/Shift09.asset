@@ -1,0 +1,51 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6ea7988840a5bd488445465412f2c6d, type: 3}
+  m_Name: Shift09
+  m_EditorClassIdentifier: 
+  data:
+    number: 9
+    title: Cracks
+    cycle: 413
+    day: 1
+    kesh: 
+    visitors: 9
+    humans: 2
+    ruleBreakers: 2
+    oddCitizens: 1
+    skilledShare: 0.5
+    clumsyMinTells: 0
+    clumsyMaxTells: 2
+    skilledTells: 0
+    maxForgedFields: 2
+    questionBudget: 3
+    questions:
+    - mood
+    - keshname
+    - cycle
+    - blessed
+    - where
+    - wave
+    - eyes
+    - busy
+    tells: []
+    closedFloors: 05000000
+    rules:
+    - clan-stamp
+    tools: []
+    briefing: 'New cycle, new questions on your list. The humans have been studying:
+      last cycle''s answers won''t catch them now. Permits (floor 5) is closed for
+      the cycle change.'
+    supervisor: They've learned our moods. Learn their mistakes.
+    revealEach: 0
+    untimed: 0
+    wanted: 

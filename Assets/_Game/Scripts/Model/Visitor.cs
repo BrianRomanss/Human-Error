@@ -35,6 +35,7 @@ namespace HumanError.Model
         EarthDate,
         FlatHologram,      // only visible under the UV lamp
         GlyphUpsideDown,
+        NoRecord,          // an invented identity: only the archive lookup shows it
     }
 
     public enum TellCategory { Visual, Verbal, Document }
@@ -78,6 +79,7 @@ namespace HumanError.Model
                 case Tell.EarthDate: return "A date written the Earth way (412.6) instead of C412·6.";
                 case Tell.FlatHologram: return "Under the UV lamp the hologram was a flat printed circle.";
                 case Tell.GlyphUpsideDown: return "The Lattice glyph on the ID was upside down.";
+                case Tell.NoRecord: return "The archive had no record of that name: an invented identity.";
                 default: return t.ToString();
             }
         }
@@ -101,6 +103,7 @@ namespace HumanError.Model
                 case Tell.EarthDate:
                 case Tell.NameMismatch:
                 case Tell.PhotoMismatch:
+                case Tell.NoRecord:
                     return 2;
                 default:
                     return 3;
@@ -109,7 +112,7 @@ namespace HumanError.Model
     }
 
     /// <summary>Why a real citizen should still be turned away (GDD §5.2): papers that break a rule.</summary>
-    public enum Violation { None, Expired, FloorClosed, NoFloorAccess, MissingStamp }
+    public enum Violation { None, Expired, FloorClosed, NoFloorAccess, MissingStamp, LateAppointment }
 
     /// <summary>A citizen's odd-but-explained behaviour (GDD §5.5): it looks human, but a medical pass covers it.</summary>
     public enum Quirk { None, LidReflex, GillRot }
@@ -171,6 +174,15 @@ namespace HumanError.Model
         public string DateText => Date.Format(DateStyle);
     }
 
+    /// <summary>What the Lattice archive holds for a name (GDD §5.6 archive lookup).</summary>
+    public sealed class ArchiveRecord
+    {
+        public string Name;
+        public Clan Clan;
+        public Look Photo;
+        public CycleDate Registered;
+    }
+
     /// <summary>A Lattice medical pass (GDD §5.1 "special papers"): explains one odd-citizen quirk.</summary>
     public sealed class MedicalPass
     {
@@ -218,7 +230,11 @@ namespace HumanError.Model
         public IdCard Id;
         public AppointmentSlip Slip;
         public MedicalPass Medical;
+        /// <summary>The archive's record for the name on the ID; null = no record (an invented identity).</summary>
+        public ArchiveRecord Record;
         public string Greeting;
+        /// <summary>Set for recurring story characters (Mira, Duun…); null for generated visitors.</summary>
+        public StoryVisit Story;
         public readonly Dictionary<string, Answer> Answers = new Dictionary<string, Answer>();
         /// <summary>0–1. Rises with questions; some visual tells only appear above a threshold.</summary>
         public float BaseStress;

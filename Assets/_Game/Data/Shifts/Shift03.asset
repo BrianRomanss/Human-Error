@@ -24,7 +24,7 @@ MonoBehaviour:
     oddCitizens: 1
     skilledShare: 0.34
     clumsyMinTells: 0
-    clumsyMaxTells: 0
+    clumsyMaxTells: 2
     skilledTells: 0
     maxForgedFields: 2
     questionBudget: 3
@@ -58,3 +58,6 @@ MonoBehaviour:
     briefing: "Humans don't know our sky. Ask about Kesh and the date \u2014 and
       watch how they write dates."
     supervisor: If they laugh at your jokes, they're not from here.
+    revealEach: 0
+    untimed: 0
+    wanted: 

@@ -31,6 +31,8 @@ namespace HumanError.Model
     {
         /// <summary>Lowest starting stress of a human; used to decide whether stress tells can ever show.</summary>
         public const float MinHumanStress = 0.2f, MaxHumanStress = 0.35f;
+        /// <summary>Share of humans in the wanted clan's suits when the bulletin names one.</summary>
+        public const float WantedShare = 0.6f;
 
         public static List<VisitorInstance> Generate(ShiftConfig config, ShiftContext ctx, ulong seed)
         {
@@ -54,8 +56,14 @@ namespace HumanError.Model
         }
 
         public static VisitorInstance Create(VisitorKind kind, ShiftConfig config, ShiftContext ctx, SeededRandom rng,
+            int index = 0, HashSet<string> usedNames = null) =>
+            Create(new VisitorSpec { Kind = kind }, config, ctx, rng, index, usedNames);
+
+        /// <summary>A visitor from a spec: anything the spec fixes (story visitors' look, name, tells) is kept, the rest is rolled.</summary>
+        public static VisitorInstance Create(VisitorSpec spec, ShiftConfig config, ShiftContext ctx, SeededRandom rng,
             int index = 0, HashSet<string> usedNames = null)
         {
+            var kind = spec.Kind;
             bool human = kind == VisitorKind.ClumsyHuman || kind == VisitorKind.SkilledHuman;
             var truth = new VisitorTruth
             {
@@ -63,29 +71,31 @@ namespace HumanError.Model
                 Kind = kind,
                 Motive = human ? rng.Pick(new[] { Motive.Refugee, Motive.Refugee, Motive.Runaway, Motive.Spy, Motive.LostTourist }) : Motive.None,
             };
+            if (human && spec.Motive != Motive.None) truth.Motive = spec.Motive;
 
             if (human)
             {
                 int count = kind == VisitorKind.SkilledHuman
                     ? config.SkilledTells
                     : rng.Range(config.ClumsyMinTells, config.ClumsyMaxTells + 1);
-                truth.Tells = PickTells(kind, Math.Max(1, count), config, ctx, rng);
+                truth.Tells = spec.Tells != null && spec.Tells.Count > 0
+                    ? spec.Tells.ToList()
+                    : PickTells(kind, Math.Max(1, count), config, ctx, rng);
             }
             else if (kind == VisitorKind.RuleBreakerCitizen)
             {
-                var options = new List<Violation> { Violation.Expired, Violation.NoFloorAccess };
-                if (ctx.ClosedFloors.Count > 0 && ctx.HasRule("floor-closed")) options.Add(Violation.FloorClosed);
-                if (ctx.HasRule("clan-stamp")) options.Add(Violation.MissingStamp);
-                truth.Violation = rng.Pick(options);
+                var options = ViolationsAllowed(ctx);
+                truth.Violation = spec.Violation != Violation.None ? spec.Violation : rng.Pick(options);
             }
             else if (kind == VisitorKind.OddCitizen)
             {
                 var quirks = QuirksAllowed(ctx);
-                truth.Quirk = quirks.Count > 0 ? rng.Pick(quirks) : Quirk.None;
+                truth.Quirk = spec.Quirk != Quirk.None ? spec.Quirk : quirks.Count > 0 ? rng.Pick(quirks) : Quirk.None;
             }
 
             var stampClan = ctx.Rules.OfType<ClanStampRule>().Select(r => (Clan?)r.Clan).FirstOrDefault();
             var clan = truth.Violation == Violation.MissingStamp && stampClan.HasValue ? stampClan.Value : rng.Pick(Clans.All);
+            if (human && ctx.WantedClan.HasValue && rng.Chance(WantedShare)) clan = ctx.WantedClan.Value;
             truth.Look = new Look
             {
                 Clan = clan,
@@ -95,17 +105,30 @@ namespace HumanError.Model
                 Outfit = rng.Range(0, Look.Options),
                 Tone = rng.Range(0, 2),
             };
-            truth.TrueName = Names.Make(clan, rng, usedNames);
+            if (spec.Look != null) truth.Look = spec.Look.Clone();
+            truth.TrueName = string.IsNullOrEmpty(spec.Name) ? Names.Make(truth.Look.Clan, rng, usedNames) : spec.Name;
+            usedNames?.Add(truth.TrueName);
 
             var v = new VisitorInstance { Index = index, Truth = truth };
             MakeDocuments(v, ctx, rng, stampClan);
             foreach (var q in ctx.Questions) v.Answers[q.Id] = AnswerBook.Make(q, v, ctx, rng);
             v.Greeting = AnswerBook.Greeting(v, rng);
+            if (!string.IsNullOrEmpty(spec.Greeting)) v.Greeting = spec.Greeting;
             v.BaseStress = human ? rng.Range(MinHumanStress, MaxHumanStress) : 0f;
             return v;
         }
 
-        static List<Quirk> QuirksAllowed(ShiftContext ctx)
+        /// <summary>Ways a rule-breaker's papers can break tonight's rules.</summary>
+        public static List<Violation> ViolationsAllowed(ShiftContext ctx)
+        {
+            var options = new List<Violation> { Violation.Expired, Violation.NoFloorAccess };
+            if (ctx.ClosedFloors.Count > 0 && ctx.HasRule("floor-closed")) options.Add(Violation.FloorClosed);
+            if (ctx.HasRule("clan-stamp")) options.Add(Violation.MissingStamp);
+            if (ctx.HasRule("curfew")) options.Add(Violation.LateAppointment);
+            return options;
+        }
+
+        public static List<Quirk> QuirksAllowed(ShiftContext ctx)
         {
             var q = new List<Quirk>();
             if (ctx.AllowedTells == null || ctx.AllowedTells.Contains(Tell.Blinks)) q.Add(Quirk.LidReflex);
@@ -133,6 +156,11 @@ namespace HumanError.Model
                 {
                     case Tell.FiveFingers: findable = ctx.Questions.Any(q => q.Effect == QuestionEffect.ShowHand); break;
                     case Tell.FlatHologram: findable = ctx.Has(Tools.UvLamp); break;
+                    case Tell.NoRecord: findable = ctx.Has(Tools.Archive); break;
+                    // Still gills show when they breathe on the glass, or under the gill-scope.
+                    case Tell.MouthBreathing:
+                        findable = ctx.Has(Tools.GillScope) || ctx.Questions.Any(q => q.Effect == QuestionEffect.BreatheOnGlass);
+                        break;
                     case Tell.Sweats: findable = maxStress >= VisitorInstance.SweatThreshold; break;
                     case Tell.SuitFlicker: findable = maxStress >= VisitorInstance.FlickerThreshold; break;
                     case Tell.SmallTalkGreeting: findable = true; break;
@@ -205,7 +233,9 @@ namespace HumanError.Model
                 }
             }
 
-            int minutes = rng.Range(0, 24) * 15; // appointment between 20:00 and 01:45
+            // Appointment between 20:00 and 01:45; under a curfew only before midnight (unless that's the rule they break).
+            int minutes = !ctx.HasRule("curfew") ? rng.Range(0, 24) * 15
+                : t.Violation == Violation.LateAppointment ? rng.Range(16, 24) * 15 : rng.Range(0, 16) * 15;
             v.Id = new IdCard
             {
                 Name = t.TrueName,
@@ -232,6 +262,9 @@ namespace HumanError.Model
                 else v.Slip.DateStyle = DateStyle.Earth;
             }
             if (t.Quirk != Quirk.None) v.Medical = new MedicalPass { Name = t.TrueName, Condition = t.Quirk };
+            // The archive knows every real citizen, and the identities humans stole; invented ones aren't there.
+            if (!t.Has(Tell.NoRecord))
+                v.Record = new ArchiveRecord { Name = t.TrueName, Clan = t.Look.Clan, Photo = t.Look.Clone(), Registered = ctx.Tonight.AddDays(-rng.Range(200, 2000)) };
         }
     }
 
@@ -314,11 +347,13 @@ namespace HumanError.Model
                 }
                 if (t.Has(Tell.NameMismatch) == (v.Slip.Name == v.Id.Name)) p.Add("name mismatch tell not reflected in papers");
                 if (t.Has(Tell.PhotoMismatch) == v.Id.Photo.SameFace(t.Look)) p.Add("photo mismatch tell not reflected in papers");
+                if (t.Has(Tell.NoRecord) != (v.Record == null)) p.Add("no-record tell not reflected in the archive");
                 if (t.Tells.Count(x => Tells.Category(x) == TellCategory.Document) > 3) p.Add("more than 3 forged fields");
             }
             else
             {
                 if (t.Tells.Count > 0) p.Add("citizen with human tells");
+                if (v.Record == null || v.Record.Name != v.Id.Name || v.Record.Clan != v.Id.Clan) p.Add("citizen without a matching archive record");
                 if (forged) p.Add("citizen with forged papers");
                 if (v.Answers.Values.Any(a => a.Reveals.HasValue || a.FingersShown == 5 || a.Fog)) p.Add("citizen answer reveals a tell");
                 if (!v.Greeting.Contains("%")) p.Add("citizen greeting doesn't state a mood");

@@ -171,6 +171,7 @@ namespace HumanError.Model
                 s.Set(c.flag);
                 s.loyalty += c.loyalty;
                 s.mercy += c.mercy;
+                s.suspicion += c.suspicion;
             }
             s.shards = left;
             s.atHome = false;

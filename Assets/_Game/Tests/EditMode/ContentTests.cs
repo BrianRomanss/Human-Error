@@ -1,3 +1,4 @@
+using System.Collections.Generic;
 using System.Linq;
 using HumanError.Model;
 using HumanError.Model.Content;
@@ -29,12 +30,17 @@ namespace HumanError.Tests
         [Test]
         public void TellsAreIntroducedGradually()
         {
-            int previous = 0;
+            // GDD §8 "introduce → combine → twist": once a tell is introduced it stays in play (each night's question
+            // list decides which verbal ones can show), and from shift 6 every night offers a wide spread.
+            HashSet<Tell> introduced = new HashSet<Tell>();
             foreach (var p in TestContent.Plans())
             {
-                int count = VisitorGenerator.AvailableTells(p.Context(1)).Count;
-                Assert.That(count, Is.GreaterThanOrEqualTo(previous), $"shift {p.Data.number} has fewer tells than the one before");
-                previous = count;
+                var ctx = p.Context(1);
+                var allowed = ctx.AllowedTells ?? new HashSet<Tell>(Tells.All);
+                foreach (var t in introduced) Assert.IsTrue(allowed.Contains(t), $"shift {p.Data.number} drops {t}");
+                introduced.UnionWith(allowed);
+                int count = VisitorGenerator.AvailableTells(ctx).Count;
+                if (p.Data.number >= 6) Assert.That(count, Is.GreaterThanOrEqualTo(15), $"shift {p.Data.number} offers only {count} findable tells");
             }
         }
 
@@ -70,7 +76,7 @@ namespace HumanError.Tests
                 new ShiftSummary { visitors = 8, invaders = 2, wrongful = 1, mistakes = 4 },
                 new ShiftSummary { visitors = 8, mistakes = 0 },
             };
-            for (int after = 0; after <= last; after++)
+            for (int after = 0; after < last; after++)
                 foreach (var c in cases)
                 {
                     c.shift = after;
@@ -97,7 +103,7 @@ namespace HumanError.Tests
             file.upgrades = new[] { new UpgradeData { id = "x", name = "X", price = 0, unlockShift = 1, tool = "laser" } };
             ContentFactory.LoadGame(file, out var errors);
             string all = string.Join("\n", errors);
-            foreach (var expected in new[] { "unknown condition 'moonquake'", "there is no shift 7", "unconditional headlines",
+            foreach (var expected in new[] { "unknown condition 'moonquake'", "there is no evening after shift 7", "unconditional headlines",
                          "a choice without text", "duplicate message id 'm'", "no sender", "price must be above 0", "unknown tool 'laser'" })
                 StringAssert.Contains(expected, all);
         }
@@ -110,7 +116,7 @@ namespace HumanError.Tests
                 new QuestionData { id = "q2", kind = "Pressure", text = "Why?", citizen = new[] { "No." } },
             },
             shifts = new[] { new ShiftData { number = 1, day = 1, visitors = 4, humans = 1, questions = new[] { "q1", "q2" }, questionBudget = 2 } },
-            news = new[] { 0, 0, 0, 1, 1, 1 }.Select((after, i) => new NewsData { after = after, text = $"Headline {i}" }).ToArray(),
+            news = new[] { 0, 0, 0 }.Select((after, i) => new NewsData { after = after, text = $"Headline {i}" }).ToArray(),
         };
 
         [Test]

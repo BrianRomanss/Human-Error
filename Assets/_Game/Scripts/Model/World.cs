@@ -120,7 +120,23 @@ namespace HumanError.Model
     {
         public const string UvLamp = "uv";
         public const string GillScope = "gillscope";
-        public static readonly string[] All = { UvLamp, GillScope };
+        /// <summary>Archive lookup: check a name against Lattice records, once per visitor (GDD §5.6, shift 14).</summary>
+        public const string Archive = "archive";
+        /// <summary>The 4th question upgrade (GDD §5.6, shift 16): one more question per visitor.</summary>
+        public const string FourthQuestion = "q4";
+        public static readonly string[] All = { UvLamp, GillScope, Archive, FourthQuestion };
+
+        public static string Name(string tool)
+        {
+            switch (tool)
+            {
+                case UvLamp: return "UV LAMP";
+                case GillScope: return "GILL-SCOPE";
+                case Archive: return "ARCHIVE";
+                case FourthQuestion: return "4TH QUESTION";
+                default: return tool.ToUpperInvariant();
+            }
+        }
     }
 
     /// <summary>Everything about tonight that rules and answers are checked against.</summary>
@@ -142,6 +158,12 @@ namespace HumanError.Model
         public string SupervisorLine = "";
         /// <summary>Show the truth after each decision (the training night) instead of only on the Shift Report.</summary>
         public bool RevealEachVisitor;
+        /// <summary>Real time moves the clock and the window closes at 02:00 (false on the training night).</summary>
+        public bool Timed = true;
+        /// <summary>Bulletin "invaders seen wearing X suits" (GDD §5.2): most humans tonight wear this clan. A hint, not a rule.</summary>
+        public Clan? WantedClan;
+        /// <summary>The silent button (GDD §5.6): mark a visitor for Window 3 instead of security. A story unlock.</summary>
+        public bool Silent;
         /// <summary>"ENDLESS" or "DAILY" for the score modes; empty in the story. Screens show Title instead of a shift number.</summary>
         public string Mode = "";
         public bool IsMode => !string.IsNullOrEmpty(Mode);

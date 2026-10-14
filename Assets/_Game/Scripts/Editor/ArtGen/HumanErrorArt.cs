@@ -71,6 +71,7 @@ namespace HumanError.EditorTools.ArtGen
             Save("UI/panel_9s.png", RoundedSquare(64, 14));
             Save("UI/button_9s.png", RoundedSquare(64, 18));
             Save("UI/circle.png", CircleSprite(128));
+            Save("UI/ring.png", RingSprite(128, 7));
             Save("UI/scanline.png", ScanLine());
             Save("UI/moon_kesh.png", Moon(160, false));
             Save("UI/moon_aun.png", Moon(320, true));
@@ -78,6 +79,7 @@ namespace HumanError.EditorTools.ArtGen
             Save("Backgrounds/title.png", TitleTower());
             Save("Backgrounds/home.png", HomeRoom());
             Save("UI/shade_left.png", ShadeLeft());
+            Save("Icon/icon.png", Icon());
             return files;
         }
 
@@ -544,6 +546,14 @@ namespace HumanError.EditorTools.ArtGen
             return r;
         }
 
+        /// <summary>Tell-assist outline (tinted in code).</summary>
+        static Raster RingSprite(int size, float halfWidth)
+        {
+            var r = new Raster(size, size);
+            r.Fill(Ring(Circle(size / 2f, size / 2f, size / 2f - halfWidth - 2), halfWidth), Rgba.White);
+            return r;
+        }
+
         static Raster ScanLine()
         {
             var r = new Raster(256, 48);
@@ -740,6 +750,47 @@ namespace HumanError.EditorTools.ArtGen
         }
 
         /// <summary>Left-to-right fade from the night colour, laid over art behind menus.</summary>
+        /// <summary>
+        /// App icon (512×512, full bleed: launchers mask the corners). A lilac Vessi at the lit booth glass, one pupil
+        /// gone round: the game's tell in one picture.
+        /// </summary>
+        static Raster Icon()
+        {
+            var lilac = Rgba.Hex("#C7B8F5");
+            Raster Tint(Raster src)
+            {
+                var o = new Raster(src.Width, src.Height);
+                for (int y = 0; y < src.Height; y++)
+                for (int x = 0; x < src.Width; x++)
+                {
+                    var c = src.Get(x, y);
+                    o.Set(x, y, new Rgba(c.R * lilac.R, c.G * lilac.G, c.B * lilac.B, c.A));
+                }
+                return o;
+            }
+            var r = new Raster(S, S);
+            r.Fill(Rect(0, 0, S, S), Raster.RadialGradient(256, 210, 400, BoothGlass, MossNight));
+            r.Glow(Circle(256, 250, 200), BioGlow.WithAlpha(0.35f), 60);
+            // The visitor, a little smaller and lower so the crest and the glass frame both fit.
+            var visitor = new Raster(S, S);
+            visitor.Draw(Tint(Neck()), 0, 0);
+            visitor.Draw(Outfit(1), 0, 0);
+            visitor.Draw(Tint(Head(0)), 0, 0);
+            visitor.Draw(Tint(Crest(0, 0)), 0, 0);
+            visitor.Draw(GlowSpots(0, 0), 0, 0);
+            // A slit-pupilled citizen... except for one round, human pupil.
+            visitor.Draw(Eyes(0, 0, round: false, closed: false), 0, 0);
+            var human = Eyes(0, 0, round: true, closed: false);
+            human.Mask(Rect(S / 2f, 0, S / 2f, S));
+            visitor.Draw(human, 0, 0);
+            visitor.Draw(Mouth(0), 0, 0);
+            var small = visitor.Downscale(440, 440);
+            r.Draw(small, 36, 62);
+            // Booth window frame.
+            r.Stroke(Box(256, 256, 232, 232, 56), 16, BioGlow);
+            return r;
+        }
+
         static Raster ShadeLeft()
         {
             var r = new Raster(256, 16);

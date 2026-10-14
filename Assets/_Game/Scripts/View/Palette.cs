@@ -6,10 +6,13 @@ namespace HumanError.View
     /// <summary>GDD §9 palette. Teal glow = alien, coral = danger; colour is always paired with a word.</summary>
     public static class Palette
     {
+        /// <summary>Colourblind palette (Settings): blue for alien, orange for danger, yellow for warnings.</summary>
+        public static bool Colourblind;
+
         public static readonly Color MossNight = Hex(0x0E1A1F);
         public static readonly Color BoothGlass = Hex(0x173B44);
-        public static readonly Color BioGlow = Hex(0x3FE0C5);
-        public static readonly Color Coral = Hex(0xFF6B57);
+        public static Color BioGlow => Colourblind ? Hex(0x5AAEFF) : Hex(0x3FE0C5);
+        public static Color Coral => Colourblind ? Hex(0xFF9A1F) : Hex(0xFF6B57);
         public static readonly Color PaperSand = Hex(0xE9DFC7);
         public static readonly Color Ink = Hex(0x111A1E);
 
@@ -19,13 +22,16 @@ namespace HumanError.View
         public static readonly Color CounterEdge = Hex(0x4A3A30);
         public static readonly Color Sand = Hex(0xD9C38E);
         public static readonly Color Muted = Hex(0x8FA7A8);
-        public static readonly Color Warning = Hex(0xE8B64A);
+        public static Color Warning => Colourblind ? Hex(0xF4E86A) : Hex(0xE8B64A);
         public static readonly Color Slip = Hex(0xF4F0E4);
         public static readonly Color StampBlue = Hex(0x2F6FC0);
         public static readonly Color DocHeader = Hex(0x1F4D50);
         public static readonly Color UvViolet = Hex(0x6B3FD1);
 
         public static Color WithAlpha(this Color c, float a) => new Color(c.r, c.g, c.b, a);
+
+        /// <summary>A colour for rich text, e.g. $"&lt;color={Palette.Rich(Palette.BioGlow)}&gt;".</summary>
+        public static string Rich(Color c) => "#" + ColorUtility.ToHtmlStringRGB(c);
 
         /// <summary>Clan skin tints (GDD §9: lilac Vessi, mint Ammaru, peach Plo; Ruu sky blue from the kit sheet).</summary>
         public static Color Skin(Clan clan)

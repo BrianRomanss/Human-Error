@@ -1,0 +1,31 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: d1d166290693aaa4da8fe7a683412f0d, type: 3}
+  m_Name: busy
+  m_EditorClassIdentifier: 
+  data:
+    id: busy
+    text: Busy night, huh?
+    kind: Trap
+    effect: 
+    reveals: EngagesSmallTalk
+    citizen:
+    - That is your business.
+    - '*silence*'
+    - I am here for an appointment.
+    human:
+    - Tell me about it!
+    - Seems like it! Long queue.
+    - Oh yeah, crazy out there.
+    slipChance: 0.5
+    stress: 0.2
+    unlockShift: 9

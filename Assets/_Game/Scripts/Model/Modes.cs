@@ -99,6 +99,11 @@ namespace HumanError.Model
             var basis = game.Shift(Math.Min(level, last)).Data;
             var rng = new SeededRandom(EndlessSeed(runSeed, level) ^ 0xE1D1E55UL);
             var d = Vary(basis, rng);
+            // Story acts open with a breather; Endless never eases off: the hardest mix seen so far, at least.
+            var sofar = shifts.Where(p => p.Data.number <= Math.Min(level, last)).Select(p => p.Data).ToList();
+            d.humans = sofar.Max(x => x.humans);
+            d.skilledShare = sofar.Max(x => x.skilledShare);
+            d.visitors = Math.Max(d.visitors, d.humans + d.ruleBreakers + d.oddCitizens);
             int beyond = Math.Max(0, level - last);
             if (beyond > 0)
             {
@@ -114,11 +119,12 @@ namespace HumanError.Model
             return Build(game, d, game.Home.ToolsBy(d.number), out errors);
         }
 
-        public static ShiftPlan Daily(GameContent game, DateTime date, out List<string> errors)
+        /// <param name="lastBase">The demo builds dailies only on the shifts it contains (<see cref="Edition.LastDailyBase"/>).</param>
+        public static ShiftPlan Daily(GameContent game, DateTime date, out List<string> errors, int lastBase = int.MaxValue)
         {
             var rng = new SeededRandom(DailySeed(date) ^ 0xDA11UL);
             // Bases from shift 3 on: enough questions and tells for a full twelve-visitor night.
-            var candidates = game.Shifts.Where(p => p.Data.number >= 3).ToList();
+            var candidates = game.Shifts.Where(p => p.Data.number >= 3 && p.Data.number <= lastBase).ToList();
             if (candidates.Count == 0) candidates = game.Shifts;
             var basis = rng.Pick(candidates).Data;
             var d = Vary(basis, rng);

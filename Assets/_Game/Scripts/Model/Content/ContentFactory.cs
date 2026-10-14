@@ -14,21 +14,32 @@ namespace HumanError.Model.Content
         public Func<ulong, ShiftContext> Context;
         /// <summary>The guided night, when this is the tutorial shift; its scripted visitors go first.</summary>
         public Tutorial Tutorial;
+        /// <summary>Story characters who may come tonight (each visit has its own conditions).</summary>
+        public List<StoryVisit> Story = new List<StoryVisit>();
 
         /// <summary>Tonight's context plus tools the player owns (bought at Home).</summary>
         public ShiftContext ContextWith(ulong seed, IEnumerable<string> ownedTools)
         {
             var ctx = Context(seed);
             foreach (var t in ownedTools ?? Enumerable.Empty<string>()) ctx.Tools.Add(t);
+            // The 4th question upgrade (GDD §5.6): one more question per visitor, if tonight's list has room.
+            if (ctx.Has(Tools.FourthQuestion)) ctx.QuestionBudget = Math.Min(ctx.Questions.Count, ctx.QuestionBudget + 1);
             return ctx;
         }
 
-        public ShiftSession NewSession(ulong seed, IEnumerable<string> ownedTools = null)
+        /// <param name="save">The campaign so far: decides which story visitors come (null = a fresh game).</param>
+        public ShiftSession NewSession(ulong seed, IEnumerable<string> ownedTools = null, SaveData save = null)
         {
             var ctx = ContextWith(seed, ownedTools);
+            ctx.Silent = save != null && save.Has(Campaign.SilentFlag);
+            return new ShiftSession(ctx, Queue(ctx, seed, StoryCast.Tonight(Story, save)));
+        }
+
+        public List<VisitorInstance> Queue(ShiftContext ctx, ulong seed, IList<StoryVisit> story)
+        {
             var queue = VisitorGenerator.Generate(Config, ctx, seed);
             if (Tutorial != null) queue = Tutorial.Arrange(queue, Config, ctx, seed);
-            return new ShiftSession(ctx, queue);
+            return StoryCast.Place(queue, story, Config, ctx, seed, Tutorial?.Visitors.Count ?? 0);
         }
     }
 
@@ -159,6 +170,12 @@ namespace HumanError.Model.Content
             if ((s.closedFloors?.Length ?? 0) >= Floors.All.Length) Errors.Add($"{where}: every floor is closed");
             if (!string.IsNullOrEmpty(s.kesh) && Array.IndexOf(Kesh.Colours, s.kesh) < 0) Errors.Add($"{where}: unknown Kesh colour '{s.kesh}'");
             if (s.day < 0 || s.day > CycleDate.DaysPerCycle) Errors.Add($"{where}: day must be 1–{CycleDate.DaysPerCycle}");
+            Clan? wanted = null;
+            if (!string.IsNullOrEmpty(s.wanted))
+            {
+                if (Enum.TryParse(s.wanted, out Clan w)) wanted = w;
+                else Errors.Add($"{where}: unknown wanted clan '{s.wanted}'");
+            }
 
             var config = new ShiftConfig
             {
@@ -196,6 +213,8 @@ namespace HumanError.Model.Content
                 Briefing = s.briefing ?? "",
                 SupervisorLine = s.supervisor ?? "",
                 RevealEachVisitor = s.revealEach,
+                Timed = !s.untimed,
+                WantedClan = wanted,
             };
 
             if (Errors.Count == 0)
@@ -224,6 +243,7 @@ namespace HumanError.Model.Content
             if (game.Shifts.Count == 0) f.Errors.Add("no shifts");
             game.Home = f.HomeFrom(file, numbers.Count == 0 ? 0 : numbers.Max());
             if (file?.tutorial != null && file.tutorial.shift > 0) f.TutorialFrom(file.tutorial, game);
+            if (f.Errors.Count == 0) f.StoryFrom(file?.story, game);
             errors = f.Errors.Distinct().ToList();
             return game;
         }
@@ -247,11 +267,12 @@ namespace HumanError.Model.Content
                 n.when = n.when ?? new string[0];
                 string where = $"news after shift {n.after} \"{Short(n.text)}\"";
                 if (string.IsNullOrWhiteSpace(n.text)) Errors.Add($"news after shift {n.after}: no text");
-                if (n.after < 0 || n.after > lastShift) Errors.Add($"{where}: there is no shift {n.after}");
+                // After the last shift comes the ending, not an evening at Home.
+                if (n.after < 0 || n.after >= lastShift) Errors.Add($"{where}: there is no evening after shift {n.after}");
                 Tokens(where, n.when);
             }
             // Every evening needs a full front page whatever happened, so reactions can only push fillers out.
-            for (int after = 0; after <= lastShift; after++)
+            for (int after = 0; after < lastShift; after++)
             {
                 int always = home.News.Count(n => n.after == after && n.when.Length == 0);
                 if (always < HomeContent.NewsPerNight)
@@ -268,7 +289,7 @@ namespace HumanError.Model.Content
                 else if (!ids.Add(m.id)) Errors.Add($"duplicate message id '{m.id}'");
                 if (string.IsNullOrWhiteSpace(m.from)) Errors.Add($"{where}: no sender");
                 if (string.IsNullOrWhiteSpace(m.text)) Errors.Add($"{where}: no text");
-                if (m.after < HomeContent.AnyEvening || m.after > lastShift) Errors.Add($"{where}: there is no shift {m.after}");
+                if (m.after < HomeContent.AnyEvening || m.after >= lastShift) Errors.Add($"{where}: there is no evening after shift {m.after}");
                 if (m.choices.Length > 3) Errors.Add($"{where}: at most 3 choices");
                 foreach (var c in m.choices)
                     if (c == null || string.IsNullOrWhiteSpace(c.text)) Errors.Add($"{where}: a choice without text");
@@ -358,6 +379,138 @@ namespace HumanError.Model.Content
             try { t.Arrange(VisitorGenerator.Generate(plan.Config, ctx, 1), plan.Config, ctx, 1); }
             catch (InvalidOperationException e) { Errors.Add($"{where}: {e.Message}"); return; }
             plan.Tutorial = t;
+        }
+
+        void StoryFrom(StoryData[] story, GameContent game)
+        {
+            var ids = new HashSet<string>();
+            foreach (var c in story ?? new StoryData[0])
+            {
+                if (c == null) continue;
+                string who = $"story '{c.id}'";
+                if (string.IsNullOrEmpty(c.id) || c.id.Any(ch => !char.IsLetter(ch) && ch != '-')) { Errors.Add($"{who}: ids are letters and dashes"); continue; }
+                if (!ids.Add(c.id)) Errors.Add($"duplicate story id '{c.id}'");
+                if (string.IsNullOrWhiteSpace(c.name)) Errors.Add($"{who}: no name");
+                int number = 0, count = 0;
+                foreach (var d in c.visits ?? new StoryVisitData[0])
+                {
+                    if (d == null) continue;
+                    count++;
+                    number = d.visit > 0 ? d.visit : number + 1;
+                    var visit = StoryVisit(c, d, number, game);
+                    if (visit != null) game.Shift(d.shift).Story.Add(visit);
+                }
+                if (count == 0) Errors.Add($"{who}: no visits");
+            }
+            if (Errors.Count > 0) return;
+
+            // Worst case every visit's conditions hold: there must be enough generated visitors of each kind to replace,
+            // and every story visitor must be fair (findable tells, papers that match their kind).
+            foreach (var plan in game.Shifts.Where(p => p.Story.Count > 0))
+            {
+                string where = $"story on shift {plan.Data.number}";
+                int front = plan.Tutorial?.Visitors.Count ?? 0;
+                foreach (var v in plan.Story.Where(v => v.Position <= front))
+                    Errors.Add($"{where}: {v.Key} at position {v.Position} would stand among the tutorial's scripted visitors");
+                for (ulong seed = 1; seed <= 6; seed++)
+                {
+                    var ctx = plan.Context(seed);
+                    List<VisitorInstance> queue;
+                    // Alternatives for the same visit exclude each other: check one of each.
+                    var worst = plan.Story.GroupBy(v => v.Key).Select(g => g.First()).OrderBy(v => v.Position).ToList();
+                    try { queue = plan.Queue(ctx, seed, worst); }
+                    catch (InvalidOperationException e) { Errors.Add($"{where}: {e.Message}"); break; }
+                    foreach (var v in queue.Where(v => v.Story != null))
+                        foreach (var problem in Fairness.Problems(v, ctx))
+                            Errors.Add($"{where}: {v.Story.Key} is unfair: {problem}");
+                }
+            }
+        }
+
+        StoryVisit StoryVisit(StoryData c, StoryVisitData d, int number, GameContent game)
+        {
+            string at = $"story '{c.id}' visit {number}";
+            var plan = game.Shift(d.shift);
+            if (plan == null) { Errors.Add($"{at}: there is no shift {d.shift}"); return null; }
+            int before = Errors.Count;
+            var ctx = plan.Context(1);
+            if (!Enum.TryParse(d.kind, out VisitorKind kind)) Errors.Add($"{at}: unknown visitor kind '{d.kind}'");
+            bool human = kind == VisitorKind.ClumsyHuman || kind == VisitorKind.SkilledHuman;
+            if (d.position < 1 || d.position > plan.Config.Visitors) Errors.Add($"{at}: position must be 1–{plan.Config.Visitors}");
+
+            var spec = new VisitorSpec { Kind = kind, Name = string.IsNullOrEmpty(d.alias) ? c.name : d.alias, Greeting = d.greeting };
+            if (d.look != null && !string.IsNullOrEmpty(d.look.clan))
+            {
+                var l = d.look;
+                if (!Enum.TryParse(l.clan, out Clan clan)) Errors.Add($"{at}: unknown clan '{l.clan}'");
+                foreach (var slot in new[] { l.head, l.mouth, l.pattern, l.outfit })
+                    if (slot < 0 || slot >= Look.Options) Errors.Add($"{at}: look slots are 0–{Look.Options - 1}");
+                if (l.tone < 0 || l.tone > 1) Errors.Add($"{at}: tone is 0 or 1");
+                spec.Look = new Look { Clan = clan, Head = l.head, Mouth = l.mouth, Pattern = l.pattern, Outfit = l.outfit, Tone = l.tone };
+            }
+            var available = VisitorGenerator.AvailableTells(ctx);
+            if ((d.tells?.Length ?? 0) > 0)
+            {
+                if (!human) Errors.Add($"{at}: only humans have tells");
+                spec.Tells = new List<Tell>();
+                foreach (var name in d.tells)
+                {
+                    if (!Enum.TryParse(name, out Tell t)) Errors.Add($"{at}: unknown tell '{name}'");
+                    else if (!available.Contains(t)) Errors.Add($"{at}: tell {t} can't be found on shift {d.shift}");
+                    else spec.Tells.Add(t);
+                }
+                if (spec.Tells.Count(t => Tells.Category(t) == TellCategory.Document) > plan.Config.MaxForgedFields)
+                    Errors.Add($"{at}: more forged fields than shift {d.shift} allows");
+            }
+            if (!string.IsNullOrEmpty(d.violation))
+            {
+                if (!Enum.TryParse(d.violation, out Violation v)) Errors.Add($"{at}: unknown violation '{d.violation}'");
+                else if (kind != VisitorKind.RuleBreakerCitizen) Errors.Add($"{at}: only rule-breakers have a violation");
+                else if (!VisitorGenerator.ViolationsAllowed(ctx).Contains(v)) Errors.Add($"{at}: {v} isn't possible on shift {d.shift}");
+                else spec.Violation = v;
+            }
+            if (!string.IsNullOrEmpty(d.quirk))
+            {
+                if (!Enum.TryParse(d.quirk, out Quirk q)) Errors.Add($"{at}: unknown quirk '{d.quirk}'");
+                else if (kind != VisitorKind.OddCitizen) Errors.Add($"{at}: only odd citizens have a quirk");
+                else if (!VisitorGenerator.QuirksAllowed(ctx).Contains(q)) Errors.Add($"{at}: {q} isn't possible on shift {d.shift}");
+                else spec.Quirk = q;
+            }
+            if (!string.IsNullOrEmpty(d.motive))
+            {
+                if (!Enum.TryParse(d.motive, out Motive m)) Errors.Add($"{at}: unknown motive '{d.motive}'");
+                else spec.Motive = m;
+            }
+            if (!string.IsNullOrEmpty(d.greeting))
+            {
+                // The greeting is evidence too (GDD §4): it must agree with the truth.
+                bool smallTalk = spec.Tells != null && spec.Tells.Contains(Tell.SmallTalkGreeting);
+                bool mood = d.greeting.Contains("%");
+                if (smallTalk && mood) Errors.Add($"{at}: a small-talk greeter's greeting states a mood");
+                if (!smallTalk && !mood) Errors.Add($"{at}: the greeting must state a mood (\"I am 60% …\") unless they greet with small talk");
+                if (kind == VisitorKind.OddCitizen) Errors.Add($"{at}: odd citizens explain their medical pass on arrival; leave the greeting out");
+            }
+            foreach (var t in d.when ?? new string[0])
+                if (!Conditions.IsKnown(t)) Errors.Add($"{at}: unknown condition '{t}'");
+            if (Errors.Count > before) return null;
+
+            var visit = new StoryVisit
+            {
+                StoryId = c.id,
+                StoryName = c.name,
+                Number = number,
+                Shift = d.shift,
+                Position = d.position,
+                Spec = spec,
+                When = d.when ?? new string[0],
+                Note = d.note,
+            };
+            void Line(Decision dec, string text) { if (!string.IsNullOrWhiteSpace(text)) visit.Lines[dec] = text; }
+            Line(Decision.LetIn, d.letin);
+            Line(Decision.TurnAway, d.away);
+            Line(Decision.Security, d.security);
+            Line(Decision.Silent, d.silent);
+            return visit;
         }
 
         static string Short(string text) => text == null ? "" : text.Length <= 30 ? text : text.Substring(0, 30) + "…";

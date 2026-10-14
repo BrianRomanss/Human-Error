@@ -75,8 +75,14 @@ namespace HumanError.EditorTools
                 a.messages = file.messages ?? new MessageData[0];
                 a.upgrades = file.upgrades ?? new UpgradeData[0];
                 a.tutorial = file.tutorial ?? new TutorialData();
+                a.story = file.story ?? new StoryData[0];
             }, report);
             AssetDatabase.SaveAssets();
+
+            // The game reads the catalog, not the JSON: a section the catalog forgets to carry would silently vanish.
+            var catalog = AssetDatabase.LoadAssetAtPath<ContentCatalogSO>(CatalogPath);
+            if (catalog == null || JsonUtility.ToJson(catalog.ToFile()) != JsonUtility.ToJson(file))
+                report.Errors.Add("The ContentCatalog doesn't carry every section of content.json — add the new section to ContentCatalogSO.ToFile and this importer.");
 
             foreach (var orphan in AssetUpsert.FindOrphans<QuestionSO>(DataFolder + "/Questions", file.questions.Select(q => q.id).ToList()))
                 report.Warnings.Add($"{orphan} is not in content.json (left untouched)");

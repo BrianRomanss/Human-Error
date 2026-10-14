@@ -24,7 +24,7 @@ MonoBehaviour:
     oddCitizens: 2
     skilledShare: 0.5
     clumsyMinTells: 0
-    clumsyMaxTells: 0
+    clumsyMaxTells: 2
     skilledTells: 0
     maxForgedFields: 3
     questionBudget: 3
@@ -47,3 +47,5 @@ MonoBehaviour:
       else twice.
     supervisor: The good forgeries start now. I hope you bought the lamp.
     revealEach: 0
+    untimed: 0
+    wanted: 

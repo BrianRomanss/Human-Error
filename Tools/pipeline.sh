@@ -3,6 +3,8 @@
 #
 #   Tools/pipeline.sh            # fast tests + art link + import + validator + Unity tests + scenes + Windows build
 #   Tools/pipeline.sh fast       # dotnet tests only (no Unity needed, ~1 s)
+#   Tools/pipeline.sh android    # everything, then also the Android APK (Builds/Android/HumanError.apk, IL2CPP ARM64)
+#   Tools/pipeline.sh release    # everything + Android + both demos + store screenshots + zips in Builds/Release (M7)
 #   Regenerate placeholder art/audio first with: dotnet run --project Tools/ArtGen
 #   UNITY=/path/to/Unity.exe Tools/pipeline.sh
 #
@@ -54,7 +56,27 @@ step "Build scenes"
 unity scenes -quit -executeMethod HumanError.EditorTools.SceneBuilder.BuildAll
 
 step "Windows player"
-unity build -quit -executeMethod HumanError.EditorTools.BuildScript.BuildWindows
+unity build -quit -buildTarget Win64 -executeMethod HumanError.EditorTools.BuildScript.BuildWindows
 grep -E "\[BuildScript\]" "$LOGS/build.log"
+
+if [ "${1:-}" = "android" ] || [ "${1:-}" = "release" ]; then
+  step "Android APK"
+  unity android -quit -buildTarget Android -executeMethod HumanError.EditorTools.BuildScript.BuildAndroid
+  grep -E "\[BuildScript\]" "$LOGS/android.log"
+fi
+
+if [ "${1:-}" = "release" ]; then
+  step "Demo builds (shifts 1–5, Endless locked)"
+  unity android-demo -quit -buildTarget Android -executeMethod HumanError.EditorTools.BuildScript.BuildAndroidDemo
+  grep -E "\[BuildScript\]" "$LOGS/android-demo.log"
+  unity windows-demo -quit -buildTarget Win64 -executeMethod HumanError.EditorTools.BuildScript.BuildWindowsDemo
+  grep -E "\[BuildScript\]" "$LOGS/windows-demo.log"
+
+  step "Store screenshots"
+  "$ROOT/Tools/store-shots.sh"
+
+  step "Package"
+  "$ROOT/Tools/package.sh"
+fi
 
 echo; echo "Pipeline OK → Builds/Windows/HumanError.exe"

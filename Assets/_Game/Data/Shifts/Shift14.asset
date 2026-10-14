@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6ea7988840a5bd488445465412f2c6d, type: 3}
+  m_Name: Shift14
+  m_EditorClassIdentifier: 
+  data:
+    number: 14
+    title: Archive
+    cycle: 413
+    day: 6
+    kesh: 
+    visitors: 10
+    humans: 3
+    ruleBreakers: 2
+    oddCitizens: 2
+    skilledShare: 0.5
+    clumsyMinTells: 0
+    clumsyMaxTells: 2
+    skilledTells: 0
+    maxForgedFields: 2
+    questionBudget: 3
+    questions:
+    - well
+    - keshname
+    - stamped
+    - showgreet
+    - where
+    - palm
+    - cold
+    - joke
+    tells: []
+    closedFloors: 09000000
+    rules:
+    - clan-stamp
+    tools:
+    - archive
+    briefing: Your desk is now linked to the Lattice ARCHIVE. Once per visitor you
+      can look up the name on their ID. Every citizen has a record. Some forgers
+      invent a name that doesn't exist.
+    supervisor: The archive doesn't lie. It doesn't forgive either.
+    revealEach: 0
+    untimed: 0
+    wanted: 

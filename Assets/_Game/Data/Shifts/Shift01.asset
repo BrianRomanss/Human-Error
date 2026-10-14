@@ -50,3 +50,5 @@ MonoBehaviour:
       really were.'
     supervisor: Three questions each. Don't waste them, and don't arrest citizens.
     revealEach: 1
+    untimed: 1
+    wanted: 

@@ -22,9 +22,9 @@ MonoBehaviour:
     humans: 3
     ruleBreakers: 2
     oddCitizens: 1
-    skilledShare: 0.34
+    skilledShare: 0.67
     clumsyMinTells: 0
-    clumsyMaxTells: 0
+    clumsyMaxTells: 2
     skilledTells: 0
     maxForgedFields: 3
     questionBudget: 3
@@ -66,3 +66,6 @@ MonoBehaviour:
     briefing: "New bulletin rule: Ammaru visitors need a blue stamp. Suits come with
       stuck-on glow spots \u2014 real ones shine."
     supervisor: Know the clans better than they do.
+    revealEach: 0
+    untimed: 0
+    wanted: 

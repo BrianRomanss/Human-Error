@@ -1,0 +1,52 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: a6ea7988840a5bd488445465412f2c6d, type: 3}
+  m_Name: Shift29
+  m_EditorClassIdentifier: 
+  data:
+    number: 29
+    title: Family
+    cycle: 415
+    day: 3
+    kesh: 
+    visitors: 12
+    humans: 4
+    ruleBreakers: 3
+    oddCitizens: 2
+    skilledShare: 0.75
+    clumsyMinTells: 0
+    clumsyMaxTells: 2
+    skilledTells: 0
+    maxForgedFields: 3
+    questionBudget: 3
+    questions:
+    - well
+    - keshname
+    - cycle
+    - leader
+    - when
+    - count
+    - exhale
+    - busy
+    tells: []
+    closedFloors: 0e000000
+    rules:
+    - clan-stamp:Ruu
+    - curfew
+    tools:
+    - archive
+    briefing: The night before the Grand Audit. Families are queuing for clinic passes
+      before the lockdown tightens. Check them as carefully as anyone.
+    supervisor: Tomorrow decides who you are. Tonight, just work.
+    revealEach: 0
+    untimed: 0
+    wanted: 
